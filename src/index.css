@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0b0e11;
+  color: #eaecef;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  background: #1e2329;
+  border: 1px solid #2b3139;
+  border-radius: 4px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #fcd535;
+  color: #000;
+}
+
+.btn-primary:hover {
+  background: #f0c419;
+}
+
+.btn-success {
+  background: #02c076;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #00a66d;
+}
+
+.btn-danger {
+  background: #f84960;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #e8334a;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.text-green {
+  color: #02c076;
+}
+
+.text-red {
+  color: #f84960;
+}
+
+.text-yellow {
+  color: #fcd535;
+}
+
+.text-gray {
+  color: #848e9c;
+}
+
+input, select, textarea {
+  background: #2b3139;
+  border: 1px solid #474d57;
+  color: #eaecef;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 14px;
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #fcd535;
+}
+
+table {
+  background: #1e2329;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+}
+
+th {
+  background: #2b3139;
+  color: #848e9c;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 16px;
+  text-align: left;
+}
+
+td {
+  border-bottom: 1px solid #2b3139;
+  padding: 16px;
+}
+
+.balance-card {
+  background: linear-gradient(135deg, #fcd535 0%, #f0b90b 100%);
+  color: #000;
+  text-align: center;
+  border: none;
+}
+
+.trading-card {
+  background: #1e2329;
+  border: 1px solid #2b3139;
+}
+
+.price-up {
+  color: #02c076;
+}
+
+.price-down {
+  color: #f84960;
+}
