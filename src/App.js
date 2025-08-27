@@ -28,9 +28,9 @@ function App() {
         localStorage.setItem('token', 'impersonated-' + userData.id);
         setUser({
           ...userData,
-          wallets: { inr: 10000, usdt: 0 },
-          kycStatus: 'approved',
-          canTrade: true
+          wallets: userData.wallets || { inr: 0, usdt: 0 },
+          kycStatus: userData.kycStatus || 'pending',
+          canTrade: userData.canTrade || false
         });
         setLoading(false);
         // Remove impersonate param from URL
