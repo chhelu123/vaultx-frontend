@@ -18,6 +18,29 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check for impersonation token
+    const urlParams = new URLSearchParams(window.location.search);
+    const impersonateToken = urlParams.get('impersonate');
+    
+    if (impersonateToken) {
+      try {
+        const userData = JSON.parse(atob(impersonateToken));
+        localStorage.setItem('token', 'impersonated-' + userData.id);
+        setUser({
+          ...userData,
+          wallets: { inr: 10000, usdt: 0 },
+          kycStatus: 'approved',
+          canTrade: true
+        });
+        setLoading(false);
+        // Remove impersonate param from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+      } catch (error) {
+        console.error('Invalid impersonation token');
+      }
+    }
+    
     const token = localStorage.getItem('token');
     if (token) {
       fetchUserData();
