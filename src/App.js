@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Trading from './pages/Trading';
 import KYCPage from './pages/KYCPage';
 import Profile from './pages/Profile';
+import History from './pages/History';
 import Auth from './pages/Auth';
 import LandingPage from './pages/LandingPage';
 import Terms from './pages/Terms';
@@ -67,6 +68,7 @@ function App() {
               <Route path="/trading" element={<Trading user={user} setUser={setUser} refreshUser={refreshUser} />} />
               <Route path="/kyc" element={<KYCPage user={user} setUser={setUser} refreshUser={refreshUser} />} />
               <Route path="/profile" element={<Profile user={user} setUser={setUser} refreshUser={refreshUser} />} />
+              <Route path="/history" element={<History user={user} />} />
               <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
           </>

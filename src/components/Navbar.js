@@ -7,6 +7,7 @@ const Navbar = ({ user, onLogout }) => {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '🏠' },
     { path: '/trading', label: 'Trading', icon: '📈' },
+    { path: '/history', label: 'History', icon: '📋' },
     { path: '/kyc', label: 'KYC', icon: '🆔' },
     { path: '/profile', label: 'Profile', icon: '👤' },
   ];
