@@ -3,8 +3,37 @@ import { authAPI } from '../services/api';
 
 const Auth = ({ setUser, defaultTab = 'login' }) => {
   const [isLogin, setIsLogin] = useState(defaultTab === 'login');
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', otp: '' });
   const [loading, setLoading] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
+
+  const sendOTP = async () => {
+    if (!formData.email) {
+      alert('Please enter email first');
+      return;
+    }
+    
+    setOtpLoading(true);
+    try {
+      const response = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email })
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        setOtpSent(true);
+        alert(`OTP sent to ${formData.email}. Please check your email.`);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert('Error sending OTP');
+    }
+    setOtpLoading(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,15 +76,52 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
             />
           )}
           
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            style={{ width: '100%', padding: '12px', marginBottom: '15px', border: '1px solid #474d57', borderRadius: '4px', backgroundColor: '#2b3139', color: '#eaecef' }}
-          />
+          <div style={{ position: 'relative', marginBottom: '15px' }}>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '4px', backgroundColor: '#2b3139', color: '#eaecef' }}
+            />
+            {!isLogin && (
+              <button
+                type="button"
+                onClick={sendOTP}
+                disabled={otpLoading || !formData.email}
+                style={{
+                  position: 'absolute',
+                  right: '5px',
+                  top: '5px',
+                  padding: '7px 12px',
+                  backgroundColor: '#fcd535',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: '3px',
+                  cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: '600'
+                }}
+              >
+                {otpLoading ? 'Sending...' : 'Send OTP'}
+              </button>
+            )}
+          </div>
+          
+          {!isLogin && otpSent && (
+            <input
+              type="text"
+              name="otp"
+              placeholder="Enter OTP"
+              value={formData.otp}
+              onChange={handleChange}
+              required
+              maxLength="6"
+              style={{ width: '100%', padding: '12px', marginBottom: '15px', border: '1px solid #474d57', borderRadius: '4px', backgroundColor: '#2b3139', color: '#eaecef' }}
+            />
+          )}
           
           <input
             type="password"
@@ -69,7 +135,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
           
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (!isLogin && (!otpSent || !formData.otp))}
             style={{ width: '100%', padding: '12px', backgroundColor: '#fcd535', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '16px', fontWeight: '600' }}
           >
             {loading ? 'Processing...' : (isLogin ? 'Login' : 'Register')}
@@ -79,7 +145,11 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
         <p style={{ textAlign: 'center', marginTop: '20px', color: '#848e9c' }}>
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <button
-            onClick={() => setIsLogin(!isLogin)}
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setOtpSent(false);
+              setFormData({ name: '', email: '', password: '', otp: '' });
+            }}
             style={{ background: 'none', border: 'none', color: '#fcd535', cursor: 'pointer', textDecoration: 'underline', fontWeight: '500' }}
           >
             {isLogin ? 'Register' : 'Login'}
