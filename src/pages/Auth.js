@@ -21,18 +21,21 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email })
       });
-      const data = await response.json();
       
-      if (response.ok) {
-        setOtpSent(true);
-        alert(`OTP sent to ${formData.email}. Please check your email.`);
-      } else {
-        alert(data.message);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
+      const data = await response.json();
+      setOtpSent(true);
+      alert(`OTP sent to ${formData.email}. Please check your email or Railway logs.`);
+      
     } catch (error) {
-      alert('Error sending OTP');
+      console.error('OTP Error:', error);
+      alert(`Error sending OTP: ${error.message}`);
+    } finally {
+      setOtpLoading(false);
     }
-    setOtpLoading(false);
   };
 
   const handleSubmit = async (e) => {
