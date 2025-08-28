@@ -16,7 +16,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
     
     setOtpLoading(true);
     try {
-      const response = await fetch('/api/auth/send-otp', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email })
@@ -130,6 +130,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
             value={formData.password}
             onChange={handleChange}
             required
+            autoComplete={isLogin ? "current-password" : "new-password"}
             style={{ width: '100%', padding: '12px', marginBottom: '20px', border: '1px solid #474d57', borderRadius: '4px', backgroundColor: '#2b3139', color: '#eaecef' }}
           />
           
