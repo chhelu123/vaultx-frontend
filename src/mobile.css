@@ -29,10 +29,21 @@ body {
   
   /* Navigation */
   .navbar {
-    padding: 10px 15px !important;
-    flex-wrap: wrap !important;
+    padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
+  }
+  
+  .desktop-nav {
+    display: none !important;
+  }
+  
+  .mobile-menu-btn {
+    display: block !important;
+  }
+  
+  .mobile-menu {
+    display: block !important;
   }
   
   .navbar h1 {
@@ -301,6 +312,21 @@ body {
   .feature-card {
     padding: 20px !important;
     text-align: center !important;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+  .desktop-nav {
+    display: flex !important;
+  }
+  
+  .mobile-menu-btn {
+    display: none !important;
+  }
+  
+  .mobile-menu {
+    display: none !important;
   }
 }
 
