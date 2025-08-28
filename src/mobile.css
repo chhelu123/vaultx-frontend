@@ -15,10 +15,24 @@ body {
 
 /* Mobile styles */
 @media (max-width: 768px) {
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
   /* Navigation */
   .navbar {
     padding: 10px 15px !important;
     flex-wrap: wrap !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   
   .navbar h1 {
@@ -47,6 +61,18 @@ body {
   .main-container {
     padding: 10px !important;
     margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* All containers */
+  .container, .content, .page-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px !important;
+    margin: 0 !important;
+    overflow-x: hidden !important;
   }
   
   /* Cards */
@@ -100,20 +126,53 @@ body {
     width: 100% !important;
   }
   
-  /* Tables */
+  /* Tables - Convert to mobile cards */
   .table-container {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   
   table {
-    min-width: 600px !important;
-    font-size: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
   }
   
-  th, td {
-    padding: 8px 4px !important;
-    white-space: nowrap !important;
+  thead {
+    display: none !important;
+  }
+  
+  tbody {
+    display: block !important;
+    width: 100% !important;
+  }
+  
+  tr {
+    display: block !important;
+    margin-bottom: 15px !important;
+    padding: 15px !important;
+    background: white !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  td {
+    display: block !important;
+    text-align: left !important;
+    padding: 5px 0 !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  td:before {
+    content: attr(data-label) ": " !important;
+    font-weight: bold !important;
+    color: #666 !important;
   }
   
   /* Trading interface */

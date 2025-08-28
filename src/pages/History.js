@@ -101,19 +101,19 @@ const History = ({ user }) => {
                   <tbody>
                     {deposits.map((deposit) => (
                       <tr key={deposit._id} style={{ borderBottom: '1px solid #1a1d23' }}>
-                        <td style={{ color: '#eaecef', padding: '12px' }}>
+                        <td data-label="Date" style={{ color: '#eaecef', padding: '12px' }}>
                           {formatDate(deposit.createdAt)}
                         </td>
-                        <td style={{ color: '#eaecef', padding: '12px' }}>
+                        <td data-label="Type" style={{ color: '#eaecef', padding: '12px' }}>
                           {deposit.type.toUpperCase()}
                         </td>
-                        <td style={{ color: '#eaecef', padding: '12px' }}>
+                        <td data-label="Amount" style={{ color: '#eaecef', padding: '12px' }}>
                           {deposit.type === 'inr' ? '₹' : ''}{deposit.amount}
                         </td>
-                        <td style={{ color: '#eaecef', padding: '12px' }}>
+                        <td data-label="Method" style={{ color: '#eaecef', padding: '12px' }}>
                           {deposit.paymentMethod || 'N/A'}
                         </td>
-                        <td style={{ padding: '12px' }}>
+                        <td data-label="Status" style={{ padding: '12px' }}>
                           <span style={{
                             color: getStatusColor(deposit.status),
                             padding: '4px 8px',
@@ -125,7 +125,7 @@ const History = ({ user }) => {
                             {deposit.status.toUpperCase()}
                           </span>
                         </td>
-                        <td style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
+                        <td data-label="Transaction ID" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
                           {deposit.transactionId || 'N/A'}
                         </td>
                       </tr>
@@ -160,21 +160,21 @@ const History = ({ user }) => {
                   <tbody>
                     {withdrawals.map((withdrawal) => (
                       <tr key={withdrawal._id} style={{ borderBottom: '1px solid #1a1d23' }}>
-                        <td style={{ color: '#eaecef', padding: '12px' }}>
+                        <td data-label="Date" style={{ color: '#eaecef', padding: '12px' }}>
                           {formatDate(withdrawal.createdAt)}
                         </td>
-                        <td style={{ color: '#eaecef', padding: '12px' }}>
+                        <td data-label="Type" style={{ color: '#eaecef', padding: '12px' }}>
                           {withdrawal.type.toUpperCase()}
                         </td>
-                        <td style={{ color: '#eaecef', padding: '12px' }}>
+                        <td data-label="Amount" style={{ color: '#eaecef', padding: '12px' }}>
                           {withdrawal.type === 'inr' ? '₹' : ''}{withdrawal.amount}
                         </td>
-                        <td style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
+                        <td data-label="Details" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
                           {typeof withdrawal.withdrawalDetails === 'string' 
                             ? withdrawal.withdrawalDetails 
                             : JSON.stringify(withdrawal.withdrawalDetails)}
                         </td>
-                        <td style={{ padding: '12px' }}>
+                        <td data-label="Status" style={{ padding: '12px' }}>
                           <span style={{
                             color: getStatusColor(withdrawal.status),
                             padding: '4px 8px',
