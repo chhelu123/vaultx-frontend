@@ -3,9 +3,10 @@ import { walletAPI } from '../services/api';
 
 const WalletActions = ({ user, onUpdate }) => {
   const [showModal, setShowModal] = useState(null);
-  const [formData, setFormData] = useState({ amount: '', details: '', method: 'upi' });
+  const [formData, setFormData] = useState({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState(null);
+  const [depositStep, setDepositStep] = useState(1); // 1: Amount, 2: Payment Details, 3: Transaction ID
 
   useEffect(() => {
     fetchSettings();
@@ -23,7 +24,6 @@ const WalletActions = ({ user, onUpdate }) => {
 
   const handleDeposit = async (type) => {
     setLoading(true);
-    await fetchSettings(); // Get latest settings
     try {
       await walletAPI.requestDeposit({
         type,
@@ -33,7 +33,8 @@ const WalletActions = ({ user, onUpdate }) => {
       });
       alert(`${type.toUpperCase()} deposit request submitted!`);
       setShowModal(null);
-      setFormData({ amount: '', details: '', method: 'upi' });
+      setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
+      setDepositStep(1);
     } catch (error) {
       alert(error.response?.data?.message || 'Error submitting deposit');
     }
@@ -54,17 +55,22 @@ const WalletActions = ({ user, onUpdate }) => {
           alert(`USDT sent successfully! TX: ${response.data.transaction}`);
         }
       } else {
+        const withdrawalDetails = formData.method === 'upi' 
+          ? formData.details 
+          : `Bank: ${formData.bankName}, IFSC: ${formData.ifscCode}, Account: ${formData.accountNumber}`;
+        
         await walletAPI.requestWithdrawal({
           type,
           amount: parseFloat(formData.amount),
-          withdrawalDetails: formData.details,
+          withdrawalDetails,
           paymentMethod: formData.method === 'upi' ? 'UPI' : 'Bank Transfer'
         });
         alert('INR withdrawal request submitted!');
       }
       
       setShowModal(null);
-      setFormData({ amount: '', details: '', method: 'upi' });
+      setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
+      setDepositStep(1);
     } catch (error) {
       alert(error.response?.data?.message || 'Error processing withdrawal');
     }
@@ -82,6 +88,7 @@ const WalletActions = ({ user, onUpdate }) => {
         <div style={{ backgroundColor: '#1e2329', padding: '30px', borderRadius: '8px', maxWidth: '400px', width: '90%', border: '1px solid #2b3139' }}>
           <h3 style={{ color: '#eaecef', marginBottom: '20px' }}>{isDeposit ? 'Deposit' : 'Withdraw'} {type.toUpperCase()}</h3>
           
+          {/* Amount Input - Always First */}
           <input
             type="number"
             placeholder="Amount"
@@ -90,17 +97,7 @@ const WalletActions = ({ user, onUpdate }) => {
             style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
           />
 
-          <input
-            type="text"
-            placeholder={isDeposit ? 
-              (type === 'inr' ? 'Transaction ID/Reference' : 'Transaction Hash') : 
-              (type === 'inr' ? (formData.method === 'upi' ? 'Your UPI ID' : 'Account Number') : 'Your USDT Address')
-            }
-            value={formData.details}
-            onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-            style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
-          />
-
+          {/* Payment Method Selection for INR */}
           {type === 'inr' && (
             <div style={{ margin: '10px 0' }}>
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>Payment Method:</label>
@@ -115,64 +112,171 @@ const WalletActions = ({ user, onUpdate }) => {
             </div>
           )}
 
-          {isDeposit && type === 'inr' && (
-            <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
+          {/* INR Deposit Flow */}
+          {isDeposit && type === 'inr' && depositStep === 1 && formData.amount && (
+            <div>
+              <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
+                {formData.method === 'upi' ? (
+                  <div>
+                    <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Pay to UPI ID:</p>
+                    <p style={{ color: '#eaecef', margin: '5px 0', fontSize: '16px' }}>{settings?.upiId || 'Loading...'}</p>
+                    <p style={{ color: '#02c076', margin: '5px 0', fontWeight: 'bold' }}>Amount: ₹{formData.amount}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Bank Transfer Details:</p>
+                    <p style={{ color: '#eaecef', margin: '5px 0' }}>Account: {settings?.bankAccount || 'Loading...'}</p>
+                    <p style={{ color: '#eaecef', margin: '5px 0' }}>IFSC: {settings?.bankIFSC || 'Loading...'}</p>
+                    <p style={{ color: '#eaecef', margin: '5px 0' }}>Name: {settings?.bankName || 'Loading...'}</p>
+                    <p style={{ color: '#02c076', margin: '5px 0', fontWeight: 'bold' }}>Amount: ₹{formData.amount}</p>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => setDepositStep(2)}
+                style={{ width: '100%', padding: '12px', backgroundColor: '#fcd535', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600', margin: '10px 0' }}
+              >
+                I have made the payment
+              </button>
+            </div>
+          )}
+
+          {/* Transaction ID Input */}
+          {isDeposit && type === 'inr' && depositStep === 2 && (
+            <div>
+              <input
+                type="text"
+                placeholder="Enter Transaction ID/Reference Number"
+                value={formData.details}
+                onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+                style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+              />
+              <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                <button
+                  onClick={() => handleDeposit(type)}
+                  disabled={loading || !formData.details}
+                  style={{ flex: 1, padding: '12px', backgroundColor: '#02c076', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  {loading ? 'Processing...' : 'Submit Deposit'}
+                </button>
+                <button
+                  onClick={() => setDepositStep(1)}
+                  style={{ flex: 1, padding: '12px', backgroundColor: '#474d57', color: '#eaecef', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* USDT Deposit */}
+          {isDeposit && type === 'usdt' && (
+            <div>
+              <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
+                <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Send USDT to:</p>
+                <p style={{ wordBreak: 'break-all', color: '#eaecef', margin: '5px 0' }}>{settings?.usdtAddress || 'Loading...'}</p>
+                <p style={{ color: '#02c076', margin: '5px 0', fontWeight: 'bold' }}>Amount: {formData.amount} USDT</p>
+              </div>
+              <input
+                type="text"
+                placeholder="Enter Transaction Hash"
+                value={formData.details}
+                onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+                style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+              />
+              <button
+                onClick={() => handleDeposit(type)}
+                disabled={loading || !formData.amount || !formData.details}
+                style={{ width: '100%', padding: '12px', backgroundColor: '#02c076', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+              >
+                {loading ? 'Processing...' : 'Submit Deposit'}
+              </button>
+            </div>
+          )}
+
+          {/* INR Withdrawal */}
+          {!isDeposit && type === 'inr' && (
+            <div>
               {formData.method === 'upi' ? (
-                <div>
-                  <p style={{ color: '#eaecef', margin: '5px 0' }}><strong style={{ color: '#fcd535' }}>UPI ID:</strong> {settings?.upiId || 'Loading...'}</p>
-                  <p style={{ color: '#848e9c', margin: '5px 0' }}>Enter transaction ID after payment</p>
-                </div>
+                <input
+                  type="text"
+                  placeholder="Your UPI ID"
+                  value={formData.details}
+                  onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+                  style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                />
               ) : (
                 <div>
-                  <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Bank Details:</p>
-                  <p style={{ color: '#eaecef', margin: '5px 0' }}>Account: {settings?.bankAccount || 'Loading...'}</p>
-                  <p style={{ color: '#eaecef', margin: '5px 0' }}>IFSC: {settings?.bankIFSC || 'Loading...'}</p>
-                  <p style={{ color: '#eaecef', margin: '5px 0' }}>Name: {settings?.bankName || 'Loading...'}</p>
-                  <p style={{ color: '#848e9c', margin: '5px 0' }}>Enter transaction reference after transfer</p>
+                  <input
+                    type="text"
+                    placeholder="Bank Name"
+                    value={formData.bankName}
+                    onChange={(e) => setFormData({ ...formData, bankName: e.target.value })}
+                    style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="IFSC Code"
+                    value={formData.ifscCode}
+                    onChange={(e) => setFormData({ ...formData, ifscCode: e.target.value })}
+                    style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Account Number"
+                    value={formData.accountNumber}
+                    onChange={(e) => setFormData({ ...formData, accountNumber: e.target.value })}
+                    style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                  />
                 </div>
               )}
+              <button
+                onClick={() => handleWithdraw(type)}
+                disabled={loading || !formData.amount || (formData.method === 'upi' ? !formData.details : (!formData.bankName || !formData.ifscCode || !formData.accountNumber))}
+                style={{ width: '100%', padding: '12px', backgroundColor: '#f84960', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+              >
+                {loading ? 'Processing...' : 'Submit Withdrawal'}
+              </button>
             </div>
           )}
 
-          {isDeposit && type === 'usdt' && (
-            <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
-              <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Send to:</p>
-              <p style={{ wordBreak: 'break-all', color: '#eaecef', margin: '5px 0' }}>{settings?.usdtAddress || 'Loading...'}</p>
-              <p style={{ color: '#848e9c', margin: '5px 0' }}>Enter transaction hash after sending</p>
-            </div>
-          )}
-
-          {!isDeposit && type === 'inr' && (
-            <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
-              <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Withdrawal Method: {formData.method === 'upi' ? 'UPI' : 'Bank Transfer'}</p>
-              <p style={{ color: '#848e9c', margin: '5px 0' }}>Enter your {formData.method === 'upi' ? 'UPI ID' : 'bank account details'}</p>
-            </div>
-          )}
-
+          {/* USDT Withdrawal */}
           {!isDeposit && type === 'usdt' && (
-            <div style={{ backgroundColor: '#fff3cd', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px' }}>
-              <p><strong>Instant Withdrawal</strong></p>
-              <p>USDT will be sent immediately to your address</p>
+            <div>
+              <input
+                type="text"
+                placeholder="Your USDT Address"
+                value={formData.details}
+                onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+                style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+              />
+              <div style={{ backgroundColor: '#fff3cd', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px' }}>
+                <p><strong>Instant Withdrawal</strong></p>
+                <p>USDT will be sent immediately to your address</p>
+              </div>
+              <button
+                onClick={() => handleWithdraw(type)}
+                disabled={loading || !formData.amount || !formData.details}
+                style={{ width: '100%', padding: '12px', backgroundColor: '#f84960', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+              >
+                {loading ? 'Processing...' : 'Submit Withdrawal'}
+              </button>
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+          {/* Cancel Button */}
+          {!(isDeposit && type === 'inr' && depositStep === 2) && (
             <button
-              onClick={() => isDeposit ? handleDeposit(type) : handleWithdraw(type)}
-              disabled={loading || !formData.amount || !formData.details}
-              className="btn btn-primary"
-              style={{ flex: 1, padding: '12px', marginRight: '8px' }}
-            >
-              {loading ? 'Processing...' : 'Submit'}
-            </button>
-            <button
-              onClick={() => setShowModal(null)}
-              className="btn"
-              style={{ flex: 1, padding: '12px', backgroundColor: '#474d57', color: '#eaecef' }}
+              onClick={() => {
+                setShowModal(null);
+                setDepositStep(1);
+                setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
+              }}
+              style={{ width: '100%', padding: '12px', backgroundColor: '#474d57', color: '#eaecef', border: 'none', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}
             >
               Cancel
             </button>
-          </div>
+          )}
         </div>
       </div>
     );
@@ -185,7 +289,12 @@ const WalletActions = ({ user, onUpdate }) => {
           <h4>INR Wallet: ₹{user.wallets?.inr?.toFixed(2) || '0.00'}</h4>
           <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
             <button
-              onClick={() => { fetchSettings(); setShowModal('deposit-inr'); }}
+              onClick={() => { 
+                fetchSettings(); 
+                setShowModal('deposit-inr'); 
+                setDepositStep(1);
+                setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
+              }}
               style={{ flex: 1, padding: '8px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
             >
               Deposit
@@ -204,7 +313,11 @@ const WalletActions = ({ user, onUpdate }) => {
           <h4>USDT Wallet: {user.wallets?.usdt?.toFixed(6) || '0.000000'}</h4>
           <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
             <button
-              onClick={() => { fetchSettings(); setShowModal('deposit-usdt'); }}
+              onClick={() => { 
+                fetchSettings(); 
+                setShowModal('deposit-usdt'); 
+                setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
+              }}
               style={{ flex: 1, padding: '8px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
             >
               Deposit
