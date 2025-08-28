@@ -96,7 +96,7 @@ const History = ({ user }) => {
                       <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Method</th>
                       <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Status</th>
                       <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Transaction ID</th>
-                      <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Admin Note</th>
+                      <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Note</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -129,17 +129,21 @@ const History = ({ user }) => {
                         <td data-label="Transaction ID" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
                           {deposit.transactionId || 'N/A'}
                         </td>
-                        <td data-label="Admin Note" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
-                          {deposit.adminNote && (
+                        <td data-label="Note" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
+                          {deposit.adminNote ? (
                             <div style={{ 
                               backgroundColor: deposit.status === 'rejected' ? '#f84960' : '#02c076',
                               color: 'white',
-                              padding: '4px 8px',
+                              padding: '6px 10px',
                               borderRadius: '4px',
-                              fontSize: '11px'
+                              fontSize: '12px',
+                              maxWidth: '200px',
+                              wordWrap: 'break-word'
                             }}>
                               {deposit.adminNote}
                             </div>
+                          ) : (
+                            <span style={{ color: '#474d57' }}>-</span>
                           )}
                         </td>
                       </tr>
@@ -169,7 +173,7 @@ const History = ({ user }) => {
                       <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Amount</th>
                       <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Details</th>
                       <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Status</th>
-                      <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Admin Note</th>
+                      <th style={{ color: '#848e9c', padding: '12px', textAlign: 'left' }}>Note</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -201,17 +205,21 @@ const History = ({ user }) => {
                             {withdrawal.status.toUpperCase()}
                           </span>
                         </td>
-                        <td data-label="Admin Note" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
-                          {withdrawal.adminNote && (
+                        <td data-label="Note" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
+                          {withdrawal.adminNote ? (
                             <div style={{ 
                               backgroundColor: withdrawal.status === 'rejected' ? '#f84960' : '#02c076',
                               color: 'white',
-                              padding: '4px 8px',
+                              padding: '6px 10px',
                               borderRadius: '4px',
-                              fontSize: '11px'
+                              fontSize: '12px',
+                              maxWidth: '200px',
+                              wordWrap: 'break-word'
                             }}>
                               {withdrawal.adminNote}
                             </div>
+                          ) : (
+                            <span style={{ color: '#474d57' }}>-</span>
                           )}
                         </td>
                       </tr>
