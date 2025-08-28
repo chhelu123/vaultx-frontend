@@ -22,11 +22,12 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
         body: JSON.stringify({ email: formData.email })
       });
       
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
       
-      const data = await response.json();
       setOtpSent(true);
       alert(`OTP sent to ${formData.email}. Please check your email or Railway logs.`);
       
