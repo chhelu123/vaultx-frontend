@@ -46,6 +46,19 @@ body {
     display: block !important;
   }
   
+  /* Landing page navbar */
+  .landing-navbar .desktop-menu {
+    display: none !important;
+  }
+  
+  .landing-navbar .mobile-hamburger {
+    display: block !important;
+  }
+  
+  .landing-navbar .mobile-dropdown {
+    display: block !important;
+  }
+  
   .navbar h1 {
     font-size: 18px !important;
     margin: 0 !important;
@@ -365,6 +378,19 @@ body {
   }
   
   .mobile-menu {
+    display: none !important;
+  }
+  
+  /* Landing navbar desktop */
+  .landing-navbar .desktop-menu {
+    display: flex !important;
+  }
+  
+  .landing-navbar .mobile-hamburger {
+    display: none !important;
+  }
+  
+  .landing-navbar .mobile-dropdown {
     display: none !important;
   }
 }
