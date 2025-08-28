@@ -130,7 +130,7 @@ const History = ({ user }) => {
                           {deposit.transactionId || 'N/A'}
                         </td>
                         <td data-label="Note" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
-                          {deposit.adminNote ? (
+                          {(deposit.adminNote || deposit.adminNotes || deposit.note) ? (
                             <div style={{ 
                               backgroundColor: deposit.status === 'rejected' ? '#f84960' : '#02c076',
                               color: 'white',
@@ -140,7 +140,7 @@ const History = ({ user }) => {
                               maxWidth: '200px',
                               wordWrap: 'break-word'
                             }}>
-                              {deposit.adminNote}
+                              {deposit.adminNote || deposit.adminNotes || deposit.note}
                             </div>
                           ) : (
                             <span style={{ color: '#474d57' }}>-</span>
@@ -206,7 +206,7 @@ const History = ({ user }) => {
                           </span>
                         </td>
                         <td data-label="Note" style={{ color: '#848e9c', padding: '12px', fontSize: '12px' }}>
-                          {withdrawal.adminNote ? (
+                          {(withdrawal.adminNote || withdrawal.adminNotes || withdrawal.note) ? (
                             <div style={{ 
                               backgroundColor: withdrawal.status === 'rejected' ? '#f84960' : '#02c076',
                               color: 'white',
@@ -216,7 +216,7 @@ const History = ({ user }) => {
                               maxWidth: '200px',
                               wordWrap: 'break-word'
                             }}>
-                              {withdrawal.adminNote}
+                              {withdrawal.adminNote || withdrawal.adminNotes || withdrawal.note}
                             </div>
                           ) : (
                             <span style={{ color: '#474d57' }}>-</span>
