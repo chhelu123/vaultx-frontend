@@ -15,25 +15,37 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
     }
     
     setOtpLoading(true);
+    const apiUrl = 'https://vaultx-backend-production.up.railway.app/api/auth/send-otp';
+    console.log('Sending OTP to:', apiUrl);
+    
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://vaultx-backend-production.up.railway.app'}/api/auth/send-otp`, {
+      // Test if backend is reachable
+      const testResponse = await fetch('https://vaultx-backend-production.up.railway.app/');
+      console.log('Backend test:', testResponse.status);
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ email: formData.email })
       });
       
+      console.log('OTP Response status:', response.status);
       const data = await response.json();
+      console.log('OTP Response data:', data);
       
       if (!response.ok) {
         throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
       
       setOtpSent(true);
-      alert(`OTP sent to ${formData.email}. Please check your email or Railway logs.`);
+      alert(`OTP sent to ${formData.email}. Check Railway logs for OTP.`);
       
     } catch (error) {
       console.error('OTP Error:', error);
-      alert(`Error sending OTP: ${error.message}`);
+      alert(`Error: ${error.message}. Check console for details.`);
     } finally {
       setOtpLoading(false);
     }
