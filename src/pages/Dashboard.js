@@ -39,7 +39,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
           <p className="text-gray">Manage your deposits, withdrawals and view transactions</p>
         </div>
         
-        <div className="grid-2">
+        <div className="wallet-balance-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
           <div className="card" style={{ textAlign: 'center', background: 'linear-gradient(135deg, #02c076 0%, #00a66d 100%)', border: 'none' }}>
             <h3 style={{ color: '#fff', fontSize: '14px', fontWeight: '500', marginBottom: '12px' }}>INR Balance</h3>
             <p style={{ fontSize: '32px', fontWeight: '700', margin: '0', color: '#fff' }}>₹{user?.wallets?.inr || '0'}</p>

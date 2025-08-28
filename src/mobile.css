@@ -226,6 +226,45 @@ body {
     font-weight: bold !important;
   }
   
+  /* Wallet actions grid */
+  .wallet-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+  
+  .wallet-grid > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .wallet-grid h4 {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .wallet-grid button {
+    padding: 12px !important;
+    font-size: 14px !important;
+  }
+  
+  /* Wallet balance grid */
+  .wallet-balance-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+  
+  .wallet-balance-grid .card {
+    padding: 20px !important;
+  }
+  
+  .wallet-balance-grid .card h3 {
+    font-size: 12px !important;
+  }
+  
+  .wallet-balance-grid .card p {
+    font-size: 24px !important;
+  }
+  
   /* Modals */
   .modal {
     width: 95% !important;

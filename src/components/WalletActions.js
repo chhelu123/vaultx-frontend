@@ -180,7 +180,7 @@ const WalletActions = ({ user, onUpdate }) => {
 
   return (
     <div style={{ marginBottom: '20px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+      <div className="wallet-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
         <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
           <h4>INR Wallet: ₹{user.wallets?.inr?.toFixed(2) || '0.00'}</h4>
           <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
