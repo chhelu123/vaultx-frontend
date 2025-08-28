@@ -86,7 +86,7 @@ const KYCForm = ({ user, onUpdate }) => {
       <div className="card" style={{ background: 'linear-gradient(135deg, #f84960 0%, #e8334a 100%)', border: 'none' }}>
         <h3 style={{ color: '#fff', marginBottom: '10px' }}>❌ KYC Rejected</h3>
         <p style={{ color: '#fff', marginBottom: '15px' }}>
-          Reason: {kycStatus.kyc?.adminNotes || 'Please resubmit with correct documents'}
+          <strong>Admin Note:</strong> {kycStatus.kyc?.adminNotes || kycStatus.adminNote || 'Please resubmit with correct documents'}
         </p>
         <button
           onClick={() => setKycStatus({ ...kycStatus, showForm: true })}
