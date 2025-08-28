@@ -12,30 +12,171 @@ const LandingPage = () => {
       <LandingNavbar />
 
       {/* Hero Section */}
-      <section style={{ padding: '100px 24px', textAlign: 'center', background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '56px', fontWeight: '700', marginBottom: '24px', color: '#eaecef' }}>
-            Buy & Sell USDT <span style={{ color: '#fcd535' }}>Instantly</span>
-          </h1>
-          <p style={{ fontSize: '24px', color: '#848e9c', marginBottom: '16px' }}>
-            Safe. Secure. Transparent.
-          </p>
-          <p style={{ fontSize: '18px', color: '#848e9c', marginBottom: '48px' }}>
-            India's trusted P2P platform for INR ↔ USDT transactions
-          </p>
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/register" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '18px', fontWeight: '600' }}>
-              Get Started
+      <section style={{ 
+        padding: '100px 24px', 
+        textAlign: 'center', 
+        background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Animated Background Elements */}
+        <div style={{
+          position: 'absolute',
+          top: '10%',
+          left: '10%',
+          width: '100px',
+          height: '100px',
+          background: 'linear-gradient(45deg, #fcd535, #f0b90b)',
+          borderRadius: '50%',
+          opacity: '0.1',
+          animation: 'float 6s ease-in-out infinite'
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          top: '20%',
+          right: '15%',
+          width: '150px',
+          height: '150px',
+          background: 'linear-gradient(45deg, #02c076, #00a66d)',
+          borderRadius: '50%',
+          opacity: '0.1',
+          animation: 'float 8s ease-in-out infinite reverse'
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          bottom: '10%',
+          left: '20%',
+          width: '80px',
+          height: '80px',
+          background: 'linear-gradient(45deg, #f84960, #e73c4e)',
+          borderRadius: '50%',
+          opacity: '0.1',
+          animation: 'float 7s ease-in-out infinite'
+        }}></div>
+        
+        <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+          <div style={{
+            animation: 'slideInUp 1s ease-out',
+            marginBottom: '24px'
+          }}>
+            <h1 style={{ 
+              fontSize: '56px', 
+              fontWeight: '700', 
+              color: '#eaecef',
+              textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+              lineHeight: '1.2'
+            }}>
+              Buy & Sell USDT{' '}
+              <span style={{ 
+                color: '#fcd535',
+                background: 'linear-gradient(45deg, #fcd535, #f0b90b)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                animation: 'glow 2s ease-in-out infinite alternate'
+              }}>Instantly</span>
+            </h1>
+          </div>
+          
+          <div style={{ animation: 'slideInUp 1s ease-out 0.2s both' }}>
+            <p style={{ 
+              fontSize: '24px', 
+              color: '#848e9c', 
+              marginBottom: '16px',
+              fontWeight: '500'
+            }}>
+              🔒 Safe. ⚡ Secure. 🌟 Transparent.
+            </p>
+            <p style={{ fontSize: '18px', color: '#848e9c', marginBottom: '48px' }}>
+              India's trusted P2P platform for INR ↔ USDT transactions
+            </p>
+          </div>
+          
+          <div style={{ 
+            display: 'flex', 
+            gap: '20px', 
+            justifyContent: 'center', 
+            flexWrap: 'wrap',
+            animation: 'slideInUp 1s ease-out 0.4s both'
+          }}>
+            <Link 
+              to="/register" 
+              style={{ 
+                padding: '16px 32px', 
+                fontSize: '18px', 
+                fontWeight: '600',
+                background: 'linear-gradient(45deg, #fcd535, #f0b90b)',
+                color: '#000',
+                border: 'none',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 15px rgba(252, 213, 53, 0.3)',
+                transform: 'translateY(0)',
+                display: 'inline-block'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 8px 25px rgba(252, 213, 53, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 15px rgba(252, 213, 53, 0.3)';
+              }}
+            >
+              🚀 Get Started
             </Link>
             <button 
               onClick={() => scrollToSection('how-it-works')}
-              className="btn" 
-              style={{ backgroundColor: 'transparent', border: '1px solid #474d57', color: '#eaecef', padding: '16px 32px', fontSize: '18px' }}
+              style={{ 
+                backgroundColor: 'transparent', 
+                border: '2px solid #474d57', 
+                color: '#eaecef', 
+                padding: '16px 32px', 
+                fontSize: '18px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                transform: 'translateY(0)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.borderColor = '#fcd535';
+                e.target.style.color = '#fcd535';
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 8px 25px rgba(252, 213, 53, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.borderColor = '#474d57';
+                e.target.style.color = '#eaecef';
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = 'none';
+              }}
             >
-              How It Works
+              📖 How It Works
             </button>
           </div>
         </div>
+        
+        {/* CSS Animations */}
+        <style>{`
+          @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+          }
+          @keyframes slideInUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          @keyframes glow {
+            from { text-shadow: 0 0 5px #fcd535, 0 0 10px #fcd535, 0 0 15px #fcd535; }
+            to { text-shadow: 0 0 10px #fcd535, 0 0 20px #fcd535, 0 0 30px #fcd535; }
+          }
+        `}</style>
       </section>
 
       {/* Why VaultX Section */}
@@ -45,23 +186,119 @@ const LandingPage = () => {
             Why Choose VaultX?
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px' }}>
-            <div className="card" style={{ textAlign: 'center', padding: '40px 24px' }}>
-              <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚡</div>
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '40px 24px',
+              background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)',
+              borderRadius: '20px',
+              border: '1px solid #474d57',
+              transition: 'all 0.4s ease',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              animation: 'slideInUp 1s ease-out 0.1s both'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-10px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(252, 213, 53, 0.2)';
+              e.currentTarget.style.borderColor = '#fcd535';
+              e.currentTarget.querySelector('.icon').style.transform = 'scale(1.2) rotate(10deg)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = '#474d57';
+              e.currentTarget.querySelector('.icon').style.transform = 'scale(1) rotate(0deg)';
+            }}>
+              <div className="icon" style={{ 
+                fontSize: '48px', 
+                marginBottom: '20px',
+                transition: 'all 0.3s ease',
+                display: 'inline-block'
+              }}>⚡</div>
               <h3 style={{ color: '#fcd535', marginBottom: '16px', fontSize: '20px' }}>Instant Transfers</h3>
               <p style={{ color: '#848e9c', lineHeight: '1.6' }}>
                 Fast INR ↔ USDT transactions completed within minutes
               </p>
+              <div style={{
+                position: 'absolute',
+                top: '-50%',
+                left: '-50%',
+                width: '200%',
+                height: '200%',
+                background: 'linear-gradient(45deg, transparent, rgba(252, 213, 53, 0.1), transparent)',
+                transform: 'rotate(45deg)',
+                transition: 'all 0.6s ease',
+                opacity: 0
+              }} className="shine"></div>
             </div>
-            <div className="card" style={{ textAlign: 'center', padding: '40px 24px' }}>
-              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🔒</div>
+            
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '40px 24px',
+              background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)',
+              borderRadius: '20px',
+              border: '1px solid #474d57',
+              transition: 'all 0.4s ease',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              animation: 'slideInUp 1s ease-out 0.2s both'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-10px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(2, 192, 118, 0.2)';
+              e.currentTarget.style.borderColor = '#02c076';
+              e.currentTarget.querySelector('.icon').style.transform = 'scale(1.2) rotate(-10deg)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = '#474d57';
+              e.currentTarget.querySelector('.icon').style.transform = 'scale(1) rotate(0deg)';
+            }}>
+              <div className="icon" style={{ 
+                fontSize: '48px', 
+                marginBottom: '20px',
+                transition: 'all 0.3s ease',
+                display: 'inline-block'
+              }}>🔒</div>
               <h3 style={{ color: '#fcd535', marginBottom: '16px', fontSize: '20px' }}>Secure & Verified</h3>
               <p style={{ color: '#848e9c', lineHeight: '1.6' }}>
                 Aadhar & PAN-based KYC with bank-level encryption
               </p>
             </div>
 
-            <div className="card" style={{ textAlign: 'center', padding: '40px 24px' }}>
-              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🎧</div>
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '40px 24px',
+              background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)',
+              borderRadius: '20px',
+              border: '1px solid #474d57',
+              transition: 'all 0.4s ease',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              animation: 'slideInUp 1s ease-out 0.3s both'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-10px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(248, 73, 96, 0.2)';
+              e.currentTarget.style.borderColor = '#f84960';
+              e.currentTarget.querySelector('.icon').style.transform = 'scale(1.2) rotate(10deg)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = '#474d57';
+              e.currentTarget.querySelector('.icon').style.transform = 'scale(1) rotate(0deg)';
+            }}>
+              <div className="icon" style={{ 
+                fontSize: '48px', 
+                marginBottom: '20px',
+                transition: 'all 0.3s ease',
+                display: 'inline-block'
+              }}>🎧</div>
               <h3 style={{ color: '#fcd535', marginBottom: '16px', fontSize: '20px' }}>24/7 Support</h3>
               <p style={{ color: '#848e9c', lineHeight: '1.6' }}>
                 We've got your back, anytime with dedicated support
@@ -104,27 +341,146 @@ const LandingPage = () => {
       </section>
 
       {/* Live Stats Section */}
-      <section style={{ padding: '60px 24px', background: '#2b3139' }}>
+      <section style={{ padding: '60px 24px', background: '#2b3139', position: 'relative' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ 
+            fontSize: '32px', 
+            fontWeight: '600', 
+            color: '#eaecef', 
+            marginBottom: '50px',
+            animation: 'slideInUp 1s ease-out'
+          }}>
+            📈 Live Platform Stats
+          </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px' }}>
-            <div>
-              <div style={{ color: '#fcd535', fontSize: '36px', fontWeight: '700' }}>₹15Cr+</div>
-              <div style={{ color: '#848e9c', fontSize: '16px' }}>Total Volume</div>
+            <div style={{
+              padding: '30px 20px',
+              background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)',
+              borderRadius: '15px',
+              border: '1px solid #474d57',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              animation: 'slideInUp 1s ease-out 0.1s both'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 10px 30px rgba(252, 213, 53, 0.2)';
+              e.currentTarget.style.borderColor = '#fcd535';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = '#474d57';
+            }}>
+              <div style={{ 
+                color: '#fcd535', 
+                fontSize: '36px', 
+                fontWeight: '700',
+                marginBottom: '10px',
+                animation: 'countUp 2s ease-out'
+              }}>₹15Cr+</div>
+              <div style={{ color: '#848e9c', fontSize: '16px' }}>💰 Total Volume</div>
             </div>
-            <div>
-              <div style={{ color: '#02c076', fontSize: '36px', fontWeight: '700' }}>1000+</div>
-              <div style={{ color: '#848e9c', fontSize: '16px' }}>Active Users</div>
+            
+            <div style={{
+              padding: '30px 20px',
+              background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)',
+              borderRadius: '15px',
+              border: '1px solid #474d57',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              animation: 'slideInUp 1s ease-out 0.2s both'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 10px 30px rgba(2, 192, 118, 0.2)';
+              e.currentTarget.style.borderColor = '#02c076';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = '#474d57';
+            }}>
+              <div style={{ 
+                color: '#02c076', 
+                fontSize: '36px', 
+                fontWeight: '700',
+                marginBottom: '10px',
+                animation: 'countUp 2s ease-out 0.5s both'
+              }}>1000+</div>
+              <div style={{ color: '#848e9c', fontSize: '16px' }}>👥 Active Users</div>
             </div>
-            <div>
-              <div style={{ color: '#f84960', fontSize: '36px', fontWeight: '700' }}>5000+</div>
-              <div style={{ color: '#848e9c', fontSize: '16px' }}>Transactions</div>
+            
+            <div style={{
+              padding: '30px 20px',
+              background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)',
+              borderRadius: '15px',
+              border: '1px solid #474d57',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              animation: 'slideInUp 1s ease-out 0.3s both'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 10px 30px rgba(248, 73, 96, 0.2)';
+              e.currentTarget.style.borderColor = '#f84960';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = '#474d57';
+            }}>
+              <div style={{ 
+                color: '#f84960', 
+                fontSize: '36px', 
+                fontWeight: '700',
+                marginBottom: '10px',
+                animation: 'countUp 2s ease-out 1s both'
+              }}>5000+</div>
+              <div style={{ color: '#848e9c', fontSize: '16px' }}>📊 Transactions</div>
             </div>
-            <div>
-              <div style={{ color: '#fcd535', fontSize: '36px', fontWeight: '700' }}>24/7</div>
-              <div style={{ color: '#848e9c', fontSize: '16px' }}>Support</div>
+            
+            <div style={{
+              padding: '30px 20px',
+              background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)',
+              borderRadius: '15px',
+              border: '1px solid #474d57',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              animation: 'slideInUp 1s ease-out 0.4s both'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 10px 30px rgba(252, 213, 53, 0.2)';
+              e.currentTarget.style.borderColor = '#fcd535';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = '#474d57';
+            }}>
+              <div style={{ 
+                color: '#fcd535', 
+                fontSize: '36px', 
+                fontWeight: '700',
+                marginBottom: '10px',
+                animation: 'pulse 2s ease-in-out infinite'
+              }}>24/7</div>
+              <div style={{ color: '#848e9c', fontSize: '16px' }}>🎆 Support</div>
             </div>
           </div>
         </div>
+        
+        <style>{`
+          @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.8); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+          }
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+          }
+        `}</style>
       </section>
 
       {/* Features Comparison */}
@@ -298,21 +654,125 @@ const LandingPage = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section style={{ padding: '80px 24px', background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', color: '#000' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '24px' }}>
-            Start Trading Now
-          </h2>
-          <p style={{ fontSize: '18px', marginBottom: '40px', opacity: '0.8' }}>
-            Join thousands of traders who trust VaultX for secure USDT trading
-          </p>
-          <Link to="/register" className="btn" style={{ backgroundColor: '#000', color: '#fcd535', padding: '16px 32px', fontSize: '18px', fontWeight: '600', border: 'none', marginRight: '16px' }}>
-            Create Account
-          </Link>
-          <a href="https://wa.me/1234567890" className="btn" style={{ backgroundColor: 'transparent', border: '2px solid #000', color: '#000', padding: '14px 32px', fontSize: '18px', fontWeight: '600', textDecoration: 'none' }}>
-            WhatsApp Support
-          </a>
+      <section style={{ 
+        padding: '80px 24px', 
+        background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
+        color: '#000',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Animated Background Pattern */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `
+            radial-gradient(circle at 20% 20%, rgba(0,0,0,0.1) 2px, transparent 2px),
+            radial-gradient(circle at 80% 80%, rgba(0,0,0,0.1) 2px, transparent 2px),
+            radial-gradient(circle at 40% 60%, rgba(0,0,0,0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px, 30px 30px, 20px 20px',
+          animation: 'movePattern 20s linear infinite'
+        }}></div>
+        
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+          <div style={{ animation: 'slideInUp 1s ease-out' }}>
+            <h2 style={{ 
+              fontSize: '36px', 
+              fontWeight: '700', 
+              marginBottom: '24px',
+              textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            }}>
+              🚀 Start Trading Now
+            </h2>
+            <p style={{ 
+              fontSize: '18px', 
+              marginBottom: '40px', 
+              opacity: '0.8',
+              fontWeight: '500'
+            }}>
+              Join thousands of traders who trust VaultX for secure USDT trading
+            </p>
+          </div>
+          
+          <div style={{ 
+            display: 'flex', 
+            gap: '20px', 
+            justifyContent: 'center', 
+            flexWrap: 'wrap',
+            animation: 'slideInUp 1s ease-out 0.2s both'
+          }}>
+            <Link 
+              to="/register" 
+              style={{ 
+                backgroundColor: '#000', 
+                color: '#fcd535', 
+                padding: '16px 32px', 
+                fontSize: '18px', 
+                fontWeight: '600', 
+                border: 'none',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                transform: 'translateY(0)',
+                display: 'inline-block'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-3px) scale(1.05)';
+                e.target.style.boxShadow = '0 8px 25px rgba(0,0,0,0.3)';
+                e.target.style.backgroundColor = '#1a1a1a';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0) scale(1)';
+                e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+                e.target.style.backgroundColor = '#000';
+              }}
+            >
+              🎆 Create Account
+            </Link>
+            
+            <a 
+              href="https://wa.me/1234567890" 
+              style={{ 
+                backgroundColor: 'transparent', 
+                border: '2px solid #000', 
+                color: '#000', 
+                padding: '14px 32px', 
+                fontSize: '18px', 
+                fontWeight: '600', 
+                textDecoration: 'none',
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                transform: 'translateY(0)',
+                display: 'inline-block'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-3px) scale(1.05)';
+                e.target.style.backgroundColor = '#000';
+                e.target.style.color = '#fcd535';
+                e.target.style.boxShadow = '0 8px 25px rgba(0,0,0,0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0) scale(1)';
+                e.target.style.backgroundColor = 'transparent';
+                e.target.style.color = '#000';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              📱 WhatsApp Support
+            </a>
+          </div>
         </div>
+        
+        <style>{`
+          @keyframes movePattern {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+          }
+        `}</style>
       </section>
 
       {/* Footer */}
