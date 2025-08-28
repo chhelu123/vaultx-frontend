@@ -3,53 +3,8 @@ import { authAPI } from '../services/api';
 
 const Auth = ({ setUser, defaultTab = 'login' }) => {
   const [isLogin, setIsLogin] = useState(defaultTab === 'login');
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', otp: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpLoading, setOtpLoading] = useState(false);
-
-  const sendOTP = async () => {
-    if (!formData.email) {
-      alert('Please enter email first');
-      return;
-    }
-    
-    setOtpLoading(true);
-    const apiUrl = 'https://vaultx-backend-production.up.railway.app/api/auth/send-otp';
-    console.log('Sending OTP to:', apiUrl);
-    
-    try {
-      // Test if backend is reachable
-      const testResponse = await fetch('https://vaultx-backend-production.up.railway.app/');
-      console.log('Backend test:', testResponse.status);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ email: formData.email })
-      });
-      
-      console.log('OTP Response status:', response.status);
-      const data = await response.json();
-      console.log('OTP Response data:', data);
-      
-      if (!response.ok) {
-        throw new Error(data.message || `HTTP error! status: ${response.status}`);
-      }
-      
-      setOtpSent(true);
-      alert(`OTP sent to ${formData.email}. Check Railway logs for OTP.`);
-      
-    } catch (error) {
-      console.error('OTP Error:', error);
-      alert(`Error: ${error.message}. Check console for details.`);
-    } finally {
-      setOtpLoading(false);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,53 +47,16 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
             />
           )}
           
-          <div style={{ position: 'relative', marginBottom: '15px' }}>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              autoComplete="username"
-              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '4px', backgroundColor: '#2b3139', color: '#eaecef' }}
-            />
-            {!isLogin && (
-              <button
-                type="button"
-                onClick={sendOTP}
-                disabled={otpLoading || !formData.email}
-                style={{
-                  position: 'absolute',
-                  right: '5px',
-                  top: '5px',
-                  padding: '7px 12px',
-                  backgroundColor: '#fcd535',
-                  color: '#000',
-                  border: 'none',
-                  borderRadius: '3px',
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                  fontWeight: '600'
-                }}
-              >
-                {otpLoading ? 'Sending...' : 'Send OTP'}
-              </button>
-            )}
-          </div>
-          
-          {!isLogin && otpSent && (
-            <input
-              type="text"
-              name="otp"
-              placeholder="Enter OTP"
-              value={formData.otp}
-              onChange={handleChange}
-              required
-              maxLength="6"
-              style={{ width: '100%', padding: '12px', marginBottom: '15px', border: '1px solid #474d57', borderRadius: '4px', backgroundColor: '#2b3139', color: '#eaecef' }}
-            />
-          )}
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            autoComplete="username"
+            style={{ width: '100%', padding: '12px', marginBottom: '15px', border: '1px solid #474d57', borderRadius: '4px', backgroundColor: '#2b3139', color: '#eaecef' }}
+          />
           
           <input
             type="password"
@@ -153,7 +71,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
           
           <button
             type="submit"
-            disabled={loading || (!isLogin && (!otpSent || !formData.otp))}
+            disabled={loading}
             style={{ width: '100%', padding: '12px', backgroundColor: '#fcd535', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '16px', fontWeight: '600' }}
           >
             {loading ? 'Processing...' : (isLogin ? 'Login' : 'Register')}
@@ -165,8 +83,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
           <button
             onClick={() => {
               setIsLogin(!isLogin);
-              setOtpSent(false);
-              setFormData({ name: '', email: '', password: '', otp: '' });
+              setFormData({ name: '', email: '', password: '' });
             }}
             style={{ background: 'none', border: 'none', color: '#fcd535', cursor: 'pointer', textDecoration: 'underline', fontWeight: '500' }}
           >
