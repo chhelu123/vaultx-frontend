@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import './mobile.css';
 import Dashboard from './pages/Dashboard';
 import Trading from './pages/Trading';
 import KYCPage from './pages/KYCPage';
@@ -86,6 +87,7 @@ function App() {
         {user ? (
           <>
             <Navbar user={user} onLogout={handleLogout} />
+            <div className="main-container">
             <Routes>
               <Route path="/dashboard" element={<Dashboard user={user} setUser={setUser} refreshUser={refreshUser} />} />
               <Route path="/trading" element={<Trading user={user} setUser={setUser} refreshUser={refreshUser} />} />
@@ -94,6 +96,7 @@ function App() {
               <Route path="/history" element={<History user={user} />} />
               <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
+            </div>
           </>
         ) : (
           <Routes>
