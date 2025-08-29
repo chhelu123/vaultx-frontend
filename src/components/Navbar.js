@@ -24,7 +24,14 @@ const Navbar = ({ user, onLogout }) => {
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '64px', padding: '0 20px', maxWidth: '100%' }}>
           {/* Logo */}
-          <h2 style={{ color: '#fcd535', margin: '0', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>VaultX</h2>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img 
+              src="/logo.png" 
+              alt="VaultX Logo" 
+              style={{ height: '32px', marginRight: '8px' }}
+            />
+            <h2 style={{ color: '#fcd535', margin: '0', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>VaultX</h2>
+          </div>
           
           {/* Desktop Navigation */}
           <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
