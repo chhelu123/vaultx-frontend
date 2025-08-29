@@ -24,16 +24,18 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
         setUser(response.data.user);
       } else {
         // Send OTP for registration
-        await fetch('/api/auth/send-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: formData.email, name: formData.name })
-        });
+        const otpResponse = await authAPI.sendOTP({ email: formData.email, name: formData.name });
+        
+        const otpData = await otpResponse.json();
+        
+        if (!otpResponse.ok) {
+          throw new Error(otpData.message || 'Failed to send OTP');
+        }
         setStep(2);
         setCountdown(600); // 10 minutes
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Authentication failed');
+      setError(error.message || error.response?.data?.message || 'Authentication failed');
     }
     setLoading(false);
   };
@@ -45,22 +47,14 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
     
     try {
       const otpString = otp.join('');
-      const response = await fetch('/api/auth/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          email: formData.email, 
-          otp: otpString, 
-          name: formData.name, 
-          password: formData.password 
-        })
+      const response = await authAPI.verifyOTP({ 
+        email: formData.email, 
+        otp: otpString, 
+        name: formData.name, 
+        password: formData.password 
       });
       
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
+      const data = response.data;
       
       localStorage.setItem('token', data.token);
       setUser(data.user);
@@ -86,15 +80,14 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
   
   const resendOTP = async () => {
     try {
-      await fetch('/api/auth/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, name: formData.name })
-      });
+      const response = await authAPI.sendOTP({ email: formData.email, name: formData.name });
+      const data = response.data;
+      
       setCountdown(600);
       setOtp(['', '', '', '', '', '']);
+      setError('');
     } catch (error) {
-      setError('Failed to resend OTP');
+      setError(error.message || 'Failed to resend OTP');
     }
   };
   

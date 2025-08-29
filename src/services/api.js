@@ -18,6 +18,8 @@ export const authAPI = {
   register: (userData) => api.post('/auth/register', userData),
   login: (credentials) => api.post('/auth/login', credentials),
   getProfile: () => api.get('/auth/profile'),
+  sendOTP: (data) => api.post('/auth/send-otp', data),
+  verifyOTP: (data) => api.post('/auth/verify-otp', data),
 };
 
 export const tradingAPI = {
