@@ -49,7 +49,20 @@ const Navbar = ({ user, onLogout }) => {
                     fontSize: '15px',
                     fontWeight: '500',
                     borderBottom: location.pathname === item.path ? '2px solid #fcd535' : '2px solid transparent',
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
+                    position: 'relative'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (location.pathname !== item.path) {
+                      e.target.style.color = '#fcd535';
+                      e.target.style.backgroundColor = 'rgba(252, 213, 53, 0.05)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (location.pathname !== item.path) {
+                      e.target.style.color = '#b7bdc6';
+                      e.target.style.backgroundColor = 'transparent';
+                    }
                   }}
                 >
                   {item.label}
@@ -169,7 +182,20 @@ const Navbar = ({ user, onLogout }) => {
                   textDecoration: 'none',
                   fontSize: '16px',
                   borderBottom: '1px solid #2b3139',
-                  background: location.pathname === item.path ? '#2b3139' : 'transparent'
+                  background: location.pathname === item.path ? '#2b3139' : 'transparent',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  if (location.pathname !== item.path) {
+                    e.target.style.backgroundColor = '#2b3139';
+                    e.target.style.color = '#fcd535';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (location.pathname !== item.path) {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.color = '#eaecef';
+                  }
                 }}
               >
                 <span style={{ marginRight: '12px', fontSize: '18px' }}>{item.icon}</span>
