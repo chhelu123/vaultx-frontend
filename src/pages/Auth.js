@@ -25,12 +25,6 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
       } else {
         // Send OTP for registration
         const otpResponse = await authAPI.sendOTP({ email: formData.email, name: formData.name });
-        
-        const otpData = await otpResponse.json();
-        
-        if (!otpResponse.ok) {
-          throw new Error(otpData.message || 'Failed to send OTP');
-        }
         setStep(2);
         setCountdown(600); // 10 minutes
       }
@@ -54,10 +48,8 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
         password: formData.password 
       });
       
-      const data = response.data;
-      
-      localStorage.setItem('token', data.token);
-      setUser(data.user);
+      localStorage.setItem('token', response.data.token);
+      setUser(response.data.user);
     } catch (error) {
       setError(error.message || 'OTP verification failed');
     }
@@ -80,8 +72,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
   
   const resendOTP = async () => {
     try {
-      const response = await authAPI.sendOTP({ email: formData.email, name: formData.name });
-      const data = response.data;
+      await authAPI.sendOTP({ email: formData.email, name: formData.name });
       
       setCountdown(600);
       setOtp(['', '', '', '', '', '']);
