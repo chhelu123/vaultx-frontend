@@ -96,6 +96,10 @@ const Navbar = ({ user, onLogout }) => {
           }}>
             {/* Wallet Info */}
             <div style={{ padding: '15px', borderBottom: '1px solid #2b3139' }}>
+              <div style={{ marginBottom: '8px' }}>
+                <span style={{ color: '#848e9c', fontSize: '12px' }}>User ID: </span>
+                <span style={{ color: '#fcd535', fontSize: '12px', fontFamily: 'monospace' }}>{user?._id}</span>
+              </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <span style={{ color: '#848e9c', fontSize: '14px' }}>INR Balance:</span>
                 <span style={{ color: '#eaecef', fontWeight: '600' }}>₹{user?.wallets?.inr?.toFixed(2) || '0'}</span>
