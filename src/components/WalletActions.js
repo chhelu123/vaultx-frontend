@@ -196,23 +196,26 @@ const WalletActions = ({ user, onUpdate }) => {
                 </div>
               )}
               
-              <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
-                {formData.method === 'upi' ? (
-                  <div>
-                    <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Pay to UPI ID:</p>
-                    <p style={{ color: '#eaecef', margin: '5px 0', fontSize: '16px' }}>{settings?.upiId || 'Loading...'}</p>
-                    <p style={{ color: '#02c076', margin: '5px 0', fontWeight: 'bold' }}>Amount: ₹{formData.amount}</p>
-                  </div>
-                ) : (
-                  <div>
-                    <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Bank Transfer Details:</p>
-                    <p style={{ color: '#eaecef', margin: '5px 0' }}>Account: {settings?.bankAccount || 'Loading...'}</p>
-                    <p style={{ color: '#eaecef', margin: '5px 0' }}>IFSC: {settings?.bankIFSC || 'Loading...'}</p>
-                    <p style={{ color: '#eaecef', margin: '5px 0' }}>Name: {settings?.bankName || 'Loading...'}</p>
-                    <p style={{ color: '#02c076', margin: '5px 0', fontWeight: 'bold' }}>Amount: ₹{formData.amount}</p>
-                  </div>
-                )}
-              </div>
+              {/* Payment Details - Only show after timer starts */}
+              {timerActive && (
+                <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
+                  {formData.method === 'upi' ? (
+                    <div>
+                      <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Pay to UPI ID:</p>
+                      <p style={{ color: '#eaecef', margin: '5px 0', fontSize: '16px' }}>{settings?.upiId || 'Loading...'}</p>
+                      <p style={{ color: '#02c076', margin: '5px 0', fontWeight: 'bold' }}>Amount: ₹{formData.amount}</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Bank Transfer Details:</p>
+                      <p style={{ color: '#eaecef', margin: '5px 0' }}>Account: {settings?.bankAccount || 'Loading...'}</p>
+                      <p style={{ color: '#eaecef', margin: '5px 0' }}>IFSC: {settings?.bankIFSC || 'Loading...'}</p>
+                      <p style={{ color: '#eaecef', margin: '5px 0' }}>Name: {settings?.bankName || 'Loading...'}</p>
+                      <p style={{ color: '#02c076', margin: '5px 0', fontWeight: 'bold' }}>Amount: ₹{formData.amount}</p>
+                    </div>
+                  )}
+                </div>
+              )}
               
               {!timerActive ? (
                 <button
