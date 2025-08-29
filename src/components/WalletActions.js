@@ -85,26 +85,60 @@ const WalletActions = ({ user, onUpdate }) => {
 
     return (
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-        <div style={{ backgroundColor: '#1e2329', padding: '30px', borderRadius: '8px', maxWidth: '400px', width: '90%', border: '1px solid #2b3139' }}>
-          <h3 style={{ color: '#eaecef', marginBottom: '20px' }}>{isDeposit ? 'Deposit' : 'Withdraw'} {type.toUpperCase()}</h3>
+        <div style={{ backgroundColor: '#2b3139', padding: '32px', borderRadius: '12px', maxWidth: '450px', width: '90%', border: '1px solid #474d57' }}>
+          <h3 style={{ 
+            color: '#ffffff', 
+            fontSize: '24px', 
+            fontWeight: '600', 
+            marginBottom: '24px', 
+            letterSpacing: '-0.3px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+          }}>{isDeposit ? 'Deposit' : 'Withdraw'} {type.toUpperCase()}</h3>
           
           {/* Amount Input - Always First */}
           <input
             type="number"
-            placeholder="Amount"
+            placeholder="Enter amount"
             value={formData.amount}
             onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-            style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+            style={{ 
+              width: '100%', 
+              padding: '14px 16px', 
+              margin: '16px 0', 
+              background: '#1e2329', 
+              border: '1px solid #474d57', 
+              borderRadius: '8px', 
+              color: '#ffffff',
+              fontSize: '16px',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            }}
           />
 
           {/* Payment Method Selection for INR */}
           {type === 'inr' && (
             <div style={{ margin: '10px 0' }}>
-              <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>Payment Method:</label>
+              <label style={{ 
+                display: 'block', 
+                marginBottom: '8px', 
+                fontWeight: '600', 
+                color: '#ffffff',
+                fontSize: '15px',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              }}>Payment Method</label>
               <select
                 value={formData.method}
                 onChange={(e) => setFormData({ ...formData, method: e.target.value })}
-                style={{ width: '100%', padding: '12px', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', marginBottom: '10px', color: '#eaecef' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px 16px', 
+                  background: '#1e2329', 
+                  border: '1px solid #474d57', 
+                  borderRadius: '8px', 
+                  marginBottom: '16px', 
+                  color: '#ffffff',
+                  fontSize: '16px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                }}
               >
                 <option value="upi">UPI</option>
                 <option value="bank">Bank Transfer</option>
@@ -134,7 +168,21 @@ const WalletActions = ({ user, onUpdate }) => {
               </div>
               <button
                 onClick={() => setDepositStep(2)}
-                style={{ width: '100%', padding: '12px', backgroundColor: '#fcd535', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600', margin: '10px 0' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px', 
+                  backgroundColor: '#fcd535', 
+                  color: '#000', 
+                  border: 'none', 
+                  borderRadius: '8px', 
+                  cursor: 'pointer', 
+                  fontWeight: '600', 
+                  margin: '16px 0',
+                  fontSize: '16px',
+                  transition: 'all 0.2s ease',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px'
+                }}
               >
                 I have made the payment
               </button>
@@ -149,19 +197,55 @@ const WalletActions = ({ user, onUpdate }) => {
                 placeholder="Enter Transaction ID/Reference Number"
                 value={formData.details}
                 onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px 16px', 
+                  margin: '16px 0', 
+                  background: '#1e2329', 
+                  border: '1px solid #474d57', 
+                  borderRadius: '8px', 
+                  color: '#ffffff',
+                  fontSize: '16px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                }}
               />
               <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
                 <button
                   onClick={() => handleDeposit(type)}
                   disabled={loading || !formData.details}
-                  style={{ flex: 1, padding: '12px', backgroundColor: '#02c076', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                  style={{ 
+                    flex: 1, 
+                    padding: '14px', 
+                    backgroundColor: loading || !formData.details ? '#848e9c' : '#02c076', 
+                    color: '#ffffff', 
+                    border: 'none', 
+                    borderRadius: '8px', 
+                    cursor: loading || !formData.details ? 'not-allowed' : 'pointer',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    transition: 'all 0.2s ease',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    letterSpacing: '-0.1px'
+                  }}
                 >
                   {loading ? 'Processing...' : 'Submit Deposit'}
                 </button>
                 <button
                   onClick={() => setDepositStep(1)}
-                  style={{ flex: 1, padding: '12px', backgroundColor: '#474d57', color: '#eaecef', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                  style={{ 
+                    flex: 1, 
+                    padding: '14px', 
+                    backgroundColor: '#474d57', 
+                    color: '#ffffff', 
+                    border: 'none', 
+                    borderRadius: '8px', 
+                    cursor: 'pointer',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    transition: 'all 0.2s ease',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    letterSpacing: '-0.1px'
+                  }}
                 >
                   Back
                 </button>
@@ -182,12 +266,35 @@ const WalletActions = ({ user, onUpdate }) => {
                 placeholder="Enter Transaction Hash"
                 value={formData.details}
                 onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px 16px', 
+                  margin: '16px 0', 
+                  background: '#1e2329', 
+                  border: '1px solid #474d57', 
+                  borderRadius: '8px', 
+                  color: '#ffffff',
+                  fontSize: '16px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                }}
               />
               <button
                 onClick={() => handleDeposit(type)}
                 disabled={loading || !formData.amount || !formData.details}
-                style={{ width: '100%', padding: '12px', backgroundColor: '#02c076', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px', 
+                  backgroundColor: loading || !formData.amount || !formData.details ? '#848e9c' : '#02c076', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '8px', 
+                  cursor: loading || !formData.amount || !formData.details ? 'not-allowed' : 'pointer', 
+                  fontWeight: '600',
+                  fontSize: '16px',
+                  transition: 'all 0.2s ease',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px'
+                }}
               >
                 {loading ? 'Processing...' : 'Submit Deposit'}
               </button>
@@ -203,7 +310,17 @@ const WalletActions = ({ user, onUpdate }) => {
                   placeholder="Your UPI ID"
                   value={formData.details}
                   onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                  style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '14px 16px', 
+                    margin: '16px 0', 
+                    background: '#1e2329', 
+                    border: '1px solid #474d57', 
+                    borderRadius: '8px', 
+                    color: '#ffffff',
+                    fontSize: '16px',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                  }}
                 />
               ) : (
                 <div>
@@ -212,28 +329,71 @@ const WalletActions = ({ user, onUpdate }) => {
                     placeholder="Bank Name"
                     value={formData.bankName}
                     onChange={(e) => setFormData({ ...formData, bankName: e.target.value })}
-                    style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                    style={{ 
+                      width: '100%', 
+                      padding: '14px 16px', 
+                      margin: '16px 0', 
+                      background: '#1e2329', 
+                      border: '1px solid #474d57', 
+                      borderRadius: '8px', 
+                      color: '#ffffff',
+                      fontSize: '16px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                    }}
                   />
                   <input
                     type="text"
                     placeholder="IFSC Code"
                     value={formData.ifscCode}
                     onChange={(e) => setFormData({ ...formData, ifscCode: e.target.value })}
-                    style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                    style={{ 
+                      width: '100%', 
+                      padding: '14px 16px', 
+                      margin: '16px 0', 
+                      background: '#1e2329', 
+                      border: '1px solid #474d57', 
+                      borderRadius: '8px', 
+                      color: '#ffffff',
+                      fontSize: '16px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                    }}
                   />
                   <input
                     type="text"
                     placeholder="Account Number"
                     value={formData.accountNumber}
                     onChange={(e) => setFormData({ ...formData, accountNumber: e.target.value })}
-                    style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                    style={{ 
+                      width: '100%', 
+                      padding: '14px 16px', 
+                      margin: '16px 0', 
+                      background: '#1e2329', 
+                      border: '1px solid #474d57', 
+                      borderRadius: '8px', 
+                      color: '#ffffff',
+                      fontSize: '16px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                    }}
                   />
                 </div>
               )}
               <button
                 onClick={() => handleWithdraw(type)}
                 disabled={loading || !formData.amount || (formData.method === 'upi' ? !formData.details : (!formData.bankName || !formData.ifscCode || !formData.accountNumber))}
-                style={{ width: '100%', padding: '12px', backgroundColor: '#f84960', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px', 
+                  backgroundColor: loading || !formData.amount || (formData.method === 'upi' ? !formData.details : (!formData.bankName || !formData.ifscCode || !formData.accountNumber)) ? '#848e9c' : '#f84960', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '8px', 
+                  cursor: loading || !formData.amount || (formData.method === 'upi' ? !formData.details : (!formData.bankName || !formData.ifscCode || !formData.accountNumber)) ? 'not-allowed' : 'pointer', 
+                  fontWeight: '600',
+                  fontSize: '16px',
+                  transition: 'all 0.2s ease',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px'
+                }}
               >
                 {loading ? 'Processing...' : 'Submit Withdrawal'}
               </button>
@@ -248,7 +408,17 @@ const WalletActions = ({ user, onUpdate }) => {
                 placeholder="Your USDT Address"
                 value={formData.details}
                 onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                style={{ width: '100%', padding: '12px', margin: '10px 0', background: '#2b3139', border: '1px solid #474d57', borderRadius: '4px', color: '#eaecef' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px 16px', 
+                  margin: '16px 0', 
+                  background: '#1e2329', 
+                  border: '1px solid #474d57', 
+                  borderRadius: '8px', 
+                  color: '#ffffff',
+                  fontSize: '16px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                }}
               />
               <div style={{ backgroundColor: '#fff3cd', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px' }}>
                 <p><strong>Instant Withdrawal</strong></p>
@@ -257,7 +427,20 @@ const WalletActions = ({ user, onUpdate }) => {
               <button
                 onClick={() => handleWithdraw(type)}
                 disabled={loading || !formData.amount || !formData.details}
-                style={{ width: '100%', padding: '12px', backgroundColor: '#f84960', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px', 
+                  backgroundColor: loading || !formData.amount || !formData.details ? '#848e9c' : '#f84960', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '8px', 
+                  cursor: loading || !formData.amount || !formData.details ? 'not-allowed' : 'pointer', 
+                  fontWeight: '600',
+                  fontSize: '16px',
+                  transition: 'all 0.2s ease',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px'
+                }}
               >
                 {loading ? 'Processing...' : 'Submit Withdrawal'}
               </button>
@@ -272,7 +455,21 @@ const WalletActions = ({ user, onUpdate }) => {
                 setDepositStep(1);
                 setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
               }}
-              style={{ width: '100%', padding: '12px', backgroundColor: '#474d57', color: '#eaecef', border: 'none', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}
+              style={{ 
+                width: '100%', 
+                padding: '14px', 
+                backgroundColor: '#474d57', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '8px', 
+                cursor: 'pointer', 
+                marginTop: '16px',
+                fontSize: '16px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                letterSpacing: '-0.1px'
+              }}
             >
               Cancel
             </button>
@@ -283,11 +480,26 @@ const WalletActions = ({ user, onUpdate }) => {
   };
 
   return (
-    <div style={{ marginBottom: '20px' }}>
-      <div className="wallet-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-        <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-          <h4>INR Wallet: ₹{user.wallets?.inr?.toFixed(2) || '0.00'}</h4>
-          <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+    <div style={{ marginBottom: '32px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '32px', 
+          borderRadius: '12px', 
+          border: '1px solid #474d57'
+        }}>
+          <h4 style={{ 
+            color: '#ffffff', 
+            fontSize: '20px', 
+            fontWeight: '600', 
+            marginBottom: '20px', 
+            letterSpacing: '-0.2px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+          }}>INR Wallet</h4>
+          <div style={{ marginBottom: '24px' }}>
+            <span style={{ color: '#ffffff', fontSize: '28px', fontWeight: '700', letterSpacing: '-0.3px' }}>₹{user.wallets?.inr?.toFixed(2) || '0.00'}</span>
+          </div>
+          <div style={{ display: 'flex', gap: '12px' }}>
             <button
               onClick={() => { 
                 fetchSettings(); 
@@ -295,37 +507,128 @@ const WalletActions = ({ user, onUpdate }) => {
                 setDepositStep(1);
                 setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
               }}
-              style={{ flex: 1, padding: '8px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              style={{ 
+                flex: 1, 
+                padding: '12px 16px', 
+                backgroundColor: '#02c076', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '8px', 
+                cursor: 'pointer',
+                fontSize: '15px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                letterSpacing: '-0.1px'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#029f6b'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#02c076'}
             >
               Deposit
             </button>
             <button
               onClick={() => setShowModal('withdraw-inr')}
               disabled={!user.wallets?.inr || user.wallets.inr <= 0}
-              style={{ flex: 1, padding: '8px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              style={{ 
+                flex: 1, 
+                padding: '12px 16px', 
+                backgroundColor: !user.wallets?.inr || user.wallets.inr <= 0 ? '#848e9c' : '#f84960', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '8px', 
+                cursor: !user.wallets?.inr || user.wallets.inr <= 0 ? 'not-allowed' : 'pointer',
+                fontSize: '15px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                letterSpacing: '-0.1px'
+              }}
+              onMouseEnter={(e) => {
+                if (!(!user.wallets?.inr || user.wallets.inr <= 0)) {
+                  e.target.style.backgroundColor = '#e73c4e';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!(!user.wallets?.inr || user.wallets.inr <= 0)) {
+                  e.target.style.backgroundColor = '#f84960';
+                }
+              }}
             >
               Withdraw
             </button>
           </div>
         </div>
 
-        <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-          <h4>USDT Wallet: {user.wallets?.usdt?.toFixed(6) || '0.000000'}</h4>
-          <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '32px', 
+          borderRadius: '12px', 
+          border: '1px solid #474d57'
+        }}>
+          <h4 style={{ 
+            color: '#ffffff', 
+            fontSize: '20px', 
+            fontWeight: '600', 
+            marginBottom: '20px', 
+            letterSpacing: '-0.2px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+          }}>USDT Wallet</h4>
+          <div style={{ marginBottom: '24px' }}>
+            <span style={{ color: '#ffffff', fontSize: '28px', fontWeight: '700', letterSpacing: '-0.3px' }}>{user.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
+          </div>
+          <div style={{ display: 'flex', gap: '12px' }}>
             <button
               onClick={() => { 
                 fetchSettings(); 
                 setShowModal('deposit-usdt'); 
                 setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
               }}
-              style={{ flex: 1, padding: '8px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              style={{ 
+                flex: 1, 
+                padding: '12px 16px', 
+                backgroundColor: '#02c076', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '8px', 
+                cursor: 'pointer',
+                fontSize: '15px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                letterSpacing: '-0.1px'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#029f6b'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#02c076'}
             >
               Deposit
             </button>
             <button
               onClick={() => setShowModal('withdraw-usdt')}
               disabled={!user.wallets?.usdt || user.wallets.usdt <= 0}
-              style={{ flex: 1, padding: '8px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              style={{ 
+                flex: 1, 
+                padding: '12px 16px', 
+                backgroundColor: !user.wallets?.usdt || user.wallets.usdt <= 0 ? '#848e9c' : '#f84960', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '8px', 
+                cursor: !user.wallets?.usdt || user.wallets.usdt <= 0 ? 'not-allowed' : 'pointer',
+                fontSize: '15px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                letterSpacing: '-0.1px'
+              }}
+              onMouseEnter={(e) => {
+                if (!(!user.wallets?.usdt || user.wallets.usdt <= 0)) {
+                  e.target.style.backgroundColor = '#e73c4e';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!(!user.wallets?.usdt || user.wallets.usdt <= 0)) {
+                  e.target.style.backgroundColor = '#f84960';
+                }
+              }}
             >
               Withdraw
             </button>

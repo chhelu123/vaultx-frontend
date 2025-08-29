@@ -50,22 +50,46 @@ const Navbar = ({ user, onLogout }) => {
               ))}
             </div>
             
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-              <div style={{ background: '#2b3139', padding: '8px 12px', borderRadius: '4px', fontSize: '14px' }}>
-                <span style={{ color: '#848e9c' }}>INR: </span>
-                <span style={{ color: '#eaecef', fontWeight: '600' }}>₹{user?.wallets?.inr?.toFixed(2) || '0'}</span>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <div style={{ 
+                background: '#2b3139', 
+                padding: '10px 16px', 
+                borderRadius: '8px', 
+                border: '1px solid #474d57'
+              }}>
+                <span style={{ color: '#b7bdc6', fontSize: '13px', fontWeight: '500', letterSpacing: '0.5px' }}>INR </span>
+                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</span>
               </div>
-              <div style={{ background: '#2b3139', padding: '8px 12px', borderRadius: '4px', fontSize: '14px' }}>
-                <span style={{ color: '#848e9c' }}>USDT: </span>
-                <span style={{ color: '#eaecef', fontWeight: '600' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
+              <div style={{ 
+                background: '#2b3139', 
+                padding: '10px 16px', 
+                borderRadius: '8px', 
+                border: '1px solid #474d57'
+              }}>
+                <span style={{ color: '#b7bdc6', fontSize: '13px', fontWeight: '500', letterSpacing: '0.5px' }}>USDT </span>
+                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
               </div>
             </div>
             
             <button
               onClick={onLogout}
-              style={{ fontSize: '12px', padding: '6px 12px', background: '#f84960', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              style={{ 
+                fontSize: '14px', 
+                fontWeight: '600', 
+                padding: '10px 20px', 
+                background: '#f84960', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '8px', 
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                letterSpacing: '-0.1px'
+              }}
+              onMouseEnter={(e) => e.target.style.background = '#e73c4e'}
+              onMouseLeave={(e) => e.target.style.background = '#f84960'}
             >
-              Logout
+              Sign Out
             </button>
           </div>
           
@@ -101,19 +125,19 @@ const Navbar = ({ user, onLogout }) => {
           }}>
             {/* Wallet Info */}
             <div style={{ padding: '15px', borderBottom: '1px solid #2b3139' }}>
-              <div style={{ marginBottom: '8px' }}>
-                <span style={{ color: '#848e9c', fontSize: '12px' }}>User ID: </span>
-                <span style={{ color: '#fcd535', fontSize: '12px', fontFamily: 'monospace' }} title={user?._id}>
+              <div style={{ marginBottom: '12px' }}>
+                <span style={{ color: '#b7bdc6', fontSize: '13px', fontWeight: '500', letterSpacing: '0.5px' }}>USER ID </span>
+                <span style={{ color: '#fcd535', fontSize: '13px', fontFamily: 'monospace', fontWeight: '600' }} title={user?._id}>
                   {user?._id ? `${user._id.slice(0, 8)}...${user._id.slice(-4)}` : 'Loading...'}
                 </span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ color: '#848e9c', fontSize: '14px' }}>INR Balance:</span>
-                <span style={{ color: '#eaecef', fontWeight: '600' }}>₹{user?.wallets?.inr?.toFixed(2) || '0'}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <span style={{ color: '#b7bdc6', fontSize: '15px', fontWeight: '500' }}>INR Balance</span>
+                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#848e9c', fontSize: '14px' }}>USDT Balance:</span>
-                <span style={{ color: '#eaecef', fontWeight: '600' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
+                <span style={{ color: '#b7bdc6', fontSize: '15px', fontWeight: '500' }}>USDT Balance</span>
+                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
               </div>
             </div>
             
@@ -149,12 +173,14 @@ const Navbar = ({ user, onLogout }) => {
                 width: '100%',
                 padding: '16px 20px',
                 background: '#f84960',
-                color: 'white',
+                color: '#ffffff',
                 border: 'none',
                 fontSize: '16px',
-                fontWeight: '500',
+                fontWeight: '600',
                 cursor: 'pointer',
-                textAlign: 'left'
+                textAlign: 'left',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                letterSpacing: '-0.1px'
               }}
             >
               Sign Out
