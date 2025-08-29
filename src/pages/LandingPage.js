@@ -68,14 +68,9 @@ const LandingPage = () => {
           <h1 style={{ fontSize: '56px', fontWeight: '700', marginBottom: '24px', color: '#ffffff', lineHeight: '1.1', letterSpacing: '-1px' }}>
             Professional USDT Trading Platform
           </h1>
-          <p style={{ fontSize: '22px', color: '#b7bdc6', marginBottom: '32px', maxWidth: '700px', margin: '0 auto 32px', lineHeight: '1.5', fontWeight: '400' }}>
+          <p style={{ fontSize: '22px', color: '#b7bdc6', marginBottom: '48px', maxWidth: '700px', margin: '0 auto 48px', lineHeight: '1.5', fontWeight: '400' }}>
             Secure, fast, and reliable INR to USDT exchange with institutional-grade security and competitive rates.
           </p>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '48px', flexWrap: 'wrap' }}>
-            <span style={{ padding: '8px 16px', backgroundColor: '#02c076', color: '#ffffff', borderRadius: '20px', fontSize: '14px', fontWeight: '500' }}>Bank-Grade Security</span>
-            <span style={{ padding: '8px 16px', backgroundColor: '#f84960', color: '#ffffff', borderRadius: '20px', fontSize: '14px', fontWeight: '500' }}>Instant Settlement</span>
-            <span style={{ padding: '8px 16px', backgroundColor: '#fcd535', color: '#000000', borderRadius: '20px', fontSize: '14px', fontWeight: '500' }}>24/7 Support</span>
-          </div>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link 
               to="/register" 
@@ -213,58 +208,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Trading Rates Section */}
-      <section style={{ padding: '80px 0' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>Live Trading Rates</h2>
-            <p style={{ fontSize: '18px', color: '#b7bdc6', maxWidth: '600px', margin: '0 auto' }}>Real-time USDT exchange rates with guaranteed execution at quoted prices.</p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', marginBottom: '64px' }}>
-            <div style={{ 
-              padding: '32px', 
-              backgroundColor: '#2b3139', 
-              borderRadius: '12px', 
-              border: '2px solid #02c076',
-              textAlign: 'center',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.02)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(2, 192, 118, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}>
-              <h3 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '16px', color: '#02c076' }}>Buy USDT</h3>
-              <div style={{ fontSize: '36px', fontWeight: '700', color: '#ffffff', marginBottom: '8px' }}>₹92.00</div>
-              <p style={{ color: '#b7bdc6', fontSize: '14px', margin: 0 }}>per USDT • Live Rate</p>
-            </div>
-            <div style={{ 
-              padding: '32px', 
-              backgroundColor: '#2b3139', 
-              borderRadius: '12px', 
-              border: '2px solid #f84960',
-              textAlign: 'center',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.02)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(248, 73, 96, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}>
-              <h3 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '16px', color: '#f84960' }}>Sell USDT</h3>
-              <div style={{ fontSize: '36px', fontWeight: '700', color: '#ffffff', marginBottom: '8px' }}>₹89.00</div>
-              <p style={{ color: '#b7bdc6', fontSize: '14px', margin: 0 }}>per USDT • Live Rate</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Stats Section */}
       <section style={{ padding: '80px 0', backgroundColor: '#2b3139' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
@@ -309,20 +252,37 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Security & Compliance Section */}
+      {/* Customer Reviews Section */}
       <section style={{ padding: '80px 0' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>Security & Compliance</h2>
-            <p style={{ fontSize: '18px', color: '#b7bdc6', maxWidth: '600px', margin: '0 auto' }}>Your security is our priority. We maintain the highest standards of protection and regulatory compliance.</p>
+            <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>What Our Customers Say</h2>
+            <p style={{ fontSize: '18px', color: '#b7bdc6', maxWidth: '600px', margin: '0 auto' }}>Trusted by thousands of traders across India for secure and reliable USDT transactions.</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '32px' }}>
             {[
-              { title: 'KYC Verified', desc: 'All users undergo thorough identity verification', icon: '🛡️' },
-              { title: 'Regulatory Compliance', desc: 'Fully compliant with Indian financial regulations', icon: '📋' },
-              { title: 'Secure Infrastructure', desc: 'Enterprise-grade security with 24/7 monitoring', icon: '🔒' },
-              { title: 'Instant Support', desc: 'Dedicated customer support available round the clock', icon: '💬' }
-            ].map((item, index) => (
+              {
+                name: 'Rajesh Kumar',
+                role: 'Crypto Trader',
+                review: 'VaultX has been my go-to platform for USDT trading. The process is seamless, and transactions are completed within minutes. Highly recommended for serious traders.',
+                rating: 5,
+                initial: 'R'
+              },
+              {
+                name: 'Priya Sharma',
+                role: 'Business Owner',
+                review: 'Excellent platform with transparent pricing and no hidden fees. The KYC process was quick, and customer support is very responsive. Great experience overall.',
+                rating: 5,
+                initial: 'P'
+              },
+              {
+                name: 'Amit Patel',
+                role: 'Software Engineer',
+                review: 'Professional platform with institutional-grade security. I have been using VaultX for over a year now, and never faced any issues. Trustworthy and reliable.',
+                rating: 5,
+                initial: 'A'
+              }
+            ].map((review, index) => (
               <div 
                 key={index}
                 style={{ 
@@ -330,13 +290,12 @@ const LandingPage = () => {
                   backgroundColor: '#2b3139', 
                   borderRadius: '12px', 
                   border: '1px solid #474d57',
-                  textAlign: 'center',
                   transition: 'all 0.3s ease'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#fcd535';
                   e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(252, 213, 53, 0.1)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = '#474d57';
@@ -344,9 +303,95 @@ const LandingPage = () => {
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                <div style={{ fontSize: '48px', marginBottom: '16px' }}>{item.icon}</div>
-                <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px', color: '#ffffff' }}>{item.title}</h3>
-                <p style={{ color: '#b7bdc6', fontSize: '14px', margin: 0, lineHeight: '1.5' }}>{item.desc}</p>
+                <div style={{ display: 'flex', marginBottom: '16px' }}>
+                  {[...Array(review.rating)].map((_, i) => (
+                    <span key={i} style={{ color: '#fcd535', fontSize: '18px' }}>★</span>
+                  ))}
+                </div>
+                <p style={{ color: '#eaecef', fontSize: '16px', lineHeight: '1.6', marginBottom: '24px', fontStyle: 'italic' }}>
+                  "{review.review}"
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ 
+                    width: '48px', 
+                    height: '48px', 
+                    borderRadius: '50%', 
+                    backgroundColor: '#fcd535', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    marginRight: '16px', 
+                    color: '#000', 
+                    fontWeight: '600',
+                    fontSize: '18px'
+                  }}>
+                    {review.initial}
+                  </div>
+                  <div>
+                    <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '16px' }}>{review.name}</div>
+                    <div style={{ color: '#b7bdc6', fontSize: '14px' }}>{review.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section style={{ padding: '80px 0', backgroundColor: '#2b3139' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>Frequently Asked Questions</h2>
+            <p style={{ fontSize: '18px', color: '#b7bdc6', maxWidth: '600px', margin: '0 auto' }}>Get answers to common questions about trading USDT on VaultX platform.</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {[
+              {
+                question: 'How long does the KYC verification process take?',
+                answer: 'KYC verification is typically completed within 10-15 minutes during business hours. In some cases, it may take up to 24 hours for manual review.'
+              },
+              {
+                question: 'What are the minimum and maximum transaction limits?',
+                answer: 'Minimum transaction amount is ₹500. Maximum limits depend on your KYC status: ₹1,00,000 per transaction for basic KYC and ₹10,00,000 for complete verification.'
+              },
+              {
+                question: 'Which payment methods are supported for INR transactions?',
+                answer: 'We support UPI, IMPS, NEFT, and RTGS for INR deposits and withdrawals. All major banks and UPI apps are accepted.'
+              },
+              {
+                question: 'How secure is my money and personal information?',
+                answer: 'We use bank-grade encryption and security protocols. Your funds are processed through secure channels, and we never store sensitive financial information.'
+              },
+              {
+                question: 'What are the trading fees and charges?',
+                answer: 'VaultX charges competitive trading fees with transparent pricing. There are no hidden charges, and all fees are clearly displayed before transaction confirmation.'
+              },
+              {
+                question: 'How can I contact customer support?',
+                answer: 'Our customer support is available 24/7 via email at support@vaultx.com. You can also reach us through the in-app chat feature for immediate assistance.'
+              }
+            ].map((faq, index) => (
+              <div 
+                key={index}
+                style={{ 
+                  padding: '24px', 
+                  backgroundColor: '#1e2329', 
+                  borderRadius: '12px', 
+                  border: '1px solid #474d57',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#fcd535';
+                  e.currentTarget.style.backgroundColor = '#252a32';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#474d57';
+                  e.currentTarget.style.backgroundColor = '#1e2329';
+                }}
+              >
+                <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#fcd535' }}>{faq.question}</h3>
+                <p style={{ color: '#b7bdc6', fontSize: '15px', margin: 0, lineHeight: '1.6' }}>{faq.answer}</p>
               </div>
             ))}
           </div>
