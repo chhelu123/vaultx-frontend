@@ -12,7 +12,8 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
   const fetchTransactions = async () => {
     try {
       const response = await tradingAPI.getTransactions();
-      setTransactions(response.data);
+      const transactionsData = response.data.transactions || response.data;
+      setTransactions(transactionsData);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
