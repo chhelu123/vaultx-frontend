@@ -8,6 +8,7 @@ const TradingPanel = ({ user, onUpdate }) => {
   const [buyAmount, setBuyAmount] = useState('');
   const [sellAmount, setSellAmount] = useState('');
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('buy'); // 'buy' or 'sell'
   
   // Check if user can trade
   const canTrade = user?.canTrade && user?.kycStatus === 'approved';
@@ -83,25 +84,69 @@ const TradingPanel = ({ user, onUpdate }) => {
 
   return (
     <div>
+      {/* Toggle Tabs */}
       <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: r.gridCols, 
-        gap: r.gap, 
-        marginBottom: r.marginBottom 
+        display: 'flex', 
+        backgroundColor: '#2b3139', 
+        borderRadius: '12px', 
+        padding: '4px', 
+        marginBottom: '24px',
+        border: '1px solid #474d57'
       }}>
-        <div style={{ 
-          backgroundColor: '#2b3139', 
-          padding: r.cardPadding, 
-          borderRadius: '12px', 
-          border: '1px solid #474d57'
-        }}>
-          <h3 style={{ 
-            color: '#02c076', 
-            fontSize: r.h3Size, 
-            fontWeight: '600', 
-            marginBottom: '20px', 
-            letterSpacing: '-0.2px' 
-          }}>Buy USDT</h3>
+        <button
+          onClick={() => setActiveTab('buy')}
+          style={{
+            flex: 1,
+            padding: '14px 20px',
+            backgroundColor: activeTab === 'buy' ? '#02c076' : 'transparent',
+            color: activeTab === 'buy' ? '#ffffff' : '#b7bdc6',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: '600',
+            transition: 'all 0.2s ease',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+          }}
+        >
+          Buy USDT
+        </button>
+        <button
+          onClick={() => setActiveTab('sell')}
+          style={{
+            flex: 1,
+            padding: '14px 20px',
+            backgroundColor: activeTab === 'sell' ? '#f84960' : 'transparent',
+            color: activeTab === 'sell' ? '#ffffff' : '#b7bdc6',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: '600',
+            transition: 'all 0.2s ease',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+          }}
+        >
+          Sell USDT
+        </button>
+      </div>
+
+      {/* Trading Panel */}
+      <div style={{ 
+        backgroundColor: '#2b3139', 
+        padding: r.cardPadding, 
+        borderRadius: '12px', 
+        border: '1px solid #474d57'
+      }}>
+        {activeTab === 'buy' && (
+          <div>
+            <h3 style={{ 
+              color: '#02c076', 
+              fontSize: r.h3Size, 
+              fontWeight: '600', 
+              marginBottom: '20px', 
+              letterSpacing: '-0.2px' 
+            }}>Buy USDT</h3>
           <div style={{ marginBottom: '20px' }}>
             <span style={{ color: '#b7bdc6', fontSize: '14px' }}>Buy Price: </span>
             <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: '600' }}>₹{prices.buyPrice}</span>
@@ -111,26 +156,81 @@ const TradingPanel = ({ user, onUpdate }) => {
               <p style={{ margin: 0, fontSize: '14px', color: '#000', fontWeight: '500' }}>No INR balance. <button onClick={() => setShowDeposit('inr')} style={{ background: 'none', border: 'none', color: '#000', cursor: 'pointer', textDecoration: 'underline', fontWeight: '600' }}>Add INR</button></p>
             </div>
           )}
-          <input
-            type="number"
-            placeholder="Enter INR amount"
-            value={buyAmount}
-            onChange={(e) => setBuyAmount(e.target.value)}
-            style={{ 
-              width: '100%', 
-              padding: '14px 16px', 
-              margin: '16px 0', 
-              border: '1px solid #474d57', 
-              borderRadius: '8px',
-              backgroundColor: '#1e2329',
-              color: '#ffffff',
-              fontSize: '16px',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-            }}
-          />
+          
+          {/* Spend Amount */}
           <div style={{ marginBottom: '20px' }}>
-            <span style={{ color: '#b7bdc6', fontSize: '14px' }}>You'll receive: </span>
-            <span style={{ color: '#02c076', fontSize: '16px', fontWeight: '600' }}>{buyAmount ? (buyAmount / prices.buyPrice).toFixed(6) : '0.000000'} USDT</span>
+            <label style={{ 
+              display: 'block', 
+              color: '#eaecef', 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '8px',
+              letterSpacing: '-0.1px'
+            }}>Spend</label>
+            <input
+              type="number"
+              placeholder="0.00"
+              value={buyAmount}
+              onChange={(e) => setBuyAmount(e.target.value)}
+              style={{ 
+                width: '100%', 
+                padding: '16px 20px', 
+                border: '2px solid #474d57', 
+                borderRadius: '12px',
+                backgroundColor: '#1e2329',
+                color: '#ffffff',
+                fontSize: '18px',
+                fontWeight: '600',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                outline: 'none',
+                transition: 'border-color 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#02c076'}
+              onBlur={(e) => e.target.style.borderColor = '#474d57'}
+            />
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center', 
+              marginTop: '8px' 
+            }}>
+              <span style={{ color: '#b7bdc6', fontSize: '14px' }}>INR</span>
+              <span style={{ color: '#b7bdc6', fontSize: '12px' }}>Balance: ₹{user.wallets?.inr?.toFixed(2) || '0.00'}</span>
+            </div>
+          </div>
+          
+          {/* Receive Amount */}
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{ 
+              display: 'block', 
+              color: '#eaecef', 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '8px',
+              letterSpacing: '-0.1px'
+            }}>Receive</label>
+            <div style={{ 
+              width: '100%', 
+              padding: '16px 20px', 
+              border: '2px solid #474d57', 
+              borderRadius: '12px',
+              backgroundColor: '#0f1419',
+              fontSize: '18px',
+              fontWeight: '600',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+              color: '#02c076'
+            }}>
+              {buyAmount ? (buyAmount / prices.buyPrice).toFixed(6) : '0.000000'}
+            </div>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center', 
+              marginTop: '8px' 
+            }}>
+              <span style={{ color: '#b7bdc6', fontSize: '14px' }}>USDT</span>
+              <span style={{ color: '#b7bdc6', fontSize: '12px' }}>Rate: ₹{prices.buyPrice}/USDT</span>
+            </div>
           </div>
           <button
             onClick={handleBuy}
@@ -150,22 +250,19 @@ const TradingPanel = ({ user, onUpdate }) => {
             }}
           >
             {loading ? 'Processing...' : 'Buy USDT'}
-          </button>
-        </div>
+            </button>
+          </div>
+        )}
 
-        <div style={{ 
-          backgroundColor: '#2b3139', 
-          padding: r.cardPadding, 
-          borderRadius: '12px', 
-          border: '1px solid #474d57'
-        }}>
-          <h3 style={{ 
-            color: '#f84960', 
-            fontSize: r.h3Size, 
-            fontWeight: '600', 
-            marginBottom: '20px', 
-            letterSpacing: '-0.2px' 
-          }}>Sell USDT</h3>
+        {activeTab === 'sell' && (
+          <div>
+            <h3 style={{ 
+              color: '#f84960', 
+              fontSize: r.h3Size, 
+              fontWeight: '600', 
+              marginBottom: '20px', 
+              letterSpacing: '-0.2px' 
+            }}>Sell USDT</h3>
           <div style={{ marginBottom: '20px' }}>
             <span style={{ color: '#b7bdc6', fontSize: '14px' }}>Sell Price: </span>
             <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: '600' }}>₹{prices.sellPrice}</span>
@@ -175,26 +272,81 @@ const TradingPanel = ({ user, onUpdate }) => {
               <p style={{ margin: 0, fontSize: '14px', color: '#000', fontWeight: '500' }}>No USDT balance. <button onClick={() => setShowDeposit('usdt')} style={{ background: 'none', border: 'none', color: '#000', cursor: 'pointer', textDecoration: 'underline', fontWeight: '600' }}>Add USDT</button></p>
             </div>
           )}
-          <input
-            type="number"
-            placeholder="Enter USDT amount"
-            value={sellAmount}
-            onChange={(e) => setSellAmount(e.target.value)}
-            style={{ 
-              width: '100%', 
-              padding: '14px 16px', 
-              margin: '16px 0', 
-              border: '1px solid #474d57', 
-              borderRadius: '8px',
-              backgroundColor: '#1e2329',
-              color: '#ffffff',
-              fontSize: '16px',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-            }}
-          />
+          
+          {/* Spend Amount */}
           <div style={{ marginBottom: '20px' }}>
-            <span style={{ color: '#b7bdc6', fontSize: '14px' }}>You'll receive: </span>
-            <span style={{ color: '#f84960', fontSize: '16px', fontWeight: '600' }}>₹{sellAmount ? (sellAmount * prices.sellPrice).toFixed(2) : '0.00'}</span>
+            <label style={{ 
+              display: 'block', 
+              color: '#eaecef', 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '8px',
+              letterSpacing: '-0.1px'
+            }}>Spend</label>
+            <input
+              type="number"
+              placeholder="0.000000"
+              value={sellAmount}
+              onChange={(e) => setSellAmount(e.target.value)}
+              style={{ 
+                width: '100%', 
+                padding: '16px 20px', 
+                border: '2px solid #474d57', 
+                borderRadius: '12px',
+                backgroundColor: '#1e2329',
+                color: '#ffffff',
+                fontSize: '18px',
+                fontWeight: '600',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                outline: 'none',
+                transition: 'border-color 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#f84960'}
+              onBlur={(e) => e.target.style.borderColor = '#474d57'}
+            />
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center', 
+              marginTop: '8px' 
+            }}>
+              <span style={{ color: '#b7bdc6', fontSize: '14px' }}>USDT</span>
+              <span style={{ color: '#b7bdc6', fontSize: '12px' }}>Balance: {user.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
+            </div>
+          </div>
+          
+          {/* Receive Amount */}
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{ 
+              display: 'block', 
+              color: '#eaecef', 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              marginBottom: '8px',
+              letterSpacing: '-0.1px'
+            }}>Receive</label>
+            <div style={{ 
+              width: '100%', 
+              padding: '16px 20px', 
+              border: '2px solid #474d57', 
+              borderRadius: '12px',
+              backgroundColor: '#0f1419',
+              fontSize: '18px',
+              fontWeight: '600',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+              color: '#f84960'
+            }}>
+              ₹{sellAmount ? (sellAmount * prices.sellPrice).toFixed(2) : '0.00'}
+            </div>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center', 
+              marginTop: '8px' 
+            }}>
+              <span style={{ color: '#b7bdc6', fontSize: '14px' }}>INR</span>
+              <span style={{ color: '#b7bdc6', fontSize: '12px' }}>Rate: ₹{prices.sellPrice}/USDT</span>
+            </div>
           </div>
           <button
             onClick={handleSell}
@@ -214,8 +366,9 @@ const TradingPanel = ({ user, onUpdate }) => {
             }}
           >
             {loading ? 'Processing...' : 'Sell USDT'}
-          </button>
-        </div>
+            </button>
+          </div>
+        )}
       </div>
 
       {showDeposit && (
