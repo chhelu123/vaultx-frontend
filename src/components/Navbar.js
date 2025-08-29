@@ -47,7 +47,7 @@ const Navbar = ({ user, onLogout }) => {
                 >
                   {item.label}
                 </Link>
-              ))
+              ))}
             </div>
             
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
