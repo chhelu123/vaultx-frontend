@@ -418,7 +418,7 @@ const TradingPanel = ({ user, onUpdate }) => {
                     fontWeight: '600',
                     marginBottom: '4px'
                   }}>
-                    {tx.type === 'buy' ? 'Bought' : 'Sold'} {tx.usdtAmount?.toFixed(6)} USDT
+                    {tx.type === 'buy' ? 'Bought' : 'Sold'} {(tx.usdtAmount || tx.amount)?.toFixed(6)} USDT
                   </div>
                   <div style={{ color: '#b7bdc6', fontSize: '12px' }}>
                     {new Date(tx.createdAt).toLocaleDateString()}
@@ -426,7 +426,7 @@ const TradingPanel = ({ user, onUpdate }) => {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ color: '#ffffff', fontSize: '14px', fontWeight: '600' }}>
-                    {tx.usdtAmount?.toFixed(6)} USDT
+                    {(tx.usdtAmount || tx.amount)?.toFixed(6)} USDT
                   </div>
                 </div>
               </div>
