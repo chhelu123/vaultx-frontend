@@ -9,10 +9,22 @@ const WalletActions = ({ user, onUpdate }) => {
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState(null);
   const [depositStep, setDepositStep] = useState(1); // 1: Amount, 2: Payment Details, 3: Transaction ID
+  const [timer, setTimer] = useState(600); // 10 minutes in seconds
+  const [timerActive, setTimerActive] = useState(false);
 
   useEffect(() => {
     fetchSettings();
   }, []);
+
+  // Timer countdown effect
+  useEffect(() => {
+    if (timerActive && timer > 0) {
+      const interval = setInterval(() => {
+        setTimer(prev => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [timerActive, timer]);
 
   const fetchSettings = async () => {
     try {
@@ -158,6 +170,32 @@ const WalletActions = ({ user, onUpdate }) => {
           {/* INR Deposit Flow */}
           {isDeposit && type === 'inr' && depositStep === 1 && formData.amount && (
             <div>
+              {/* Timer Display */}
+              {timerActive && (
+                <div style={{ 
+                  backgroundColor: timer <= 60 ? '#2d1b1b' : '#1e2329', 
+                  border: `1px solid ${timer <= 60 ? '#f84960' : '#474d57'}`, 
+                  padding: '12px', 
+                  borderRadius: '8px', 
+                  margin: '16px 0', 
+                  textAlign: 'center' 
+                }}>
+                  <p style={{ 
+                    color: timer <= 60 ? '#f84960' : '#fcd535', 
+                    margin: 0, 
+                    fontSize: '18px', 
+                    fontWeight: '600' 
+                  }}>
+                    Time remaining: {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}
+                  </p>
+                  {timer <= 60 && (
+                    <p style={{ color: '#f84960', margin: '4px 0 0 0', fontSize: '12px' }}>
+                      Payment window will expire soon!
+                    </p>
+                  )}
+                </div>
+              )}
+              
               <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
                 {formData.method === 'upi' ? (
                   <div>
@@ -175,26 +213,54 @@ const WalletActions = ({ user, onUpdate }) => {
                   </div>
                 )}
               </div>
-              <button
-                onClick={() => setDepositStep(2)}
-                style={{ 
-                  width: '100%', 
-                  padding: '14px', 
-                  backgroundColor: '#fcd535', 
-                  color: '#000', 
-                  border: 'none', 
-                  borderRadius: '8px', 
-                  cursor: 'pointer', 
-                  fontWeight: '600', 
-                  margin: '16px 0',
-                  fontSize: '16px',
-                  transition: 'all 0.2s ease',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                  letterSpacing: '-0.1px'
-                }}
-              >
-                I have made the payment
-              </button>
+              
+              {!timerActive ? (
+                <button
+                  onClick={() => {
+                    setTimerActive(true);
+                    setTimer(600);
+                  }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '14px', 
+                    backgroundColor: '#fcd535', 
+                    color: '#000', 
+                    border: 'none', 
+                    borderRadius: '8px', 
+                    cursor: 'pointer', 
+                    fontWeight: '600', 
+                    margin: '16px 0',
+                    fontSize: '16px',
+                    transition: 'all 0.2s ease',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    letterSpacing: '-0.1px'
+                  }}
+                >
+                  Click to Make Payment
+                </button>
+              ) : (
+                <button
+                  onClick={() => setDepositStep(2)}
+                  disabled={timer <= 0}
+                  style={{ 
+                    width: '100%', 
+                    padding: '14px', 
+                    backgroundColor: timer <= 0 ? '#848e9c' : '#02c076', 
+                    color: '#ffffff', 
+                    border: 'none', 
+                    borderRadius: '8px', 
+                    cursor: timer <= 0 ? 'not-allowed' : 'pointer', 
+                    fontWeight: '600', 
+                    margin: '16px 0',
+                    fontSize: '16px',
+                    transition: 'all 0.2s ease',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    letterSpacing: '-0.1px'
+                  }}
+                >
+                  {timer <= 0 ? 'Payment Expired' : 'I have made the payment'}
+                </button>
+              )}
             </div>
           )}
 
@@ -462,6 +528,8 @@ const WalletActions = ({ user, onUpdate }) => {
               onClick={() => {
                 setShowModal(null);
                 setDepositStep(1);
+                setTimerActive(false);
+                setTimer(600);
                 setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
               }}
               style={{ 
@@ -523,6 +591,8 @@ const WalletActions = ({ user, onUpdate }) => {
                 fetchSettings(); 
                 setShowModal('deposit-inr'); 
                 setDepositStep(1);
+                setTimerActive(false);
+                setTimer(600);
                 setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
               }}
               style={{ 
