@@ -1,8 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [visibleSections, setVisibleSections] = useState(new Set());
+  const sectionRefs = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections(prev => new Set([...prev, entry.target.dataset.section]));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '-50px' }
+    );
+
+    sectionRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const addToRefs = (el, index) => {
+    if (el) sectionRefs.current[index] = el;
+  };
 
   return (
     <div style={{ minHeight: '100vh', background: '#1e2329', color: '#eaecef', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
@@ -125,7 +150,16 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section style={{ padding: '80px 0', backgroundColor: '#2b3139' }}>
+      <section 
+        ref={(el) => addToRefs(el, 0)}
+        data-section="features"
+        style={{ 
+          padding: '80px 0', 
+          backgroundColor: '#2b3139',
+          transform: visibleSections.has('features') ? 'translateY(0)' : 'translateY(50px)',
+          opacity: visibleSections.has('features') ? 1 : 0,
+          transition: 'all 0.8s ease'
+        }}
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>Why Choose VaultX</h2>
@@ -182,7 +216,15 @@ const LandingPage = () => {
       </section>
 
       {/* How It Works */}
-      <section style={{ padding: '80px 0' }}>
+      <section 
+        ref={(el) => addToRefs(el, 1)}
+        data-section="howItWorks"
+        style={{ 
+          padding: '80px 0',
+          transform: visibleSections.has('howItWorks') ? 'translateY(0)' : 'translateY(50px)',
+          opacity: visibleSections.has('howItWorks') ? 1 : 0,
+          transition: 'all 0.8s ease 0.2s'
+        }}
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>How It Works</h2>
@@ -209,7 +251,16 @@ const LandingPage = () => {
       </section>
 
       {/* Stats Section */}
-      <section style={{ padding: '80px 0', backgroundColor: '#2b3139' }}>
+      <section 
+        ref={(el) => addToRefs(el, 2)}
+        data-section="stats"
+        style={{ 
+          padding: '80px 0', 
+          backgroundColor: '#2b3139',
+          transform: visibleSections.has('stats') ? 'translateY(0)' : 'translateY(50px)',
+          opacity: visibleSections.has('stats') ? 1 : 0,
+          transition: 'all 0.8s ease 0.4s'
+        }}
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '48px', textAlign: 'center' }}>
             {[
@@ -253,7 +304,15 @@ const LandingPage = () => {
       </section>
 
       {/* Customer Reviews Section */}
-      <section style={{ padding: '80px 0' }}>
+      <section 
+        ref={(el) => addToRefs(el, 3)}
+        data-section="reviews"
+        style={{ 
+          padding: '80px 0',
+          transform: visibleSections.has('reviews') ? 'translateY(0)' : 'translateY(50px)',
+          opacity: visibleSections.has('reviews') ? 1 : 0,
+          transition: 'all 0.8s ease 0.6s'
+        }}
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>What Our Customers Say</h2>
@@ -339,7 +398,16 @@ const LandingPage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section style={{ padding: '80px 0', backgroundColor: '#2b3139' }}>
+      <section 
+        ref={(el) => addToRefs(el, 4)}
+        data-section="faq"
+        style={{ 
+          padding: '80px 0', 
+          backgroundColor: '#2b3139',
+          transform: visibleSections.has('faq') ? 'translateY(0)' : 'translateY(50px)',
+          opacity: visibleSections.has('faq') ? 1 : 0,
+          transition: 'all 0.8s ease 0.8s'
+        }}
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>Frequently Asked Questions</h2>
