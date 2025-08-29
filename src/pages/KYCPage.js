@@ -8,11 +8,15 @@ const KYCPage = ({ user, setUser, refreshUser }) => {
   };
 
   return (
-    <div style={{ padding: '24px', minHeight: 'calc(100vh - 64px)' }}>
+    <div style={{ 
+      padding: '32px 24px', 
+      minHeight: 'calc(100vh - 64px)',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <div className="card">
-          <h1 style={{ color: '#eaecef', fontSize: '24px', marginBottom: '8px' }}>KYC Verification</h1>
-          <p className="text-gray">Complete your identity verification to start trading</p>
+        <div style={{ marginBottom: '32px' }}>
+          <h1 style={{ color: '#ffffff', fontSize: '32px', fontWeight: '700', marginBottom: '8px', letterSpacing: '-0.5px' }}>KYC Verification</h1>
+          <p style={{ color: '#b7bdc6', fontSize: '16px', margin: 0 }}>Complete your identity verification to unlock full trading capabilities</p>
         </div>
         {user && <KYCForm user={user} onUpdate={handleUpdate} />}
       </div>

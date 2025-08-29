@@ -85,33 +85,34 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
-                    <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600', color: '#495057' }}>Type</th>
-                    <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600', color: '#495057' }}>Amount</th>
-                    <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600', color: '#495057' }}>Price</th>
-                    <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600', color: '#495057' }}>Total</th>
-                    <th style={{ padding: '15px', textAlign: 'left', fontWeight: '600', color: '#495057' }}>Date</th>
+                  <tr style={{ borderBottom: '1px solid #474d57' }}>
+                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>TYPE</th>
+                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>AMOUNT</th>
+                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>PRICE</th>
+                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>TOTAL</th>
+                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>DATE</th>
                   </tr>
                 </thead>
                 <tbody>
                   {transactions.map((tx) => (
-                    <tr key={tx._id} style={{ borderBottom: '1px solid #e9ecef' }}>
-                      <td style={{ padding: '15px' }}>
+                    <tr key={tx._id} style={{ borderBottom: '1px solid #474d57' }}>
+                      <td style={{ padding: '16px' }}>
                         <span style={{
                           padding: '6px 12px',
                           borderRadius: '6px',
                           fontSize: '12px',
                           fontWeight: '600',
                           color: '#ffffff',
-                          backgroundColor: tx.type === 'buy' ? '#02c076' : '#f84960'
+                          backgroundColor: tx.type === 'buy' ? '#02c076' : '#f84960',
+                          letterSpacing: '0.5px'
                         }}>
                           {tx.type === 'buy' ? 'BUY' : 'SELL'}
                         </span>
                       </td>
-                      <td style={{ padding: '15px', fontWeight: '500' }}>{tx.amount.toFixed(6)} USDT</td>
-                      <td style={{ padding: '15px' }}>₹{tx.price.toFixed(2)}</td>
-                      <td style={{ padding: '15px', fontWeight: '600' }}>₹{tx.total.toFixed(2)}</td>
-                      <td style={{ padding: '15px', color: '#6c757d' }}>{new Date(tx.createdAt).toLocaleDateString()}</td>
+                      <td style={{ padding: '16px', fontWeight: '500', color: '#ffffff', fontSize: '15px' }}>{tx.amount.toFixed(6)} USDT</td>
+                      <td style={{ padding: '16px', color: '#b7bdc6', fontSize: '15px' }}>₹{tx.price.toFixed(2)}</td>
+                      <td style={{ padding: '16px', fontWeight: '600', color: '#ffffff', fontSize: '15px' }}>₹{tx.total.toFixed(2)}</td>
+                      <td style={{ padding: '16px', color: '#848e9c', fontSize: '14px' }}>{new Date(tx.createdAt).toLocaleDateString()}</td>
                     </tr>
                   ))}
                 </tbody>

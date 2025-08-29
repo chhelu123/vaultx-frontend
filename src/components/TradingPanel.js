@@ -64,9 +64,15 @@ const TradingPanel = ({ user, onUpdate }) => {
 
   if (!canTrade) {
     return (
-      <div style={{ backgroundColor: '#f8d7da', padding: '25px', borderRadius: '10px', border: '1px solid #f5c6cb', marginBottom: '20px' }}>
-        <h2 style={{ color: '#721c24', marginBottom: '15px' }}>🚫 Trading Restricted</h2>
-        <p style={{ color: '#721c24', margin: 0 }}>
+      <div style={{ 
+        backgroundColor: '#2b3139', 
+        padding: '32px', 
+        borderRadius: '12px', 
+        border: '1px solid #f84960',
+        textAlign: 'center'
+      }}>
+        <h2 style={{ color: '#f84960', fontSize: '24px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.3px' }}>Trading Restricted</h2>
+        <p style={{ color: '#b7bdc6', fontSize: '16px', margin: 0, lineHeight: '1.5' }}>
           Complete and get your KYC approved to start trading.
         </p>
       </div>
@@ -75,52 +81,118 @@ const TradingPanel = ({ user, onUpdate }) => {
 
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-        <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-          <h3 style={{ color: '#28a745', marginBottom: '15px' }}>Buy USDT</h3>
-          <p>Buy Price: ₹{prices.buyPrice}</p>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '32px', 
+          borderRadius: '12px', 
+          border: '1px solid #474d57'
+        }}>
+          <h3 style={{ color: '#02c076', fontSize: '20px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>Buy USDT</h3>
+          <div style={{ marginBottom: '20px' }}>
+            <span style={{ color: '#b7bdc6', fontSize: '14px' }}>Buy Price: </span>
+            <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: '600' }}>₹{prices.buyPrice}</span>
+          </div>
           {user.wallets?.inr === 0 && (
-            <div style={{ backgroundColor: '#fff3cd', padding: '10px', borderRadius: '4px', margin: '10px 0' }}>
-              <p style={{ margin: 0, fontSize: '14px' }}>No INR balance. <button onClick={() => setShowDeposit('inr')} style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}>Add INR</button></p>
+            <div style={{ backgroundColor: '#fcd535', padding: '12px', borderRadius: '8px', margin: '16px 0' }}>
+              <p style={{ margin: 0, fontSize: '14px', color: '#000', fontWeight: '500' }}>No INR balance. <button onClick={() => setShowDeposit('inr')} style={{ background: 'none', border: 'none', color: '#000', cursor: 'pointer', textDecoration: 'underline', fontWeight: '600' }}>Add INR</button></p>
             </div>
           )}
           <input
             type="number"
-            placeholder="INR Amount"
+            placeholder="Enter INR amount"
             value={buyAmount}
             onChange={(e) => setBuyAmount(e.target.value)}
-            style={{ width: '100%', padding: '10px', margin: '10px 0', border: '1px solid #ddd', borderRadius: '4px' }}
+            style={{ 
+              width: '100%', 
+              padding: '14px 16px', 
+              margin: '16px 0', 
+              border: '1px solid #474d57', 
+              borderRadius: '8px',
+              backgroundColor: '#1e2329',
+              color: '#ffffff',
+              fontSize: '16px',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            }}
           />
-          <p>You'll get: {buyAmount ? (buyAmount / prices.buyPrice).toFixed(6) : '0'} USDT</p>
+          <div style={{ marginBottom: '20px' }}>
+            <span style={{ color: '#b7bdc6', fontSize: '14px' }}>You'll receive: </span>
+            <span style={{ color: '#02c076', fontSize: '16px', fontWeight: '600' }}>{buyAmount ? (buyAmount / prices.buyPrice).toFixed(6) : '0.000000'} USDT</span>
+          </div>
           <button
             onClick={handleBuy}
             disabled={loading || !buyAmount || user.wallets?.inr < buyAmount}
-            style={{ width: '100%', padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            style={{ 
+              width: '100%', 
+              padding: '14px', 
+              backgroundColor: loading || !buyAmount || user.wallets?.inr < buyAmount ? '#848e9c' : '#02c076', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '8px', 
+              cursor: loading || !buyAmount || user.wallets?.inr < buyAmount ? 'not-allowed' : 'pointer',
+              fontSize: '16px',
+              fontWeight: '600',
+              transition: 'all 0.2s ease',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            }}
           >
             {loading ? 'Processing...' : 'Buy USDT'}
           </button>
         </div>
 
-        <div style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-          <h3 style={{ color: '#dc3545', marginBottom: '15px' }}>Sell USDT</h3>
-          <p>Sell Price: ₹{prices.sellPrice}</p>
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '32px', 
+          borderRadius: '12px', 
+          border: '1px solid #474d57'
+        }}>
+          <h3 style={{ color: '#f84960', fontSize: '20px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>Sell USDT</h3>
+          <div style={{ marginBottom: '20px' }}>
+            <span style={{ color: '#b7bdc6', fontSize: '14px' }}>Sell Price: </span>
+            <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: '600' }}>₹{prices.sellPrice}</span>
+          </div>
           {user.wallets?.usdt === 0 && (
-            <div style={{ backgroundColor: '#fff3cd', padding: '10px', borderRadius: '4px', margin: '10px 0' }}>
-              <p style={{ margin: 0, fontSize: '14px' }}>No USDT balance. <button onClick={() => setShowDeposit('usdt')} style={{ background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}>Add USDT</button></p>
+            <div style={{ backgroundColor: '#fcd535', padding: '12px', borderRadius: '8px', margin: '16px 0' }}>
+              <p style={{ margin: 0, fontSize: '14px', color: '#000', fontWeight: '500' }}>No USDT balance. <button onClick={() => setShowDeposit('usdt')} style={{ background: 'none', border: 'none', color: '#000', cursor: 'pointer', textDecoration: 'underline', fontWeight: '600' }}>Add USDT</button></p>
             </div>
           )}
           <input
             type="number"
-            placeholder="USDT Amount"
+            placeholder="Enter USDT amount"
             value={sellAmount}
             onChange={(e) => setSellAmount(e.target.value)}
-            style={{ width: '100%', padding: '10px', margin: '10px 0', border: '1px solid #ddd', borderRadius: '4px' }}
+            style={{ 
+              width: '100%', 
+              padding: '14px 16px', 
+              margin: '16px 0', 
+              border: '1px solid #474d57', 
+              borderRadius: '8px',
+              backgroundColor: '#1e2329',
+              color: '#ffffff',
+              fontSize: '16px',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            }}
           />
-          <p>You'll get: ₹{sellAmount ? (sellAmount * prices.sellPrice).toFixed(2) : '0'}</p>
+          <div style={{ marginBottom: '20px' }}>
+            <span style={{ color: '#b7bdc6', fontSize: '14px' }}>You'll receive: </span>
+            <span style={{ color: '#f84960', fontSize: '16px', fontWeight: '600' }}>₹{sellAmount ? (sellAmount * prices.sellPrice).toFixed(2) : '0.00'}</span>
+          </div>
           <button
             onClick={handleSell}
             disabled={loading || !sellAmount || user.wallets?.usdt < sellAmount}
-            style={{ width: '100%', padding: '10px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            style={{ 
+              width: '100%', 
+              padding: '14px', 
+              backgroundColor: loading || !sellAmount || user.wallets?.usdt < sellAmount ? '#848e9c' : '#f84960', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '8px', 
+              cursor: loading || !sellAmount || user.wallets?.usdt < sellAmount ? 'not-allowed' : 'pointer',
+              fontSize: '16px',
+              fontWeight: '600',
+              transition: 'all 0.2s ease',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            }}
           >
             {loading ? 'Processing...' : 'Sell USDT'}
           </button>
@@ -128,27 +200,66 @@ const TradingPanel = ({ user, onUpdate }) => {
       </div>
 
       {showDeposit && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '8px', maxWidth: '400px', width: '90%' }}>
-            <h3>Add {showDeposit.toUpperCase()}</h3>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ 
+            backgroundColor: '#2b3139', 
+            padding: '32px', 
+            borderRadius: '12px', 
+            maxWidth: '450px', 
+            width: '90%',
+            border: '1px solid #474d57'
+          }}>
+            <h3 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.3px' }}>Add {showDeposit.toUpperCase()}</h3>
             {showDeposit === 'inr' ? (
               <div>
-                <p>Pay to our UPI ID:</p>
-                <div style={{ backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '4px', textAlign: 'center', margin: '10px 0' }}>
-                  <strong>chhelu@paytm</strong>
+                <p style={{ color: '#b7bdc6', fontSize: '16px', marginBottom: '16px' }}>Pay to our UPI ID:</p>
+                <div style={{ 
+                  backgroundColor: '#1e2329', 
+                  padding: '20px', 
+                  borderRadius: '8px', 
+                  textAlign: 'center', 
+                  margin: '16px 0',
+                  border: '1px solid #474d57'
+                }}>
+                  <strong style={{ color: '#fcd535', fontSize: '18px', fontFamily: 'monospace' }}>chhelu@paytm</strong>
                 </div>
-                <p style={{ fontSize: '14px', color: '#666' }}>After payment, contact us with transaction ID for verification.</p>
+                <p style={{ fontSize: '14px', color: '#848e9c', lineHeight: '1.5' }}>After payment, contact us with transaction ID for verification.</p>
               </div>
             ) : (
               <div>
-                <p>Send USDT to our wallet:</p>
-                <div style={{ backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '4px', fontSize: '12px', wordBreak: 'break-all', margin: '10px 0' }}>
-                  <strong>TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh</strong>
+                <p style={{ color: '#b7bdc6', fontSize: '16px', marginBottom: '16px' }}>Send USDT to our wallet:</p>
+                <div style={{ 
+                  backgroundColor: '#1e2329', 
+                  padding: '20px', 
+                  borderRadius: '8px', 
+                  fontSize: '14px', 
+                  wordBreak: 'break-all', 
+                  margin: '16px 0',
+                  border: '1px solid #474d57',
+                  fontFamily: 'monospace'
+                }}>
+                  <strong style={{ color: '#fcd535' }}>TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh</strong>
                 </div>
-                <p style={{ fontSize: '14px', color: '#666' }}>Send only USDT (TRC20). Contact us with transaction hash for verification.</p>
+                <p style={{ fontSize: '14px', color: '#848e9c', lineHeight: '1.5' }}>Send only USDT (TRC20). Contact us with transaction hash for verification.</p>
               </div>
             )}
-            <button onClick={() => setShowDeposit(false)} style={{ width: '100%', padding: '10px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', marginTop: '15px' }}>
+            <button 
+              onClick={() => setShowDeposit(false)} 
+              style={{ 
+                width: '100%', 
+                padding: '14px', 
+                backgroundColor: '#848e9c', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '8px', 
+                cursor: 'pointer', 
+                marginTop: '24px',
+                fontSize: '16px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              }}
+            >
               Close
             </button>
           </div>
