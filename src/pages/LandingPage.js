@@ -160,6 +160,7 @@ const LandingPage = () => {
           opacity: visibleSections.has('features') ? 1 : 0,
           transition: 'all 0.8s ease'
         }}
+      >
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>Why Choose VaultX</h2>
@@ -225,6 +226,7 @@ const LandingPage = () => {
           opacity: visibleSections.has('howItWorks') ? 1 : 0,
           transition: 'all 0.8s ease 0.2s'
         }}
+      >
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>How It Works</h2>
@@ -261,6 +263,7 @@ const LandingPage = () => {
           opacity: visibleSections.has('stats') ? 1 : 0,
           transition: 'all 0.8s ease 0.4s'
         }}
+      >
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '48px', textAlign: 'center' }}>
             {[
@@ -313,6 +316,7 @@ const LandingPage = () => {
           opacity: visibleSections.has('reviews') ? 1 : 0,
           transition: 'all 0.8s ease 0.6s'
         }}
+      >
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>What Our Customers Say</h2>
@@ -408,6 +412,7 @@ const LandingPage = () => {
           opacity: visibleSections.has('faq') ? 1 : 0,
           transition: 'all 0.8s ease 0.8s'
         }}
+      >
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <h2 style={{ fontSize: '42px', fontWeight: '700', marginBottom: '16px', color: '#ffffff', letterSpacing: '-0.5px' }}>Frequently Asked Questions</h2>
