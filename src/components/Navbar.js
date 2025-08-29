@@ -6,19 +6,25 @@ const Navbar = ({ user, onLogout }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: '🏠' },
-    { path: '/trading', label: 'Trading', icon: '📈' },
-    { path: '/history', label: 'History', icon: '📋' },
-    { path: '/kyc', label: 'KYC', icon: '🆔' },
-    { path: '/profile', label: 'Profile', icon: '👤' },
+    { path: '/dashboard', label: 'Dashboard' },
+    { path: '/trading', label: 'Trading' },
+    { path: '/history', label: 'History' },
+    { path: '/kyc', label: 'KYC' },
+    { path: '/profile', label: 'Profile' },
   ];
 
   return (
     <>
-      <nav className="navbar" style={{ background: '#1e2329', padding: '0', borderBottom: '1px solid #2b3139', position: 'relative' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '64px', padding: '0 15px', maxWidth: '100%' }}>
+      <nav className="navbar" style={{ 
+        background: '#1e2329', 
+        padding: '0', 
+        borderBottom: '1px solid #2b3139', 
+        position: 'relative',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '64px', padding: '0 20px', maxWidth: '100%' }}>
           {/* Logo */}
-          <h2 style={{ color: '#fcd535', margin: '0', fontSize: '20px', fontWeight: '600' }}>VaultX</h2>
+          <h2 style={{ color: '#fcd535', margin: '0', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>VaultX</h2>
           
           {/* Desktop Navigation */}
           <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
@@ -30,19 +36,18 @@ const Navbar = ({ user, onLogout }) => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '20px 16px',
-                    color: location.pathname === item.path ? '#fcd535' : '#848e9c',
+                    padding: '20px 20px',
+                    color: location.pathname === item.path ? '#fcd535' : '#b7bdc6',
                     textDecoration: 'none',
-                    fontSize: '14px',
+                    fontSize: '15px',
                     fontWeight: '500',
                     borderBottom: location.pathname === item.path ? '2px solid #fcd535' : '2px solid transparent',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s ease'
                   }}
                 >
-                  <span style={{ marginRight: '8px' }}>{item.icon}</span>
                   {item.label}
                 </Link>
-              ))}
+              ))
             </div>
             
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
@@ -142,16 +147,17 @@ const Navbar = ({ user, onLogout }) => {
               }}
               style={{
                 width: '100%',
-                padding: '15px',
+                padding: '16px 20px',
                 background: '#f84960',
                 color: 'white',
                 border: 'none',
                 fontSize: '16px',
+                fontWeight: '500',
                 cursor: 'pointer',
                 textAlign: 'left'
               }}
             >
-              🚪 Logout
+              Sign Out
             </button>
           </div>
         )}

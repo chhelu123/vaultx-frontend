@@ -33,32 +33,53 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
   };
 
   return (
-    <div style={{ padding: '24px', minHeight: 'calc(100vh - 64px)' }}>
+    <div style={{ 
+      padding: '32px 24px', 
+      minHeight: 'calc(100vh - 64px)',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div className="card">
-          <h1 style={{ color: '#eaecef', fontSize: '24px', marginBottom: '8px' }}>Wallet Overview</h1>
-          <p className="text-gray">Manage your deposits, withdrawals and view transactions</p>
+        <div style={{ marginBottom: '32px' }}>
+          <h1 style={{ color: '#ffffff', fontSize: '32px', fontWeight: '700', marginBottom: '8px', letterSpacing: '-0.5px' }}>Dashboard</h1>
+          <p style={{ color: '#b7bdc6', fontSize: '16px', margin: 0 }}>Manage your wallet, deposits, withdrawals and view transaction history</p>
         </div>
         
-        <div className="wallet-balance-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-          <div className="card" style={{ textAlign: 'center', background: 'linear-gradient(135deg, #02c076 0%, #00a66d 100%)', border: 'none' }}>
-            <h3 style={{ color: '#fff', fontSize: '14px', fontWeight: '500', marginBottom: '12px' }}>INR Balance</h3>
-            <p style={{ fontSize: '32px', fontWeight: '700', margin: '0', color: '#fff' }}>₹{user?.wallets?.inr || '0'}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
+          <div style={{ 
+            padding: '32px', 
+            textAlign: 'center', 
+            background: 'linear-gradient(135deg, #02c076 0%, #00a66d 100%)', 
+            borderRadius: '12px',
+            border: 'none'
+          }}>
+            <h3 style={{ color: '#fff', fontSize: '16px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>INR Balance</h3>
+            <p style={{ fontSize: '36px', fontWeight: '700', margin: '0', color: '#fff', letterSpacing: '-0.5px' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</p>
           </div>
-          <div className="card" style={{ textAlign: 'center', background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', border: 'none' }}>
-            <h3 style={{ color: '#000', fontSize: '14px', fontWeight: '500', marginBottom: '12px' }}>USDT Balance</h3>
-            <p style={{ fontSize: '32px', fontWeight: '700', margin: '0', color: '#000' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
+          <div style={{ 
+            padding: '32px', 
+            textAlign: 'center', 
+            background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
+            borderRadius: '12px',
+            border: 'none'
+          }}>
+            <h3 style={{ color: '#000', fontSize: '16px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
+            <p style={{ fontSize: '36px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
           </div>
         </div>
         
         <WalletActions user={user} onUpdate={handleUpdate} />
 
-        <div className="card">
-          <h3 style={{ marginBottom: '20px', color: '#2c3e50' }}>📋 Transaction History</h3>
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '32px', 
+          borderRadius: '12px', 
+          border: '1px solid #474d57'
+        }}>
+          <h3 style={{ marginBottom: '24px', color: '#ffffff', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>Transaction History</h3>
           {transactions.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px', color: '#7f8c8d' }}>
-              <p style={{ fontSize: '18px' }}>No transactions yet</p>
-              <p>Start trading to see your transaction history</p>
+            <div style={{ textAlign: 'center', padding: '48px', color: '#b7bdc6' }}>
+              <p style={{ fontSize: '18px', fontWeight: '500', marginBottom: '8px' }}>No transactions yet</p>
+              <p style={{ fontSize: '16px', margin: 0 }}>Start trading to see your transaction history</p>
             </div>
           ) : (
             <div style={{ overflowX: 'auto' }}>
@@ -76,8 +97,15 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                   {transactions.map((tx) => (
                     <tr key={tx._id} style={{ borderBottom: '1px solid #e9ecef' }}>
                       <td style={{ padding: '15px' }}>
-                        <span className={`status-badge ${tx.type === 'buy' ? 'status-success' : 'status-danger'}`}>
-                          {tx.type === 'buy' ? '📈 BUY' : '📉 SELL'}
+                        <span style={{
+                          padding: '6px 12px',
+                          borderRadius: '6px',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#ffffff',
+                          backgroundColor: tx.type === 'buy' ? '#02c076' : '#f84960'
+                        }}>
+                          {tx.type === 'buy' ? 'BUY' : 'SELL'}
                         </span>
                       </td>
                       <td style={{ padding: '15px', fontWeight: '500' }}>{tx.amount.toFixed(6)} USDT</td>
