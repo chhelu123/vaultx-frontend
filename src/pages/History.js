@@ -5,22 +5,36 @@ const History = ({ user }) => {
   const [deposits, setDeposits] = useState([]);
   const [withdrawals, setWithdrawals] = useState([]);
   const [activeTab, setActiveTab] = useState('deposits');
+  const [depositsPagination, setDepositsPagination] = useState({});
+  const [withdrawalsPagination, setWithdrawalsPagination] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(1);
   }, []);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (page = 1) => {
+    setLoading(true);
     try {
       const [depositsRes, withdrawalsRes] = await Promise.all([
-        walletAPI.getDeposits(),
-        walletAPI.getWithdrawals()
+        walletAPI.getDeposits(page),
+        walletAPI.getWithdrawals(page)
       ]);
-      setDeposits(depositsRes.data);
-      setWithdrawals(withdrawalsRes.data);
+      
+      if (page === 1) {
+        setDeposits(depositsRes.data.deposits || depositsRes.data);
+        setWithdrawals(withdrawalsRes.data.withdrawals || withdrawalsRes.data);
+      } else {
+        setDeposits(prev => [...prev, ...(depositsRes.data.deposits || depositsRes.data)]);
+        setWithdrawals(prev => [...prev, ...(withdrawalsRes.data.withdrawals || withdrawalsRes.data)]);
+      }
+      
+      setDepositsPagination(depositsRes.data.pagination || {});
+      setWithdrawalsPagination(withdrawalsRes.data.pagination || {});
     } catch (error) {
       console.error('Error fetching history:', error);
     }
+    setLoading(false);
   };
 
   const getStatusColor = (status) => {
@@ -152,6 +166,25 @@ const History = ({ user }) => {
                 </table>
               </div>
             )}
+            {depositsPagination.hasNext && (
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <button
+                  onClick={() => fetchHistory(depositsPagination.page + 1)}
+                  disabled={loading}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#fcd535',
+                    color: '#000',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontWeight: '600'
+                  }}
+                >
+                  {loading ? 'Loading...' : 'Load More'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -226,6 +259,25 @@ const History = ({ user }) => {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            )}
+            {withdrawalsPagination.hasNext && (
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <button
+                  onClick={() => fetchHistory(withdrawalsPagination.page + 1)}
+                  disabled={loading}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#fcd535',
+                    color: '#000',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontWeight: '600'
+                  }}
+                >
+                  {loading ? 'Loading...' : 'Load More'}
+                </button>
               </div>
             )}
           </div>

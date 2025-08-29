@@ -24,15 +24,15 @@ export const tradingAPI = {
   getPrice: () => api.get('/trading/price'),
   buyUSDT: (amount) => api.post('/trading/buy', { amount }),
   sellUSDT: (amount) => api.post('/trading/sell', { amount }),
-  getTransactions: () => api.get('/trading/transactions'),
+  getTransactions: (page = 1, limit = 10) => api.get(`/trading/transactions?page=${page}&limit=${limit}`),
 };
 
 export const walletAPI = {
   getWalletInfo: () => api.get('/wallet/info'),
   requestDeposit: (data) => api.post('/wallet/deposit', data),
-  getDeposits: () => api.get('/wallet/deposits'),
+  getDeposits: (page = 1, limit = 10) => api.get(`/wallet/deposits?page=${page}&limit=${limit}`),
   requestWithdrawal: (data) => api.post('/wallet/withdraw', data),
-  getWithdrawals: () => api.get('/wallet/withdrawals'),
+  getWithdrawals: (page = 1, limit = 10) => api.get(`/wallet/withdrawals?page=${page}&limit=${limit}`),
   processUSDTWithdrawal: (data) => api.post('/wallet/withdraw-usdt', data),
 };
 
