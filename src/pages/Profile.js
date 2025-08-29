@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { tradingAPI, walletAPI } from '../services/api';
 import { Link } from 'react-router-dom';
+import useResponsive from '../hooks/useResponsive';
 
 const Profile = ({ user }) => {
   const [stats, setStats] = useState({ totalTrades: 0, totalVolume: 0, totalDeposits: 0, totalWithdrawals: 0 });
   const [loading, setLoading] = useState(true);
+  const r = useResponsive();
 
   useEffect(() => {
     fetchUserStats();
@@ -41,35 +43,36 @@ const Profile = ({ user }) => {
 
   return (
     <div style={{ 
-      padding: '32px 24px', 
+      padding: r.pagePadding, 
       minHeight: 'calc(100vh - 64px)',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      overflowX: 'hidden'
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ color: '#ffffff', fontSize: '32px', fontWeight: '700', marginBottom: '8px', letterSpacing: '-0.5px' }}>My Profile</h1>
-          <p style={{ color: '#b7bdc6', fontSize: '16px', margin: 0 }}>Complete overview of your VaultX account and trading statistics</p>
+        <div style={{ marginBottom: r.marginBottom }}>
+          <h1 style={{ color: '#ffffff', fontSize: r.h1Size, fontWeight: '700', marginBottom: '8px', letterSpacing: '-0.5px' }}>My Profile</h1>
+          <p style={{ color: '#b7bdc6', fontSize: r.bodySize, margin: 0 }}>Complete overview of your VaultX account and trading statistics</p>
         </div>
 
         {/* Wallet Overview */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: r.gridCols, gap: r.gap, marginBottom: r.marginBottom }}>
           <div style={{ 
             background: 'linear-gradient(135deg, #02c076 0%, #00a66d 100%)', 
-            padding: '32px', 
+            padding: r.cardPadding, 
             borderRadius: '12px',
             textAlign: 'center' 
           }}>
-            <h3 style={{ color: '#fff', fontSize: '16px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>INR Balance</h3>
-            <p style={{ fontSize: '36px', fontWeight: '700', margin: '0', color: '#fff', letterSpacing: '-0.5px' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</p>
+            <h3 style={{ color: '#fff', fontSize: r.bodySize, fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>INR Balance</h3>
+            <p style={{ fontSize: r.balanceSize, fontWeight: '700', margin: '0', color: '#fff', letterSpacing: '-0.5px' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</p>
           </div>
           <div style={{ 
             background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
-            padding: '32px', 
+            padding: r.cardPadding, 
             borderRadius: '12px',
             textAlign: 'center' 
           }}>
-            <h3 style={{ color: '#000', fontSize: '16px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
-            <p style={{ fontSize: '36px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
+            <h3 style={{ color: '#000', fontSize: r.bodySize, fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
+            <p style={{ fontSize: r.balanceSize, fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px', wordBreak: 'break-all' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
           </div>
         </div>
 
@@ -82,30 +85,30 @@ const Profile = ({ user }) => {
           marginBottom: '32px'
         }}>
           <h3 style={{ marginBottom: '24px', color: '#ffffff', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>Account Statistics</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px' }}>
-            <div style={{ textAlign: 'center', padding: '24px', backgroundColor: '#1e2329', borderRadius: '12px' }}>
-              <div style={{ fontSize: '36px', fontWeight: '700', color: '#fcd535', marginBottom: '8px', letterSpacing: '-0.5px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: r.isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: r.gap }}>
+            <div style={{ textAlign: 'center', padding: r.isMobile ? '16px' : '24px', backgroundColor: '#1e2329', borderRadius: '12px' }}>
+              <div style={{ fontSize: r.isMobile ? '24px' : '32px', fontWeight: '700', color: '#fcd535', marginBottom: '8px', letterSpacing: '-0.5px' }}>
                 {loading ? '...' : stats.totalTrades}
               </div>
-              <div style={{ color: '#b7bdc6', fontSize: '16px', fontWeight: '500' }}>Total Trades</div>
+              <div style={{ color: '#b7bdc6', fontSize: r.smallSize, fontWeight: '500' }}>Total Trades</div>
             </div>
-            <div style={{ textAlign: 'center', padding: '24px', backgroundColor: '#1e2329', borderRadius: '12px' }}>
-              <div style={{ fontSize: '36px', fontWeight: '700', color: '#02c076', marginBottom: '8px', letterSpacing: '-0.5px' }}>
+            <div style={{ textAlign: 'center', padding: r.isMobile ? '16px' : '24px', backgroundColor: '#1e2329', borderRadius: '12px' }}>
+              <div style={{ fontSize: r.isMobile ? '20px' : '28px', fontWeight: '700', color: '#02c076', marginBottom: '8px', letterSpacing: '-0.5px', wordBreak: 'break-all' }}>
                 ₹{loading ? '...' : stats.totalVolume.toFixed(0)}
               </div>
-              <div style={{ color: '#b7bdc6', fontSize: '16px', fontWeight: '500' }}>Trading Volume</div>
+              <div style={{ color: '#b7bdc6', fontSize: r.smallSize, fontWeight: '500' }}>Trading Volume</div>
             </div>
-            <div style={{ textAlign: 'center', padding: '24px', backgroundColor: '#1e2329', borderRadius: '12px' }}>
-              <div style={{ fontSize: '36px', fontWeight: '700', color: '#3498db', marginBottom: '8px', letterSpacing: '-0.5px' }}>
+            <div style={{ textAlign: 'center', padding: r.isMobile ? '16px' : '24px', backgroundColor: '#1e2329', borderRadius: '12px' }}>
+              <div style={{ fontSize: r.isMobile ? '24px' : '32px', fontWeight: '700', color: '#3498db', marginBottom: '8px', letterSpacing: '-0.5px' }}>
                 {loading ? '...' : stats.totalDeposits}
               </div>
-              <div style={{ color: '#b7bdc6', fontSize: '16px', fontWeight: '500' }}>Deposits</div>
+              <div style={{ color: '#b7bdc6', fontSize: r.smallSize, fontWeight: '500' }}>Deposits</div>
             </div>
-            <div style={{ textAlign: 'center', padding: '24px', backgroundColor: '#1e2329', borderRadius: '12px' }}>
-              <div style={{ fontSize: '36px', fontWeight: '700', color: '#f84960', marginBottom: '8px', letterSpacing: '-0.5px' }}>
+            <div style={{ textAlign: 'center', padding: r.isMobile ? '16px' : '24px', backgroundColor: '#1e2329', borderRadius: '12px' }}>
+              <div style={{ fontSize: r.isMobile ? '24px' : '32px', fontWeight: '700', color: '#f84960', marginBottom: '8px', letterSpacing: '-0.5px' }}>
                 {loading ? '...' : stats.totalWithdrawals}
               </div>
-              <div style={{ color: '#b7bdc6', fontSize: '16px', fontWeight: '500' }}>Withdrawals</div>
+              <div style={{ color: '#b7bdc6', fontSize: r.smallSize, fontWeight: '500' }}>Withdrawals</div>
             </div>
           </div>
         </div>
@@ -166,7 +169,8 @@ const Profile = ({ user }) => {
                 border: '1px solid #474d57', 
                 borderRadius: '8px', 
                 color: '#eaecef',
-                fontSize: '15px'
+                fontSize: r.bodySize,
+                wordBreak: 'break-word'
               }}>
                 {user?.name || 'Loading...'}
               </div>
@@ -174,14 +178,15 @@ const Profile = ({ user }) => {
           </div>
 
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#eaecef', fontSize: '14px' }}>Email Address</label>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#eaecef', fontSize: r.smallSize }}>Email Address</label>
             <div style={{ 
               padding: '16px', 
               backgroundColor: '#1e2329', 
               border: '1px solid #474d57', 
               borderRadius: '8px', 
               color: '#eaecef',
-              fontSize: '15px',
+              fontSize: r.bodySize,
+              wordBreak: 'break-all',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
@@ -191,16 +196,16 @@ const Profile = ({ user }) => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: r.gridCols, gap: r.gap }}>
             <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#eaecef', fontSize: '14px' }}>KYC Status</label>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#eaecef', fontSize: r.smallSize }}>KYC Status</label>
               <div style={{ 
                 padding: '16px', 
                 backgroundColor: '#1e2329', 
                 border: '1px solid #474d57', 
                 borderRadius: '8px', 
                 color: user?.kycStatus === 'approved' ? '#02c076' : user?.kycStatus === 'rejected' ? '#f84960' : '#fcd535',
-                fontSize: '15px',
+                fontSize: r.bodySize,
                 fontWeight: '600',
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -214,7 +219,7 @@ const Profile = ({ user }) => {
             </div>
             
             <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#eaecef', fontSize: '14px' }}>Member Since</label>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#eaecef', fontSize: r.smallSize }}>Member Since</label>
               <div style={{ 
                 padding: '16px', 
                 backgroundColor: '#1e2329', 
@@ -236,12 +241,12 @@ const Profile = ({ user }) => {
         {/* Quick Actions */}
         <div style={{ 
           backgroundColor: '#2b3139', 
-          padding: '32px', 
+          padding: r.cardPadding, 
           borderRadius: '12px', 
           border: '1px solid #474d57'
         }}>
-          <h3 style={{ marginBottom: '24px', color: '#ffffff', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>Quick Actions</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+          <h3 style={{ marginBottom: '24px', color: '#ffffff', fontSize: r.h2Size, fontWeight: '600', letterSpacing: '-0.3px' }}>Quick Actions</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: r.isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: r.gap }}>
             {[
               { to: '/trading', title: 'Start Trading', desc: 'Buy/Sell USDT' },
               { to: '/history', title: 'View History', desc: 'Transactions & Deposits' },
@@ -250,7 +255,7 @@ const Profile = ({ user }) => {
             ].map((action, index) => (
               <Link key={index} to={action.to} style={{ textDecoration: 'none' }}>
                 <div style={{ 
-                  padding: '24px', 
+                  padding: r.isMobile ? '16px' : '24px', 
                   backgroundColor: '#1e2329', 
                   borderRadius: '12px', 
                   textAlign: 'center',
@@ -268,8 +273,8 @@ const Profile = ({ user }) => {
                   e.currentTarget.style.borderColor = '#474d57';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}>
-                  <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '16px', marginBottom: '8px' }}>{action.title}</div>
-                  <div style={{ color: '#b7bdc6', fontSize: '14px' }}>{action.desc}</div>
+                  <div style={{ color: '#ffffff', fontWeight: '600', fontSize: r.bodySize, marginBottom: '8px' }}>{action.title}</div>
+                  <div style={{ color: '#b7bdc6', fontSize: r.smallSize }}>{action.desc}</div>
                 </div>
               </Link>
             ))}
