@@ -34,14 +34,24 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
 
   return (
     <div style={{ 
-      padding: '32px 24px', 
+      padding: window.innerWidth <= 768 ? '20px 16px' : '32px 24px', 
       minHeight: 'calc(100vh - 64px)',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ color: '#ffffff', fontSize: '32px', fontWeight: '700', marginBottom: '8px', letterSpacing: '-0.5px' }}>Dashboard</h1>
-          <p style={{ color: '#b7bdc6', fontSize: '16px', margin: 0 }}>Manage your wallet, deposits, withdrawals and view transaction history</p>
+          <h1 style={{ 
+            color: '#ffffff', 
+            fontSize: window.innerWidth <= 768 ? '28px' : '32px', 
+            fontWeight: '700', 
+            marginBottom: '8px', 
+            letterSpacing: '-0.5px' 
+          }}>Dashboard</h1>
+          <p style={{ 
+            color: '#b7bdc6', 
+            fontSize: window.innerWidth <= 768 ? '14px' : '16px', 
+            margin: 0 
+          }}>Manage your wallet, deposits, withdrawals and view transaction history</p>
         </div>
         
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>

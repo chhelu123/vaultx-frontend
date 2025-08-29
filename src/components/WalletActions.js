@@ -85,7 +85,14 @@ const WalletActions = ({ user, onUpdate }) => {
 
     return (
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-        <div style={{ backgroundColor: '#2b3139', padding: '32px', borderRadius: '12px', maxWidth: '450px', width: '90%', border: '1px solid #474d57' }}>
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: window.innerWidth <= 768 ? '24px' : '32px', 
+          borderRadius: '12px', 
+          maxWidth: window.innerWidth <= 768 ? '95%' : '450px', 
+          width: '90%', 
+          border: '1px solid #474d57' 
+        }}>
           <h3 style={{ 
             color: '#ffffff', 
             fontSize: '24px', 
@@ -481,23 +488,32 @@ const WalletActions = ({ user, onUpdate }) => {
 
   return (
     <div style={{ marginBottom: '32px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', 
+        gap: window.innerWidth <= 768 ? '16px' : '24px' 
+      }}>
         <div style={{ 
           backgroundColor: '#2b3139', 
-          padding: '32px', 
+          padding: window.innerWidth <= 768 ? '20px' : '32px', 
           borderRadius: '12px', 
           border: '1px solid #474d57'
         }}>
           <h4 style={{ 
             color: '#ffffff', 
-            fontSize: '20px', 
+            fontSize: window.innerWidth <= 768 ? '18px' : '20px', 
             fontWeight: '600', 
             marginBottom: '20px', 
             letterSpacing: '-0.2px',
             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
           }}>INR Wallet</h4>
           <div style={{ marginBottom: '24px' }}>
-            <span style={{ color: '#ffffff', fontSize: '28px', fontWeight: '700', letterSpacing: '-0.3px' }}>₹{user.wallets?.inr?.toFixed(2) || '0.00'}</span>
+            <span style={{ 
+              color: '#ffffff', 
+              fontSize: window.innerWidth <= 768 ? '24px' : '28px', 
+              fontWeight: '700', 
+              letterSpacing: '-0.3px' 
+            }}>₹{user.wallets?.inr?.toFixed(2) || '0.00'}</span>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
             <button
@@ -561,20 +577,25 @@ const WalletActions = ({ user, onUpdate }) => {
 
         <div style={{ 
           backgroundColor: '#2b3139', 
-          padding: '32px', 
+          padding: window.innerWidth <= 768 ? '20px' : '32px', 
           borderRadius: '12px', 
           border: '1px solid #474d57'
         }}>
           <h4 style={{ 
             color: '#ffffff', 
-            fontSize: '20px', 
+            fontSize: window.innerWidth <= 768 ? '18px' : '20px', 
             fontWeight: '600', 
             marginBottom: '20px', 
             letterSpacing: '-0.2px',
             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
           }}>USDT Wallet</h4>
           <div style={{ marginBottom: '24px' }}>
-            <span style={{ color: '#ffffff', fontSize: '28px', fontWeight: '700', letterSpacing: '-0.3px' }}>{user.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
+            <span style={{ 
+              color: '#ffffff', 
+              fontSize: window.innerWidth <= 768 ? '24px' : '28px', 
+              fontWeight: '700', 
+              letterSpacing: '-0.3px' 
+            }}>{user.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
             <button

@@ -109,6 +109,14 @@ const Navbar = ({ user, onLogout }) => {
           >
             {isMobileMenuOpen ? '✕' : '☰'}
           </button>
+          
+          <style>{`
+            @media (max-width: 768px) {
+              .desktop-nav { display: none !important; }
+              .mobile-menu-btn { display: block !important; }
+              .mobile-menu { display: block !important; }
+            }
+          `}</style>
         </div>
         
         {/* Mobile Dropdown Menu */}
@@ -120,8 +128,7 @@ const Navbar = ({ user, onLogout }) => {
             right: 0,
             background: '#1e2329',
             borderBottom: '1px solid #2b3139',
-            zIndex: 1000,
-            display: 'none'
+            zIndex: 1000
           }}>
             {/* Wallet Info */}
             <div style={{ padding: '15px', borderBottom: '1px solid #2b3139' }}>

@@ -81,14 +81,25 @@ const TradingPanel = ({ user, onUpdate }) => {
 
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', 
+        gap: window.innerWidth <= 768 ? '16px' : '24px', 
+        marginBottom: '32px' 
+      }}>
         <div style={{ 
           backgroundColor: '#2b3139', 
-          padding: '32px', 
+          padding: window.innerWidth <= 768 ? '20px' : '32px', 
           borderRadius: '12px', 
           border: '1px solid #474d57'
         }}>
-          <h3 style={{ color: '#02c076', fontSize: '20px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>Buy USDT</h3>
+          <h3 style={{ 
+            color: '#02c076', 
+            fontSize: window.innerWidth <= 768 ? '18px' : '20px', 
+            fontWeight: '600', 
+            marginBottom: '20px', 
+            letterSpacing: '-0.2px' 
+          }}>Buy USDT</h3>
           <div style={{ marginBottom: '20px' }}>
             <span style={{ color: '#b7bdc6', fontSize: '14px' }}>Buy Price: </span>
             <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: '600' }}>₹{prices.buyPrice}</span>
@@ -142,11 +153,17 @@ const TradingPanel = ({ user, onUpdate }) => {
 
         <div style={{ 
           backgroundColor: '#2b3139', 
-          padding: '32px', 
+          padding: window.innerWidth <= 768 ? '20px' : '32px', 
           borderRadius: '12px', 
           border: '1px solid #474d57'
         }}>
-          <h3 style={{ color: '#f84960', fontSize: '20px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>Sell USDT</h3>
+          <h3 style={{ 
+            color: '#f84960', 
+            fontSize: window.innerWidth <= 768 ? '18px' : '20px', 
+            fontWeight: '600', 
+            marginBottom: '20px', 
+            letterSpacing: '-0.2px' 
+          }}>Sell USDT</h3>
           <div style={{ marginBottom: '20px' }}>
             <span style={{ color: '#b7bdc6', fontSize: '14px' }}>Sell Price: </span>
             <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: '600' }}>₹{prices.sellPrice}</span>

@@ -58,14 +58,24 @@ const History = ({ user }) => {
 
   return (
     <div style={{ 
-      padding: '32px 24px', 
+      padding: window.innerWidth <= 768 ? '20px 16px' : '32px 24px', 
       minHeight: 'calc(100vh - 64px)',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ color: '#ffffff', fontSize: '32px', fontWeight: '700', marginBottom: '8px', letterSpacing: '-0.5px' }}>Transaction History</h1>
-          <p style={{ color: '#b7bdc6', fontSize: '16px', margin: 0 }}>View your complete deposit and withdrawal history</p>
+          <h1 style={{ 
+            color: '#ffffff', 
+            fontSize: window.innerWidth <= 768 ? '28px' : '32px', 
+            fontWeight: '700', 
+            marginBottom: '8px', 
+            letterSpacing: '-0.5px' 
+          }}>Transaction History</h1>
+          <p style={{ 
+            color: '#b7bdc6', 
+            fontSize: window.innerWidth <= 768 ? '14px' : '16px', 
+            margin: 0 
+          }}>View your complete deposit and withdrawal history</p>
         </div>
 
         {/* Tabs */}
@@ -108,11 +118,17 @@ const History = ({ user }) => {
         {activeTab === 'deposits' && (
           <div style={{ 
             backgroundColor: '#2b3139', 
-            padding: '32px', 
+            padding: window.innerWidth <= 768 ? '20px' : '32px', 
             borderRadius: '12px', 
             border: '1px solid #474d57'
           }}>
-            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '24px', letterSpacing: '-0.3px' }}>Deposit History</h2>
+            <h2 style={{ 
+              color: '#ffffff', 
+              fontSize: window.innerWidth <= 768 ? '20px' : '24px', 
+              fontWeight: '600', 
+              marginBottom: '24px', 
+              letterSpacing: '-0.3px' 
+            }}>Deposit History</h2>
             {deposits.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '48px', color: '#b7bdc6' }}>
                 <p style={{ fontSize: '18px', fontWeight: '500', marginBottom: '8px' }}>No deposits found</p>
@@ -216,11 +232,17 @@ const History = ({ user }) => {
         {activeTab === 'withdrawals' && (
           <div style={{ 
             backgroundColor: '#2b3139', 
-            padding: '32px', 
+            padding: window.innerWidth <= 768 ? '20px' : '32px', 
             borderRadius: '12px', 
             border: '1px solid #474d57'
           }}>
-            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '24px', letterSpacing: '-0.3px' }}>Withdrawal History</h2>
+            <h2 style={{ 
+              color: '#ffffff', 
+              fontSize: window.innerWidth <= 768 ? '20px' : '24px', 
+              fontWeight: '600', 
+              marginBottom: '24px', 
+              letterSpacing: '-0.3px' 
+            }}>Withdrawal History</h2>
             {withdrawals.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '48px', color: '#b7bdc6' }}>
                 <p style={{ fontSize: '18px', fontWeight: '500', marginBottom: '8px' }}>No withdrawals found</p>
