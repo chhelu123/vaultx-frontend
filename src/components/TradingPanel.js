@@ -9,6 +9,8 @@ const TradingPanel = ({ user, onUpdate }) => {
   const [sellAmount, setSellAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('buy'); // 'buy' or 'sell'
+  const [transactions, setTransactions] = useState([]);
+  const [transactionsLoading, setTransactionsLoading] = useState(false);
   
   // Check if user can trade
   const canTrade = user?.canTrade && user?.kycStatus === 'approved';
@@ -16,7 +18,19 @@ const TradingPanel = ({ user, onUpdate }) => {
 
   useEffect(() => {
     fetchPrice();
+    fetchTransactions();
   }, []);
+
+  const fetchTransactions = async () => {
+    setTransactionsLoading(true);
+    try {
+      const response = await tradingAPI.getTransactions(1, 10);
+      setTransactions(response.data.transactions || []);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+    setTransactionsLoading(false);
+  };
 
   const fetchPrice = async () => {
     try {
@@ -39,6 +53,7 @@ const TradingPanel = ({ user, onUpdate }) => {
       } else {
         onUpdate();
       }
+      fetchTransactions();
       alert('USDT purchased successfully!');
     } catch (error) {
       alert(error.response?.data?.message || 'Error buying USDT');
@@ -58,6 +73,7 @@ const TradingPanel = ({ user, onUpdate }) => {
       } else {
         onUpdate();
       }
+      fetchTransactions();
       alert('USDT sold successfully!');
     } catch (error) {
       alert(error.response?.data?.message || 'Error selling USDT');
@@ -147,10 +163,7 @@ const TradingPanel = ({ user, onUpdate }) => {
               marginBottom: '20px', 
               letterSpacing: '-0.2px' 
             }}>Buy USDT</h3>
-          <div style={{ marginBottom: '20px' }}>
-            <span style={{ color: '#b7bdc6', fontSize: '14px' }}>Buy Price: </span>
-            <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: '600' }}>₹{prices.buyPrice}</span>
-          </div>
+
           {user.wallets?.inr === 0 && (
             <div style={{ backgroundColor: '#fcd535', padding: '12px', borderRadius: '8px', margin: '16px 0' }}>
               <p style={{ margin: 0, fontSize: '14px', color: '#000', fontWeight: '500' }}>No INR balance. <button onClick={() => setShowDeposit('inr')} style={{ background: 'none', border: 'none', color: '#000', cursor: 'pointer', textDecoration: 'underline', fontWeight: '600' }}>Add INR</button></p>
@@ -229,7 +242,7 @@ const TradingPanel = ({ user, onUpdate }) => {
               marginTop: '8px' 
             }}>
               <span style={{ color: '#b7bdc6', fontSize: '14px' }}>USDT</span>
-              <span style={{ color: '#b7bdc6', fontSize: '12px' }}>Rate: ₹{prices.buyPrice}/USDT</span>
+
             </div>
           </div>
           <button
@@ -263,10 +276,7 @@ const TradingPanel = ({ user, onUpdate }) => {
               marginBottom: '20px', 
               letterSpacing: '-0.2px' 
             }}>Sell USDT</h3>
-          <div style={{ marginBottom: '20px' }}>
-            <span style={{ color: '#b7bdc6', fontSize: '14px' }}>Sell Price: </span>
-            <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: '600' }}>₹{prices.sellPrice}</span>
-          </div>
+
           {user.wallets?.usdt === 0 && (
             <div style={{ backgroundColor: '#fcd535', padding: '12px', borderRadius: '8px', margin: '16px 0' }}>
               <p style={{ margin: 0, fontSize: '14px', color: '#000', fontWeight: '500' }}>No USDT balance. <button onClick={() => setShowDeposit('usdt')} style={{ background: 'none', border: 'none', color: '#000', cursor: 'pointer', textDecoration: 'underline', fontWeight: '600' }}>Add USDT</button></p>
@@ -345,7 +355,7 @@ const TradingPanel = ({ user, onUpdate }) => {
               marginTop: '8px' 
             }}>
               <span style={{ color: '#b7bdc6', fontSize: '14px' }}>INR</span>
-              <span style={{ color: '#b7bdc6', fontSize: '12px' }}>Rate: ₹{prices.sellPrice}/USDT</span>
+
             </div>
           </div>
           <button
@@ -367,6 +377,63 @@ const TradingPanel = ({ user, onUpdate }) => {
           >
             {loading ? 'Processing...' : 'Sell USDT'}
             </button>
+          </div>
+        )}
+      </div>
+
+      {/* Transaction History */}
+      <div style={{ 
+        backgroundColor: '#2b3139', 
+        padding: r.cardPadding, 
+        borderRadius: '12px', 
+        border: '1px solid #474d57',
+        marginTop: '24px'
+      }}>
+        <h3 style={{ 
+          color: '#ffffff', 
+          fontSize: r.h3Size, 
+          fontWeight: '600', 
+          marginBottom: '20px', 
+          letterSpacing: '-0.2px' 
+        }}>Recent Transactions</h3>
+        
+        {transactionsLoading ? (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#b7bdc6' }}>Loading...</div>
+        ) : transactions.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '20px', color: '#b7bdc6' }}>No transactions yet</div>
+        ) : (
+          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            {transactions.map((tx, index) => (
+              <div key={index} style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                padding: '12px 0',
+                borderBottom: index < transactions.length - 1 ? '1px solid #474d57' : 'none'
+              }}>
+                <div>
+                  <div style={{ 
+                    color: tx.type === 'buy' ? '#02c076' : '#f84960', 
+                    fontSize: '14px', 
+                    fontWeight: '600',
+                    marginBottom: '4px'
+                  }}>
+                    {tx.type === 'buy' ? 'Bought' : 'Sold'} USDT
+                  </div>
+                  <div style={{ color: '#b7bdc6', fontSize: '12px' }}>
+                    {new Date(tx.createdAt).toLocaleDateString()}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ color: '#ffffff', fontSize: '14px', fontWeight: '600' }}>
+                    {tx.usdtAmount?.toFixed(6)} USDT
+                  </div>
+                  <div style={{ color: '#b7bdc6', fontSize: '12px' }}>
+                    ₹{tx.inrAmount?.toFixed(2)}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
