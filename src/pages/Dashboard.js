@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import WalletActions from '../components/WalletActions';
 import { tradingAPI } from '../services/api';
+import useResponsive from '../hooks/useResponsive';
 
 const Dashboard = ({ user, setUser, refreshUser }) => {
   const [transactions, setTransactions] = useState([]);
+  const r = useResponsive();
 
   useEffect(() => {
     fetchTransactions();
@@ -34,7 +36,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
 
   return (
     <div style={{ 
-      padding: window.innerWidth <= 768 ? '20px 16px' : '32px 24px', 
+      padding: r.pagePadding, 
       minHeight: 'calc(100vh - 64px)',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
     }}>
@@ -54,7 +56,12 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
           }}>Manage your wallet, deposits, withdrawals and view transaction history</p>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: r.gridCols, 
+          gap: r.gap, 
+          marginBottom: r.marginBottom 
+        }}>
           <div style={{ 
             padding: '32px', 
             textAlign: 'center', 

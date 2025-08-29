@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { tradingAPI } from '../services/api';
+import useResponsive from '../hooks/useResponsive';
 
 const TradingPanel = ({ user, onUpdate }) => {
   const [prices, setPrices] = useState({ buyPrice: 92, sellPrice: 89 });
+  const r = useResponsive();
   const [buyAmount, setBuyAmount] = useState('');
   const [sellAmount, setSellAmount] = useState('');
   const [loading, setLoading] = useState(false);
@@ -83,19 +85,19 @@ const TradingPanel = ({ user, onUpdate }) => {
     <div>
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', 
-        gap: window.innerWidth <= 768 ? '16px' : '24px', 
-        marginBottom: '32px' 
+        gridTemplateColumns: r.gridCols, 
+        gap: r.gap, 
+        marginBottom: r.marginBottom 
       }}>
         <div style={{ 
           backgroundColor: '#2b3139', 
-          padding: window.innerWidth <= 768 ? '20px' : '32px', 
+          padding: r.cardPadding, 
           borderRadius: '12px', 
           border: '1px solid #474d57'
         }}>
           <h3 style={{ 
             color: '#02c076', 
-            fontSize: window.innerWidth <= 768 ? '18px' : '20px', 
+            fontSize: r.h3Size, 
             fontWeight: '600', 
             marginBottom: '20px', 
             letterSpacing: '-0.2px' 
@@ -153,13 +155,13 @@ const TradingPanel = ({ user, onUpdate }) => {
 
         <div style={{ 
           backgroundColor: '#2b3139', 
-          padding: window.innerWidth <= 768 ? '20px' : '32px', 
+          padding: r.cardPadding, 
           borderRadius: '12px', 
           border: '1px solid #474d57'
         }}>
           <h3 style={{ 
             color: '#f84960', 
-            fontSize: window.innerWidth <= 768 ? '18px' : '20px', 
+            fontSize: r.h3Size, 
             fontWeight: '600', 
             marginBottom: '20px', 
             letterSpacing: '-0.2px' 

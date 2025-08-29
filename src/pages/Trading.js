@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import TradingPanel from '../components/TradingPanel';
 import { authAPI } from '../services/api';
+import useResponsive from '../hooks/useResponsive';
 
 const Trading = ({ user, setUser, refreshUser }) => {
+  const r = useResponsive();
+  
   const handleUpdate = (wallets) => {
     if (wallets) {
       setUser({ ...user, wallets });
@@ -12,22 +15,22 @@ const Trading = ({ user, setUser, refreshUser }) => {
 
   return (
     <div style={{ 
-      padding: window.innerWidth <= 768 ? '20px 16px' : '32px 24px', 
+      padding: r.pagePadding, 
       minHeight: 'calc(100vh - 64px)',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '32px' }}>
+        <div style={{ marginBottom: r.marginBottom }}>
           <h1 style={{ 
             color: '#ffffff', 
-            fontSize: window.innerWidth <= 768 ? '28px' : '32px', 
+            fontSize: r.h1Size, 
             fontWeight: '700', 
             marginBottom: '8px', 
             letterSpacing: '-0.5px' 
           }}>Spot Trading</h1>
           <p style={{ 
             color: '#b7bdc6', 
-            fontSize: window.innerWidth <= 768 ? '14px' : '16px', 
+            fontSize: r.bodySize, 
             margin: 0 
           }}>Buy and sell USDT at competitive rates with instant settlement</p>
         </div>
