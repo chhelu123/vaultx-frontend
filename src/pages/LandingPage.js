@@ -34,7 +34,16 @@ const LandingPage = () => {
       {/* Navigation */}
       <nav style={{ padding: '20px 0', borderBottom: '1px solid #2b3139', backgroundColor: '#1e2329', position: 'sticky', top: 0, zIndex: 100, backdropFilter: 'blur(10px)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1 style={{ color: '#fcd535', fontSize: '32px', fontWeight: '600', margin: 0, letterSpacing: '-0.5px' }}>VaultX</h1>
+          <img 
+            src="/image.png" 
+            alt="VaultX Logo" 
+            style={{ height: '48px' }}
+            onError={(e) => { 
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'block';
+            }}
+          />
+          <h1 style={{ color: '#fcd535', fontSize: '32px', fontWeight: '600', margin: 0, letterSpacing: '-0.5px', display: 'none' }}>VaultX</h1>
           <div style={{ display: 'flex', gap: '16px' }}>
             <Link 
               to="/login" 

@@ -26,12 +26,15 @@ const Navbar = ({ user, onLogout }) => {
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img 
-              src="/logo.png" 
+              src="/image.png" 
               alt="VaultX Logo" 
-              style={{ height: '32px', marginRight: '8px' }}
-              onError={(e) => { e.target.style.display = 'none'; }}
+              style={{ height: '40px' }}
+              onError={(e) => { 
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'block';
+              }}
             />
-            <h2 style={{ color: '#fcd535', margin: '0', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>VaultX</h2>
+            <h2 style={{ color: '#fcd535', margin: '0', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px', display: 'none' }}>VaultX</h2>
           </div>
           
           {/* Desktop Navigation */}

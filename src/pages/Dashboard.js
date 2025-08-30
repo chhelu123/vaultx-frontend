@@ -84,6 +84,41 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
           </div>
         </div>
         
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '24px', 
+          borderRadius: '12px', 
+          border: '1px solid #474d57',
+          marginBottom: '32px'
+        }}>
+          <h3 style={{ marginBottom: '20px', color: '#ffffff', fontSize: '20px', fontWeight: '600', letterSpacing: '-0.3px' }}>USDT Exchange Rates</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+            <div style={{ 
+              padding: '20px', 
+              backgroundColor: '#1e2329', 
+              borderRadius: '8px', 
+              border: '1px solid #02c076',
+              textAlign: 'center'
+            }}>
+              <h4 style={{ color: '#02c076', fontSize: '14px', fontWeight: '600', marginBottom: '8px', letterSpacing: '0.5px' }}>BUY USDT</h4>
+              <p style={{ fontSize: '24px', fontWeight: '700', margin: '0', color: '#ffffff' }}>₹92.00</p>
+              <p style={{ fontSize: '12px', color: '#b7bdc6', margin: '4px 0 0 0' }}>per USDT</p>
+            </div>
+            <div style={{ 
+              padding: '20px', 
+              backgroundColor: '#1e2329', 
+              borderRadius: '8px', 
+              border: '1px solid #f84960',
+              textAlign: 'center'
+            }}>
+              <h4 style={{ color: '#f84960', fontSize: '14px', fontWeight: '600', marginBottom: '8px', letterSpacing: '0.5px' }}>SELL USDT</h4>
+              <p style={{ fontSize: '24px', fontWeight: '700', margin: '0', color: '#ffffff' }}>₹89.00</p>
+              <p style={{ fontSize: '12px', color: '#b7bdc6', margin: '4px 0 0 0' }}>per USDT</p>
+            </div>
+          </div>
+          <p style={{ fontSize: '13px', color: '#848e9c', margin: '16px 0 0 0', textAlign: 'center' }}>Visit Trading page to buy or sell USDT instantly</p>
+        </div>
+        
         <WalletActions user={user} onUpdate={handleUpdate} />
 
         <div style={{ 
