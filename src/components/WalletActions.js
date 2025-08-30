@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { walletAPI } from '../services/api';
 import useResponsive from '../hooks/useResponsive';
+import NotificationModal from './NotificationModal';
 
 const WalletActions = ({ user, onUpdate }) => {
   const [showModal, setShowModal] = useState(null);
@@ -11,6 +12,7 @@ const WalletActions = ({ user, onUpdate }) => {
   const [depositStep, setDepositStep] = useState(1); // 1: Amount, 2: Payment Details, 3: Transaction ID
   const [timer, setTimer] = useState(600); // 10 minutes in seconds
   const [timerActive, setTimerActive] = useState(false);
+  const [notification, setNotification] = useState({ isOpen: false, type: '', title: '', message: '' });
 
   useEffect(() => {
     fetchSettings();
@@ -45,12 +47,22 @@ const WalletActions = ({ user, onUpdate }) => {
         paymentMethod: type === 'inr' ? (formData.method === 'upi' ? 'UPI' : 'Bank Transfer') : 'USDT Transfer',
         transactionId: formData.details
       });
-      alert(`${type.toUpperCase()} deposit request submitted!`);
+      setNotification({
+        isOpen: true,
+        type: 'success',
+        title: 'Deposit Submitted',
+        message: `Your ${type.toUpperCase()} deposit request has been submitted successfully and is being processed.`
+      });
       setShowModal(null);
       setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
       setDepositStep(1);
     } catch (error) {
-      alert(error.response?.data?.message || 'Error submitting deposit');
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Deposit Failed',
+        message: error.response?.data?.message || 'Unable to submit deposit request. Please try again.'
+      });
     }
     setLoading(false);
   };
@@ -66,7 +78,12 @@ const WalletActions = ({ user, onUpdate }) => {
         
         if (response.data.success) {
           onUpdate(response.data.wallets);
-          alert(`USDT sent successfully! TX: ${response.data.transaction}`);
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'USDT Sent Successfully',
+            message: `USDT has been sent to your address. Transaction ID: ${response.data.transaction}`
+          });
         }
       } else {
         const withdrawalDetails = formData.method === 'upi' 
@@ -79,14 +96,24 @@ const WalletActions = ({ user, onUpdate }) => {
           withdrawalDetails,
           paymentMethod: formData.method === 'upi' ? 'UPI' : 'Bank Transfer'
         });
-        alert('INR withdrawal request submitted!');
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Withdrawal Submitted',
+          message: 'Your INR withdrawal request has been submitted and will be processed within 24 hours.'
+        });
       }
       
       setShowModal(null);
       setFormData({ amount: '', details: '', method: 'upi', bankName: '', ifscCode: '', accountNumber: '' });
       setDepositStep(1);
     } catch (error) {
-      alert(error.response?.data?.message || 'Error processing withdrawal');
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Withdrawal Failed',
+        message: error.response?.data?.message || 'Unable to process withdrawal request. Please try again.'
+      });
     }
     setLoading(false);
   };
@@ -733,6 +760,14 @@ const WalletActions = ({ user, onUpdate }) => {
       </div>
 
       {renderModal()}
+      
+      <NotificationModal
+        isOpen={notification.isOpen}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        onClose={() => setNotification({ isOpen: false, type: '', title: '', message: '' })}
+      />
     </div>
   );
 };

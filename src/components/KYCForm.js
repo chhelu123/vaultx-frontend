@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { kycAPI } from '../services/api';
+import NotificationModal from './NotificationModal';
 
 const KYCForm = ({ user, onUpdate }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -21,6 +22,7 @@ const KYCForm = ({ user, onUpdate }) => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+  const [notification, setNotification] = useState({ isOpen: false, type: '', title: '', message: '' });
 
   const indianStates = [
     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana',
@@ -46,13 +48,23 @@ const KYCForm = ({ user, onUpdate }) => {
 
   const handleFileUpload = (field, file) => {
     if (file && file.size > 5 * 1024 * 1024) {
-      alert('File size should be less than 5MB');
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'File Too Large',
+        message: 'File size should be less than 5MB. Please choose a smaller file.'
+      });
       return;
     }
 
     // Only allow image files
     if (file && !file.type.startsWith('image/')) {
-      alert('Only image files are allowed');
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Invalid File Type',
+        message: 'Only image files are allowed. Please select a JPG, PNG, or other image file.'
+      });
       return;
     }
 
@@ -86,7 +98,12 @@ const KYCForm = ({ user, onUpdate }) => {
       onUpdate();
       if (window.refreshUser) window.refreshUser();
     } catch (error) {
-      alert(error.response?.data?.message || 'Error submitting KYC');
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Submission Failed',
+        message: error.response?.data?.message || 'Unable to submit KYC documents. Please try again.'
+      });
     }
     setLoading(false);
   };
@@ -642,6 +659,13 @@ const KYCForm = ({ user, onUpdate }) => {
           </button>
         )}
       </div>
+      <NotificationModal
+        isOpen={notification.isOpen}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        onClose={() => setNotification({ isOpen: false, type: '', title: '', message: '' })}
+      />
     </div>
   );
 };

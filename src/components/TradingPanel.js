@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { tradingAPI } from '../services/api';
 import useResponsive from '../hooks/useResponsive';
+import NotificationModal from './NotificationModal';
 
 const TradingPanel = ({ user, onUpdate }) => {
   const [prices, setPrices] = useState({ buyPrice: 92, sellPrice: 89 });
@@ -15,6 +16,7 @@ const TradingPanel = ({ user, onUpdate }) => {
   // Check if user can trade
   const canTrade = user?.canTrade && user?.kycStatus === 'approved';
   const [showDeposit, setShowDeposit] = useState(false);
+  const [notification, setNotification] = useState({ isOpen: false, type: '', title: '', message: '' });
 
   useEffect(() => {
     fetchPrice();
@@ -54,9 +56,19 @@ const TradingPanel = ({ user, onUpdate }) => {
         onUpdate();
       }
       fetchTransactions();
-      alert('USDT purchased successfully!');
+      setNotification({
+        isOpen: true,
+        type: 'success',
+        title: 'Purchase Successful',
+        message: 'USDT has been successfully added to your wallet!'
+      });
     } catch (error) {
-      alert(error.response?.data?.message || 'Error buying USDT');
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Purchase Failed',
+        message: error.response?.data?.message || 'Unable to complete USDT purchase. Please try again.'
+      });
     }
     setLoading(false);
   };
@@ -74,9 +86,19 @@ const TradingPanel = ({ user, onUpdate }) => {
         onUpdate();
       }
       fetchTransactions();
-      alert('USDT sold successfully!');
+      setNotification({
+        isOpen: true,
+        type: 'success',
+        title: 'Sale Successful',
+        message: 'USDT has been successfully sold and INR added to your wallet!'
+      });
     } catch (error) {
-      alert(error.response?.data?.message || 'Error selling USDT');
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Sale Failed',
+        message: error.response?.data?.message || 'Unable to complete USDT sale. Please try again.'
+      });
     }
     setLoading(false);
   };
@@ -501,6 +523,13 @@ const TradingPanel = ({ user, onUpdate }) => {
           </div>
         </div>
       )}
+      <NotificationModal
+        isOpen={notification.isOpen}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        onClose={() => setNotification({ isOpen: false, type: '', title: '', message: '' })}
+      />
     </div>
   );
 };
