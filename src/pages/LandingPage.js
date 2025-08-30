@@ -91,7 +91,7 @@ const LandingPage = () => {
       <section style={{ padding: '120px 0 100px', textAlign: 'center', background: 'linear-gradient(135deg, #1e2329 0%, #2b3139 100%)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 20px' }}>
           <h1 style={{ fontSize: '56px', fontWeight: '700', marginBottom: '24px', color: '#ffffff', lineHeight: '1.1', letterSpacing: '-1px' }}>
-            Trusted USDT Exchange | Secure USDT - INR Trading
+            Trusted USDT Exchange – Buy and Sell USDT to INR Securely
           </h1>
           <p style={{ fontSize: '22px', color: '#b7bdc6', marginBottom: '48px', maxWidth: '700px', margin: '0 auto 48px', lineHeight: '1.5', fontWeight: '400' }}>
             Secure, fast, and reliable INR to USDT exchange with institutional-grade security and competitive rates.
