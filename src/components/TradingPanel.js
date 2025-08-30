@@ -143,22 +143,26 @@ const TradingPanel = ({ user, onUpdate }) => {
     setSellFlow(prev => ({ ...prev, loading: false }));
   };
 
-  if (!canTrade) {
-    return (
-      <div style={{ 
-        backgroundColor: '#2b3139', 
-        padding: '32px', 
-        borderRadius: '12px', 
-        border: '1px solid #f84960',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ color: '#f84960', fontSize: '24px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.3px' }}>Trading Restricted</h2>
-        <p style={{ color: '#b7bdc6', fontSize: '16px', margin: 0, lineHeight: '1.5' }}>
-          Complete and get your KYC approved to start trading.
-        </p>
-      </div>
-    );
-  }
+  const handleTradeAttempt = (action) => {
+    if (!canTrade) {
+      setNotification({
+        isOpen: true,
+        type: 'warning',
+        title: 'KYC Required',
+        message: 'Please complete your KYC verification to start trading. Click OK to go to KYC page.',
+        onConfirm: () => window.location.href = '/kyc'
+      });
+      return;
+    }
+    
+    if (action === 'buy') {
+      if (buyFlow.amount && parseFloat(buyFlow.amount) > 0) {
+        setBuyFlow(prev => ({ ...prev, step: 2 }));
+        setTimer(600);
+        setTimerActive(true);
+      }
+    }
+  };
 
   return (
     <div>
@@ -305,13 +309,7 @@ const TradingPanel = ({ user, onUpdate }) => {
                 </div>
                 
                 <button
-                  onClick={() => {
-                    if (buyFlow.amount && parseFloat(buyFlow.amount) > 0) {
-                      setBuyFlow(prev => ({ ...prev, step: 2 }));
-                      setTimer(600);
-                      setTimerActive(true);
-                    }
-                  }}
+                  onClick={() => handleTradeAttempt('buy')}
                   disabled={!buyFlow.amount || parseFloat(buyFlow.amount) <= 0}
                   style={{ 
                     width: '100%', 
@@ -327,7 +325,7 @@ const TradingPanel = ({ user, onUpdate }) => {
                     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
                   }}
                 >
-                  Click to Make Payment
+                  {!canTrade ? 'Complete KYC to Trade' : 'Click to Make Payment'}
                 </button>
               </div>
             )}
@@ -733,29 +731,41 @@ const TradingPanel = ({ user, onUpdate }) => {
                 )}
                 
                 <button
-                  onClick={handleSellSubmit}
+                  onClick={() => {
+                    if (!canTrade) {
+                      setNotification({
+                        isOpen: true,
+                        type: 'warning',
+                        title: 'KYC Required',
+                        message: 'Please complete your KYC verification to start trading. Click OK to go to KYC page.',
+                        onConfirm: () => window.location.href = '/kyc'
+                      });
+                      return;
+                    }
+                    handleSellSubmit();
+                  }}
                   disabled={sellFlow.loading || !sellFlow.amount || parseFloat(sellFlow.amount) <= 0 || 
-                    (sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
-                    (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName))}
+                    (canTrade && sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
+                    (canTrade && !sellFlow.paymentMethod === 'upi' && (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName)))}
                   style={{ 
                     width: '100%', 
                     padding: '16px', 
                     backgroundColor: sellFlow.loading || !sellFlow.amount || parseFloat(sellFlow.amount) <= 0 || 
-                      (sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
-                      (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName)) ? '#848e9c' : '#f84960', 
+                      (canTrade && sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
+                      (canTrade && sellFlow.paymentMethod !== 'upi' && (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName))) ? '#848e9c' : '#f84960', 
                     color: '#ffffff', 
                     border: 'none', 
                     borderRadius: '12px', 
                     cursor: sellFlow.loading || !sellFlow.amount || parseFloat(sellFlow.amount) <= 0 || 
-                      (sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
-                      (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName)) ? 'not-allowed' : 'pointer',
+                      (canTrade && sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
+                      (canTrade && sellFlow.paymentMethod !== 'upi' && (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName))) ? 'not-allowed' : 'pointer',
                     fontSize: '16px',
                     fontWeight: '600',
                     transition: 'all 0.2s ease',
                     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
                   }}
                 >
-                  {sellFlow.loading ? 'Submitting...' : 'Sell USDT'}
+                  {sellFlow.loading ? 'Submitting...' : (!canTrade ? 'Complete KYC to Trade' : 'Sell USDT')}
                 </button>
               </div>
             )}
