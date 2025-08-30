@@ -20,6 +20,16 @@ const KYCForm = ({ user, onUpdate }) => {
   const [kycStatus, setKycStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const indianStates = [
+    'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana',
+    'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
+    'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu',
+    'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Delhi', 'Jammu and Kashmir',
+    'Ladakh', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Puducherry',
+    'Andaman and Nicobar Islands'
+  ];
 
   useEffect(() => {
     fetchKYCStatus();
@@ -81,17 +91,86 @@ const KYCForm = ({ user, onUpdate }) => {
     setLoading(false);
   };
 
+  const validateField = (field, value) => {
+    const newErrors = { ...errors };
+    
+    switch(field) {
+      case 'fullName':
+        if (!value || value.trim().length < 2) {
+          newErrors.fullName = 'Full name must be at least 2 characters';
+        } else {
+          delete newErrors.fullName;
+        }
+        break;
+      case 'mobileNumber':
+        const mobileRegex = /^[6-9]\d{9}$/;
+        if (!value) {
+          newErrors.mobileNumber = 'Mobile number is required';
+        } else if (!mobileRegex.test(value)) {
+          newErrors.mobileNumber = 'Enter valid 10-digit mobile number';
+        } else {
+          delete newErrors.mobileNumber;
+        }
+        break;
+      case 'pincode':
+        const pincodeRegex = /^[1-9][0-9]{5}$/;
+        if (!value) {
+          newErrors.pincode = 'PIN code is required';
+        } else if (!pincodeRegex.test(value)) {
+          newErrors.pincode = 'Enter valid 6-digit PIN code';
+        } else {
+          delete newErrors.pincode;
+        }
+        break;
+      case 'aadharNumber':
+        const aadharRegex = /^[2-9]{1}[0-9]{11}$/;
+        const cleanAadhar = value.replace(/\s/g, '');
+        if (!value) {
+          newErrors.aadharNumber = 'Aadhar number is required';
+        } else if (!aadharRegex.test(cleanAadhar)) {
+          newErrors.aadharNumber = 'Enter valid 12-digit Aadhar number';
+        } else {
+          delete newErrors.aadharNumber;
+        }
+        break;
+      case 'panNumber':
+        const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+        if (!value) {
+          newErrors.panNumber = 'PAN number is required';
+        } else if (!panRegex.test(value)) {
+          newErrors.panNumber = 'Enter valid PAN number (e.g., ABCDE1234F)';
+        } else {
+          delete newErrors.panNumber;
+        }
+        break;
+      default:
+        if (!value || value.trim() === '') {
+          newErrors[field] = 'This field is required';
+        } else {
+          delete newErrors[field];
+        }
+    }
+    
+    setErrors(newErrors);
+    return !newErrors[field];
+  };
+
   const isStepValid = () => {
     switch(currentStep) {
-      case 1: return kycData.fullName && kycData.dateOfBirth;
-      case 2: return kycData.mobileNumber;
-      case 3: return kycData.streetAddress && kycData.city && kycData.state && kycData.pincode;
-      case 4: return kycData.aadharNumber;
+      case 1: return kycData.fullName && kycData.dateOfBirth && !errors.fullName;
+      case 2: return kycData.mobileNumber && !errors.mobileNumber;
+      case 3: return kycData.streetAddress && kycData.city && kycData.state && kycData.pincode && !errors.pincode;
+      case 4: return kycData.aadharNumber && !errors.aadharNumber;
       case 5: return kycData.aadharFrontWithSelfie && kycData.aadharBackWithSelfie;
-      case 6: return kycData.panNumber;
+      case 6: return kycData.panNumber && !errors.panNumber;
       case 7: return kycData.panDocument;
       default: return false;
     }
+  };
+
+  const handleInputChange = (field, value) => {
+    setKycData({ ...kycData, [field]: value });
+    validateField(field, value);
   };
 
   if (kycStatus?.kycStatus === 'approved') {
@@ -206,12 +285,20 @@ const KYCForm = ({ user, onUpdate }) => {
               <input
                 type="text"
                 value={kycData.fullName}
-                onChange={(e) => setKycData({ ...kycData, fullName: e.target.value })}
-                style={inputStyle}
+                onChange={(e) => handleInputChange('fullName', e.target.value)}
+                style={{
+                  ...inputStyle,
+                  borderColor: errors.fullName ? '#f84960' : '#474d57'
+                }}
                 placeholder="Enter your full name"
-                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
-                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                onFocus={(e) => e.target.style.borderColor = errors.fullName ? '#f84960' : '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = errors.fullName ? '#f84960' : '#474d57'}
               />
+              {errors.fullName && (
+                <small style={{ color: '#f84960', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                  {errors.fullName}
+                </small>
+              )}
             </div>
             
             <div style={{ marginBottom: '32px' }}>
@@ -219,11 +306,15 @@ const KYCForm = ({ user, onUpdate }) => {
               <input
                 type="date"
                 value={kycData.dateOfBirth}
-                onChange={(e) => setKycData({ ...kycData, dateOfBirth: e.target.value })}
+                onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
                 style={inputStyle}
+                max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
                 onFocus={(e) => e.target.style.borderColor = '#fcd535'}
                 onBlur={(e) => e.target.style.borderColor = '#474d57'}
               />
+              <small style={{ color: '#848e9c', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                You must be at least 18 years old
+              </small>
             </div>
           </div>
         );
@@ -239,12 +330,24 @@ const KYCForm = ({ user, onUpdate }) => {
               <input
                 type="tel"
                 value={kycData.mobileNumber}
-                onChange={(e) => setKycData({ ...kycData, mobileNumber: e.target.value })}
-                style={inputStyle}
-                placeholder="+91 XXXXXXXXXX"
-                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
-                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                  handleInputChange('mobileNumber', value);
+                }}
+                style={{
+                  ...inputStyle,
+                  borderColor: errors.mobileNumber ? '#f84960' : '#474d57'
+                }}
+                placeholder="Enter 10-digit mobile number"
+                maxLength="10"
+                onFocus={(e) => e.target.style.borderColor = errors.mobileNumber ? '#f84960' : '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = errors.mobileNumber ? '#f84960' : '#474d57'}
               />
+              {errors.mobileNumber && (
+                <small style={{ color: '#f84960', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                  {errors.mobileNumber}
+                </small>
+              )}
             </div>
           </div>
         );
@@ -283,15 +386,20 @@ const KYCForm = ({ user, onUpdate }) => {
               </div>
               <div>
                 <label style={labelStyle}>State</label>
-                <input
-                  type="text"
+                <select
                   value={kycData.state}
-                  onChange={(e) => setKycData({ ...kycData, state: e.target.value })}
+                  onChange={(e) => handleInputChange('state', e.target.value)}
                   style={inputStyle}
-                  placeholder="State"
                   onFocus={(e) => e.target.style.borderColor = '#fcd535'}
                   onBlur={(e) => e.target.style.borderColor = '#474d57'}
-                />
+                >
+                  <option value="">Select State</option>
+                  {indianStates.map(state => (
+                    <option key={state} value={state} style={{ backgroundColor: '#1e2329', color: '#eaecef' }}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             
@@ -300,13 +408,24 @@ const KYCForm = ({ user, onUpdate }) => {
               <input
                 type="text"
                 value={kycData.pincode}
-                onChange={(e) => setKycData({ ...kycData, pincode: e.target.value })}
-                style={inputStyle}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                  handleInputChange('pincode', value);
+                }}
+                style={{
+                  ...inputStyle,
+                  borderColor: errors.pincode ? '#f84960' : '#474d57'
+                }}
                 placeholder="6-digit PIN code"
                 maxLength="6"
-                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
-                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                onFocus={(e) => e.target.style.borderColor = errors.pincode ? '#f84960' : '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = errors.pincode ? '#f84960' : '#474d57'}
               />
+              {errors.pincode && (
+                <small style={{ color: '#f84960', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                  {errors.pincode}
+                </small>
+              )}
             </div>
           </div>
         );
@@ -322,13 +441,29 @@ const KYCForm = ({ user, onUpdate }) => {
               <input
                 type="text"
                 value={kycData.aadharNumber}
-                onChange={(e) => setKycData({ ...kycData, aadharNumber: e.target.value })}
-                style={inputStyle}
+                onChange={(e) => {
+                  let value = e.target.value.replace(/\D/g, '').slice(0, 12);
+                  if (value.length > 4 && value.length <= 8) {
+                    value = value.slice(0, 4) + ' ' + value.slice(4);
+                  } else if (value.length > 8) {
+                    value = value.slice(0, 4) + ' ' + value.slice(4, 8) + ' ' + value.slice(8);
+                  }
+                  handleInputChange('aadharNumber', value);
+                }}
+                style={{
+                  ...inputStyle,
+                  borderColor: errors.aadharNumber ? '#f84960' : '#474d57'
+                }}
                 placeholder="XXXX XXXX XXXX"
-                maxLength="12"
-                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
-                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                maxLength="14"
+                onFocus={(e) => e.target.style.borderColor = errors.aadharNumber ? '#f84960' : '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = errors.aadharNumber ? '#f84960' : '#474d57'}
               />
+              {errors.aadharNumber && (
+                <small style={{ color: '#f84960', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                  {errors.aadharNumber}
+                </small>
+              )}
             </div>
           </div>
         );
@@ -374,13 +509,27 @@ const KYCForm = ({ user, onUpdate }) => {
               <input
                 type="text"
                 value={kycData.panNumber}
-                onChange={(e) => setKycData({ ...kycData, panNumber: e.target.value.toUpperCase() })}
-                style={inputStyle}
+                onChange={(e) => {
+                  const value = e.target.value.toUpperCase().slice(0, 10);
+                  handleInputChange('panNumber', value);
+                }}
+                style={{
+                  ...inputStyle,
+                  borderColor: errors.panNumber ? '#f84960' : '#474d57'
+                }}
                 placeholder="ABCDE1234F"
                 maxLength="10"
-                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
-                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                onFocus={(e) => e.target.style.borderColor = errors.panNumber ? '#f84960' : '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = errors.panNumber ? '#f84960' : '#474d57'}
               />
+              {errors.panNumber && (
+                <small style={{ color: '#f84960', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                  {errors.panNumber}
+                </small>
+              )}
+              <small style={{ color: '#848e9c', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                Format: 5 letters + 4 digits + 1 letter
+              </small>
             </div>
           </div>
         );
