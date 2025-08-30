@@ -8,7 +8,8 @@ const KYCForm = ({ user, onUpdate }) => {
     mobileNumber: '',
     aadharNumber: '',
     panNumber: '',
-    aadharDocument: '',
+    aadharFrontWithSelfie: '',
+    aadharBackWithSelfie: '',
     panDocument: ''
   });
   const [kycStatus, setKycStatus] = useState(null);
@@ -30,6 +31,12 @@ const KYCForm = ({ user, onUpdate }) => {
   const handleFileUpload = (field, file) => {
     if (file && file.size > 5 * 1024 * 1024) {
       alert('File size should be less than 5MB');
+      return;
+    }
+
+    // Only allow image files
+    if (file && !file.type.startsWith('image/')) {
+      alert('Only image files are allowed');
       return;
     }
 
@@ -107,14 +114,14 @@ const KYCForm = ({ user, onUpdate }) => {
       </p>
 
       <form onSubmit={handleSubmit}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
           <div>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>Full Name</label>
             <input
               type="text"
               value={kycData.fullName}
               onChange={(e) => setKycData({ ...kycData, fullName: e.target.value })}
-              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
+              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
               required
             />
           </div>
@@ -125,7 +132,7 @@ const KYCForm = ({ user, onUpdate }) => {
               type="date"
               value={kycData.dateOfBirth}
               onChange={(e) => setKycData({ ...kycData, dateOfBirth: e.target.value })}
-              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
+              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
               required
             />
           </div>
@@ -137,61 +144,75 @@ const KYCForm = ({ user, onUpdate }) => {
             type="tel"
             value={kycData.mobileNumber}
             onChange={(e) => setKycData({ ...kycData, mobileNumber: e.target.value })}
-            style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
+            style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
             placeholder="+91 XXXXXXXXXX"
             required
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Aadhar Number</label>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>Aadhar Number</label>
             <input
               type="text"
               value={kycData.aadharNumber}
               onChange={(e) => setKycData({ ...kycData, aadharNumber: e.target.value })}
-              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
+              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
               placeholder="XXXX XXXX XXXX"
               required
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>PAN Number</label>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>PAN Number</label>
             <input
               type="text"
               value={kycData.panNumber}
               onChange={(e) => setKycData({ ...kycData, panNumber: e.target.value.toUpperCase() })}
-              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
+              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
               placeholder="ABCDE1234F"
               required
             />
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '25px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Aadhar Document</label>
+        <div style={{ marginBottom: '25px' }}>
+          <h3 style={{ color: '#eaecef', marginBottom: '15px', fontSize: '18px' }}>Document Upload</h3>
+          
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#eaecef' }}>Aadhar Front with Selfie</label>
             <input
               type="file"
-              accept="image/*,.pdf"
-              onChange={(e) => handleFileUpload('aadharDocument', e.target.files[0])}
-              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
+              accept="image/*"
+              onChange={(e) => handleFileUpload('aadharFrontWithSelfie', e.target.files[0])}
+              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
               required
             />
-            <small style={{ color: '#7f8c8d' }}>Upload clear image/PDF (Max 5MB)</small>
+            <small style={{ color: '#b7bdc6', display: 'block', marginTop: '4px' }}>Upload a selfie holding your Aadhar card (front side visible). Max 5MB</small>
+          </div>
+
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#eaecef' }}>Aadhar Back with Selfie</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileUpload('aadharBackWithSelfie', e.target.files[0])}
+              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
+              required
+            />
+            <small style={{ color: '#b7bdc6', display: 'block', marginTop: '4px' }}>Upload a selfie holding your Aadhar card (back side visible). Max 5MB</small>
           </div>
 
           <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>PAN Document</label>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#eaecef' }}>PAN Card</label>
             <input
               type="file"
-              accept="image/*,.pdf"
+              accept="image/*"
               onChange={(e) => handleFileUpload('panDocument', e.target.files[0])}
-              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
+              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
               required
             />
-            <small style={{ color: '#7f8c8d' }}>Upload clear image/PDF (Max 5MB)</small>
+            <small style={{ color: '#b7bdc6', display: 'block', marginTop: '4px' }}>Upload clear image of your PAN card. Max 5MB</small>
           </div>
         </div>
 
@@ -200,14 +221,16 @@ const KYCForm = ({ user, onUpdate }) => {
           disabled={loading}
           style={{
             width: '100%',
-            padding: '15px',
-            backgroundColor: '#3498db',
-            color: 'white',
+            padding: '16px',
+            backgroundColor: loading ? '#b8a429' : '#fcd535',
+            color: '#000',
             border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
+            borderRadius: '8px',
+            cursor: loading ? 'not-allowed' : 'pointer',
             fontSize: '16px',
-            fontWeight: 'bold'
+            fontWeight: '600',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            transition: 'all 0.2s ease'
           }}
         >
           {loading ? 'Submitting...' : 'Submit KYC Documents'}
