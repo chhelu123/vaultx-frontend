@@ -113,7 +113,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                 <tbody>
                   {transactions.map((tx) => (
                     <tr key={tx._id} style={{ borderBottom: '1px solid #474d57' }}>
-                      <td style={{ padding: '16px' }}>
+                      <td data-label="Type" style={{ padding: '16px' }}>
                         <span style={{
                           padding: '6px 12px',
                           borderRadius: '6px',
@@ -126,10 +126,10 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                           {tx.type === 'buy' ? 'BUY' : 'SELL'}
                         </span>
                       </td>
-                      <td style={{ padding: '16px', fontWeight: '500', color: '#ffffff', fontSize: '15px' }}>{tx.amount.toFixed(6)} USDT</td>
-                      <td style={{ padding: '16px', color: '#b7bdc6', fontSize: '15px' }}>₹{tx.price.toFixed(2)}</td>
-                      <td style={{ padding: '16px', fontWeight: '600', color: '#ffffff', fontSize: '15px' }}>₹{tx.total.toFixed(2)}</td>
-                      <td style={{ padding: '16px', color: '#848e9c', fontSize: '14px' }}>{new Date(tx.createdAt).toLocaleDateString()}</td>
+                      <td data-label="Amount" style={{ padding: '16px', fontWeight: '500', color: '#ffffff', fontSize: '15px' }}>{tx.amount.toFixed(6)} USDT</td>
+                      <td data-label="Price" style={{ padding: '16px', color: '#b7bdc6', fontSize: '15px' }}>₹{tx.price.toFixed(2)}</td>
+                      <td data-label="Total" style={{ padding: '16px', fontWeight: '600', color: '#ffffff', fontSize: '15px' }}>₹{tx.total.toFixed(2)}</td>
+                      <td data-label="Date" style={{ padding: '16px', color: '#848e9c', fontSize: '14px' }}>{new Date(tx.createdAt).toLocaleDateString()}</td>
                     </tr>
                   ))}
                 </tbody>

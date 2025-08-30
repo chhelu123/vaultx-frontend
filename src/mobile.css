@@ -175,9 +175,10 @@ body {
     display: block !important;
     margin-bottom: 15px !important;
     padding: 15px !important;
-    background: white !important;
+    background: #1e2329 !important;
+    border: 1px solid #474d57 !important;
     border-radius: 8px !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
     width: 100% !important;
     max-width: 100% !important;
   }
@@ -196,7 +197,9 @@ body {
   td:before {
     content: attr(data-label) ": " !important;
     font-weight: bold !important;
-    color: #666 !important;
+    color: #fcd535 !important;
+    display: inline-block !important;
+    width: 80px !important;
   }
   
   /* Trading interface */
