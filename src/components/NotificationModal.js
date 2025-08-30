@@ -99,44 +99,23 @@ const NotificationModal = ({ isOpen, onClose, type, title, message, onConfirm })
 
         <div style={{ display: 'flex', gap: '12px' }}>
           {type === 'confirm' ? (
-            <>
-              <button
-                onClick={onClose}
-                style={{
-                  flex: 1,
-                  padding: '14px 20px',
-                  backgroundColor: '#474d57',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#5a6169'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#474d57'}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={onConfirm}
-                style={{
-                  flex: 1,
-                  padding: '14px 20px',
-                  backgroundColor: styles.color,
-                  color: type === 'warning' ? '#000' : '#ffffff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                Confirm
-              </button>
-            </>
+            <button
+              onClick={onConfirm}
+              style={{
+                width: '100%',
+                padding: '14px 20px',
+                backgroundColor: styles.color,
+                color: type === 'warning' || type === 'confirm' ? '#000' : '#ffffff',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '16px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              Confirm
+            </button>
           ) : (
             <button
               onClick={onClose}
