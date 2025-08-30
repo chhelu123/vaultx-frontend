@@ -7,10 +7,12 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [step, setStep] = useState(1); // 1: form, 2: otp
+  const [step, setStep] = useState(1); // 1: form, 2: otp, 3: forgot password
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [otpLoading, setOtpLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -310,8 +312,32 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
           >
             {loading ? 'Processing...' : (isLogin ? 'Sign In' : 'Send OTP')}
           </button>
+          
+          {/* Forgot Password Link */}
+          {isLogin && (
+            <div style={{ textAlign: 'center', marginTop: '16px' }}>
+              <button
+                type="button"
+                onClick={() => setStep(3)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#fcd535',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+              >
+                Forgot Password?
+              </button>
+            </div>
+          )}
         </form>
-        ) : (
+        ) : step === 2 ? (
         <form onSubmit={handleOTPSubmit}>
           <div style={{ marginBottom: '24px' }}>
             <label style={{ 
@@ -422,6 +448,94 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
             </button>
           </div>
         </form>
+        ) : (
+        <form onSubmit={async (e) => {
+          e.preventDefault();
+          setForgotLoading(true);
+          setError('');
+          
+          try {
+            await authAPI.forgotPassword({ email: forgotEmail });
+            alert('Password reset email sent! Check your inbox.');
+            setStep(1);
+            setForgotEmail('');
+          } catch (error) {
+            setError(error.response?.data?.message || 'Failed to send reset email');
+          }
+          setForgotLoading(false);
+        }}>
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ 
+              display: 'block', 
+              marginBottom: '8px', 
+              color: '#eaecef', 
+              fontSize: '14px', 
+              fontWeight: '500' 
+            }}>
+              Email Address
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email address"
+              value={forgotEmail}
+              onChange={(e) => setForgotEmail(e.target.value)}
+              required
+              style={{ 
+                width: '100%', 
+                padding: '14px 16px', 
+                border: '1px solid #474d57', 
+                borderRadius: '8px', 
+                backgroundColor: '#1e2329', 
+                color: '#eaecef',
+                fontSize: '16px',
+                fontFamily: 'inherit',
+                transition: 'all 0.2s ease',
+                outline: 'none'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+              onBlur={(e) => e.target.style.borderColor = '#474d57'}
+            />
+          </div>
+          
+          <button
+            type="submit"
+            disabled={forgotLoading || !forgotEmail}
+            style={{ 
+              width: '100%', 
+              padding: '16px', 
+              backgroundColor: forgotLoading || !forgotEmail ? '#b8a429' : '#fcd535', 
+              color: '#000', 
+              border: 'none', 
+              borderRadius: '8px', 
+              cursor: forgotLoading || !forgotEmail ? 'not-allowed' : 'pointer', 
+              fontSize: '16px', 
+              fontWeight: '600',
+              fontFamily: 'inherit',
+              transition: 'all 0.2s ease',
+              marginBottom: '16px'
+            }}
+          >
+            {forgotLoading ? 'Sending...' : 'Send Reset Email'}
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => { setStep(1); setForgotEmail(''); setError(''); }}
+            style={{
+              width: '100%',
+              padding: '12px',
+              backgroundColor: '#474d57',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
+            Back to Login
+          </button>
+        </form>
         )}
         
         {/* Divider */}
@@ -447,6 +561,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
               setIsLogin(!isLogin);
               setFormData({ name: '', email: '', password: '' });
               setError('');
+              setStep(1);
             }}
             style={{ 
               background: 'none', 

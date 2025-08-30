@@ -10,6 +10,7 @@ import Auth from './pages/Auth';
 import LandingPage from './pages/LandingPage';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import ResetPassword from './pages/ResetPassword';
 
 import Navbar from './components/Navbar';
 import { authAPI } from './services/api';
@@ -105,6 +106,7 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/login" element={<Auth setUser={setUser} defaultTab="login" />} />
             <Route path="/register" element={<Auth setUser={setUser} defaultTab="register" />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         )}
