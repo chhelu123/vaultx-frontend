@@ -31,7 +31,16 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
         setCountdown(600); // 10 minutes
       }
     } catch (error) {
-      setError(error.message || error.response?.data?.message || 'Authentication failed');
+      const errorMessage = error.response?.data?.message || error.message;
+      if (errorMessage?.includes('Invalid credentials') || errorMessage?.includes('User not found')) {
+        setError('Invalid email or password. Please check your credentials and try again.');
+      } else if (errorMessage?.includes('User already exists')) {
+        setError('An account with this email already exists. Please sign in instead.');
+      } else if (errorMessage?.includes('Network Error')) {
+        setError('Connection failed. Please check your internet connection and try again.');
+      } else {
+        setError('Something went wrong. Please try again later.');
+      }
     }
     setLoading(false);
   };
@@ -53,7 +62,14 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
     } catch (error) {
-      setError(error.message || 'OTP verification failed');
+      const errorMessage = error.response?.data?.message || error.message;
+      if (errorMessage?.includes('Invalid OTP') || errorMessage?.includes('OTP expired')) {
+        setError('Invalid or expired OTP. Please request a new code.');
+      } else if (errorMessage?.includes('OTP attempts exceeded')) {
+        setError('Too many failed attempts. Please request a new OTP.');
+      } else {
+        setError('Verification failed. Please try again.');
+      }
     }
     setOtpLoading(false);
   };
@@ -80,7 +96,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
       setOtp(['', '', '', '', '', '']);
       setError('');
     } catch (error) {
-      setError(error.message || 'Failed to resend OTP');
+      setError('Failed to send OTP. Please try again.');
     }
   };
   
@@ -118,13 +134,23 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
       }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <Link to="/" style={{ textDecoration: 'none' }}>
+          <Link to="/" style={{ textDecoration: 'none', display: 'inline-block', marginBottom: '16px' }}>
+            <img 
+              src="/image.png" 
+              alt="VaultX Logo" 
+              style={{ height: '56px' }}
+              onError={(e) => { 
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'block';
+              }}
+            />
             <h1 style={{ 
               color: '#fcd535', 
               fontSize: '32px', 
               fontWeight: '600', 
-              margin: '0 0 8px 0', 
-              letterSpacing: '-0.5px' 
+              margin: '0', 
+              letterSpacing: '-0.5px',
+              display: 'none'
             }}>
               VaultX
             </h1>
@@ -460,7 +486,12 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
             setStep(1);
             setForgotEmail('');
           } catch (error) {
-            setError(error.response?.data?.message || 'Failed to send reset email');
+            const errorMessage = error.response?.data?.message || error.message;
+            if (errorMessage?.includes('User not found')) {
+              setError('No account found with this email address.');
+            } else {
+              setError('Failed to send reset email. Please try again.');
+            }
           }
           setForgotLoading(false);
         }}>
