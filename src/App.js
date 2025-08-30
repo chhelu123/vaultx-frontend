@@ -90,11 +90,12 @@ function App() {
             <Navbar user={user} onLogout={handleLogout} />
             <div className="main-container">
             <Routes>
+              <Route path="/dashboard" element={<Dashboard user={user} setUser={setUser} refreshUser={refreshUser} />} />
               <Route path="/trading" element={<Trading user={user} setUser={setUser} refreshUser={refreshUser} />} />
               <Route path="/kyc" element={<KYCPage user={user} setUser={setUser} refreshUser={refreshUser} />} />
               <Route path="/profile" element={<Profile user={user} setUser={setUser} refreshUser={refreshUser} />} />
               <Route path="/history" element={<History user={user} />} />
-              <Route path="*" element={<Navigate to="/trading" />} />
+              <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
             </div>
           </>
