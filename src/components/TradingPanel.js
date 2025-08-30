@@ -13,7 +13,7 @@ const TradingPanel = ({ user, onUpdate }) => {
   
   // Trading flow states
   const [buyFlow, setBuyFlow] = useState({ step: 1, amount: '', paymentMethod: 'upi', transactionId: '', loading: false });
-  const [sellFlow, setSellFlow] = useState({ step: 1, amount: '', paymentMethod: 'upi', bankDetails: '', loading: false });
+  const [sellFlow, setSellFlow] = useState({ step: 1, amount: '', paymentMethod: 'upi', bankDetails: '', accountName: '', accountNumber: '', ifscCode: '', bankName: '', loading: false });
   const [timer, setTimer] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
   const [settings, setSettings] = useState(null);
@@ -270,7 +270,7 @@ const TradingPanel = ({ user, onUpdate }) => {
                     }}>
                       <div style={{ color: '#02c076', fontSize: '16px', fontWeight: '600', marginBottom: '4px' }}>You will pay</div>
                       <div style={{ color: '#ffffff', fontSize: '24px', fontWeight: '700' }}>₹{(parseFloat(buyFlow.amount) * prices.buyPrice).toFixed(2)}</div>
-                      <div style={{ color: '#b7bdc6', fontSize: '14px', marginTop: '4px' }}>Rate: ₹{prices.buyPrice} per USDT</div>
+
                     </div>
                   )}
                 </div>
@@ -542,7 +542,7 @@ const TradingPanel = ({ user, onUpdate }) => {
                     }}>
                       <div style={{ color: '#f84960', fontSize: '16px', fontWeight: '600', marginBottom: '4px' }}>You will receive</div>
                       <div style={{ color: '#ffffff', fontSize: '24px', fontWeight: '700' }}>₹{(parseFloat(sellFlow.amount) * prices.sellPrice).toFixed(2)}</div>
-                      <div style={{ color: '#b7bdc6', fontSize: '14px', marginTop: '4px' }}>Rate: ₹{prices.sellPrice} per USDT</div>
+
                     </div>
                   )}
                 </div>
@@ -576,48 +576,179 @@ const TradingPanel = ({ user, onUpdate }) => {
                   </select>
                 </div>
                 
-                <div style={{ marginBottom: '24px' }}>
-                  <label style={{ 
-                    display: 'block', 
-                    color: '#eaecef', 
-                    fontSize: '15px', 
-                    fontWeight: '600', 
-                    marginBottom: '8px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                  }}>{sellFlow.paymentMethod === 'upi' ? 'UPI ID' : 'Bank Details'}</label>
-                  <input
-                    type="text"
-                    placeholder={sellFlow.paymentMethod === 'upi' ? 'Enter your UPI ID' : 'Bank Name, IFSC, Account Number'}
-                    value={sellFlow.bankDetails}
-                    onChange={(e) => setSellFlow(prev => ({ ...prev, bankDetails: e.target.value }))}
-                    style={{ 
-                      width: '100%', 
-                      padding: '16px 20px', 
-                      border: '2px solid #474d57', 
-                      borderRadius: '12px',
-                      backgroundColor: '#1e2329',
-                      color: '#ffffff',
-                      fontSize: '16px',
-                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                      outline: 'none',
-                      transition: 'border-color 0.2s ease'
-                    }}
-                    onFocus={(e) => e.target.style.borderColor = '#f84960'}
-                    onBlur={(e) => e.target.style.borderColor = '#474d57'}
-                  />
-                </div>
+                {sellFlow.paymentMethod === 'upi' ? (
+                  <div style={{ marginBottom: '24px' }}>
+                    <label style={{ 
+                      display: 'block', 
+                      color: '#eaecef', 
+                      fontSize: '15px', 
+                      fontWeight: '600', 
+                      marginBottom: '8px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                    }}>UPI ID</label>
+                    <input
+                      type="text"
+                      placeholder="Enter your UPI ID"
+                      value={sellFlow.bankDetails}
+                      onChange={(e) => setSellFlow(prev => ({ ...prev, bankDetails: e.target.value }))}
+                      style={{ 
+                        width: '100%', 
+                        padding: '16px 20px', 
+                        border: '2px solid #474d57', 
+                        borderRadius: '12px',
+                        backgroundColor: '#1e2329',
+                        color: '#ffffff',
+                        fontSize: '16px',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                        outline: 'none',
+                        transition: 'border-color 0.2s ease'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#f84960'}
+                      onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                    />
+                  </div>
+                ) : (
+                  <div style={{ marginBottom: '24px' }}>
+                    <div style={{ marginBottom: '16px' }}>
+                      <label style={{ 
+                        display: 'block', 
+                        color: '#eaecef', 
+                        fontSize: '15px', 
+                        fontWeight: '600', 
+                        marginBottom: '8px',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                      }}>Account Holder Name</label>
+                      <input
+                        type="text"
+                        placeholder="Enter account holder name"
+                        value={sellFlow.accountName || ''}
+                        onChange={(e) => setSellFlow(prev => ({ ...prev, accountName: e.target.value }))}
+                        style={{ 
+                          width: '100%', 
+                          padding: '16px 20px', 
+                          border: '2px solid #474d57', 
+                          borderRadius: '12px',
+                          backgroundColor: '#1e2329',
+                          color: '#ffffff',
+                          fontSize: '16px',
+                          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                          outline: 'none',
+                          transition: 'border-color 0.2s ease'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#f84960'}
+                        onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                      />
+                    </div>
+                    <div style={{ marginBottom: '16px' }}>
+                      <label style={{ 
+                        display: 'block', 
+                        color: '#eaecef', 
+                        fontSize: '15px', 
+                        fontWeight: '600', 
+                        marginBottom: '8px',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                      }}>Account Number</label>
+                      <input
+                        type="text"
+                        placeholder="Enter account number"
+                        value={sellFlow.accountNumber || ''}
+                        onChange={(e) => setSellFlow(prev => ({ ...prev, accountNumber: e.target.value }))}
+                        style={{ 
+                          width: '100%', 
+                          padding: '16px 20px', 
+                          border: '2px solid #474d57', 
+                          borderRadius: '12px',
+                          backgroundColor: '#1e2329',
+                          color: '#ffffff',
+                          fontSize: '16px',
+                          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                          outline: 'none',
+                          transition: 'border-color 0.2s ease'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#f84960'}
+                        onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                      />
+                    </div>
+                    <div style={{ marginBottom: '16px' }}>
+                      <label style={{ 
+                        display: 'block', 
+                        color: '#eaecef', 
+                        fontSize: '15px', 
+                        fontWeight: '600', 
+                        marginBottom: '8px',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                      }}>IFSC Code</label>
+                      <input
+                        type="text"
+                        placeholder="Enter IFSC code"
+                        value={sellFlow.ifscCode || ''}
+                        onChange={(e) => setSellFlow(prev => ({ ...prev, ifscCode: e.target.value }))}
+                        style={{ 
+                          width: '100%', 
+                          padding: '16px 20px', 
+                          border: '2px solid #474d57', 
+                          borderRadius: '12px',
+                          backgroundColor: '#1e2329',
+                          color: '#ffffff',
+                          fontSize: '16px',
+                          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                          outline: 'none',
+                          transition: 'border-color 0.2s ease'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#f84960'}
+                        onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                      />
+                    </div>
+                    <div style={{ marginBottom: '16px' }}>
+                      <label style={{ 
+                        display: 'block', 
+                        color: '#eaecef', 
+                        fontSize: '15px', 
+                        fontWeight: '600', 
+                        marginBottom: '8px',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                      }}>Bank Name</label>
+                      <input
+                        type="text"
+                        placeholder="Enter bank name"
+                        value={sellFlow.bankName || ''}
+                        onChange={(e) => setSellFlow(prev => ({ ...prev, bankName: e.target.value }))}
+                        style={{ 
+                          width: '100%', 
+                          padding: '16px 20px', 
+                          border: '2px solid #474d57', 
+                          borderRadius: '12px',
+                          backgroundColor: '#1e2329',
+                          color: '#ffffff',
+                          fontSize: '16px',
+                          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                          outline: 'none',
+                          transition: 'border-color 0.2s ease'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#f84960'}
+                        onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                      />
+                    </div>
+                  </div>
+                )}
                 
                 <button
                   onClick={handleSellSubmit}
-                  disabled={sellFlow.loading || !sellFlow.amount || !sellFlow.bankDetails || parseFloat(sellFlow.amount) <= 0}
+                  disabled={sellFlow.loading || !sellFlow.amount || parseFloat(sellFlow.amount) <= 0 || 
+                    (sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
+                    (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName))}
                   style={{ 
                     width: '100%', 
                     padding: '16px', 
-                    backgroundColor: sellFlow.loading || !sellFlow.amount || !sellFlow.bankDetails || parseFloat(sellFlow.amount) <= 0 ? '#848e9c' : '#f84960', 
+                    backgroundColor: sellFlow.loading || !sellFlow.amount || parseFloat(sellFlow.amount) <= 0 || 
+                      (sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
+                      (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName)) ? '#848e9c' : '#f84960', 
                     color: '#ffffff', 
                     border: 'none', 
                     borderRadius: '12px', 
-                    cursor: sellFlow.loading || !sellFlow.amount || !sellFlow.bankDetails || parseFloat(sellFlow.amount) <= 0 ? 'not-allowed' : 'pointer',
+                    cursor: sellFlow.loading || !sellFlow.amount || parseFloat(sellFlow.amount) <= 0 || 
+                      (sellFlow.paymentMethod === 'upi' ? !sellFlow.bankDetails : 
+                      (!sellFlow.accountName || !sellFlow.accountNumber || !sellFlow.ifscCode || !sellFlow.bankName)) ? 'not-allowed' : 'pointer',
                     fontSize: '16px',
                     fontWeight: '600',
                     transition: 'all 0.2s ease',
@@ -632,59 +763,7 @@ const TradingPanel = ({ user, onUpdate }) => {
         )}
       </div>
 
-      {/* Transaction History */}
-      <div style={{ 
-        backgroundColor: '#2b3139', 
-        padding: r.cardPadding, 
-        borderRadius: '12px', 
-        border: '1px solid #474d57',
-        marginTop: '24px'
-      }}>
-        <h3 style={{ 
-          color: '#ffffff', 
-          fontSize: r.h3Size, 
-          fontWeight: '600', 
-          marginBottom: '20px', 
-          letterSpacing: '-0.2px' 
-        }}>Recent Transactions</h3>
-        
-        {transactionsLoading ? (
-          <div style={{ textAlign: 'center', padding: '20px', color: '#b7bdc6' }}>Loading...</div>
-        ) : transactions.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '20px', color: '#b7bdc6' }}>No transactions yet</div>
-        ) : (
-          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-            {transactions.map((tx, index) => (
-              <div key={index} style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center',
-                padding: '12px 0',
-                borderBottom: index < transactions.length - 1 ? '1px solid #474d57' : 'none'
-              }}>
-                <div>
-                  <div style={{ 
-                    color: tx.type === 'buy' ? '#02c076' : '#f84960', 
-                    fontSize: '14px', 
-                    fontWeight: '600',
-                    marginBottom: '4px'
-                  }}>
-                    {tx.type === 'buy' ? 'Bought' : 'Sold'} {(tx.usdtAmount || tx.amount)?.toFixed(6)} USDT
-                  </div>
-                  <div style={{ color: '#b7bdc6', fontSize: '12px' }}>
-                    {new Date(tx.createdAt).toLocaleDateString()}
-                  </div>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ color: '#ffffff', fontSize: '14px', fontWeight: '600' }}>
-                    {(tx.usdtAmount || tx.amount)?.toFixed(6)} USDT
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+
 
 
       <NotificationModal
