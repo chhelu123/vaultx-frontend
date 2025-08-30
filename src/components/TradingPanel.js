@@ -149,7 +149,7 @@ const TradingPanel = ({ user, onUpdate }) => {
         isOpen: true,
         type: 'confirm',
         title: 'KYC Required',
-        message: 'Please complete your KYC verification to start trading. Click OK to complete KYC.',
+        message: 'Please complete your KYC verification to start trading. Click Submit to complete KYC.',
         onConfirm: () => window.location.href = '/kyc'
       });
       return;
@@ -782,6 +782,7 @@ const TradingPanel = ({ user, onUpdate }) => {
         title={notification.title}
         message={notification.message}
         onClose={() => setNotification({ isOpen: false, type: '', title: '', message: '' })}
+        onConfirm={notification.onConfirm}
       />
     </div>
   );
