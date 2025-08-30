@@ -68,6 +68,30 @@ const WalletActions = ({ user, onUpdate }) => {
   };
 
   const handleWithdraw = async (type) => {
+    // Check balance before processing
+    const balance = type === 'usdt' ? user.wallets?.usdt : user.wallets?.inr;
+    const amount = parseFloat(formData.amount);
+    
+    if (!balance || balance <= 0) {
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Insufficient Balance',
+        message: `You don't have enough ${type.toUpperCase()} balance to withdraw.`
+      });
+      return;
+    }
+    
+    if (amount > balance) {
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Insufficient Balance',
+        message: `You can only withdraw up to ${balance.toFixed(type === 'usdt' ? 6 : 2)} ${type.toUpperCase()}.`
+      });
+      return;
+    }
+    
     setLoading(true);
     try {
       if (type === 'usdt') {
@@ -525,9 +549,9 @@ const WalletActions = ({ user, onUpdate }) => {
                   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
                 }}
               />
-              <div style={{ backgroundColor: '#fff3cd', padding: '15px', borderRadius: '4px', margin: '10px 0', fontSize: '14px' }}>
-                <p><strong>Instant Withdrawal</strong></p>
-                <p>USDT will be sent immediately to your address</p>
+              <div style={{ backgroundColor: '#2b3139', padding: '15px', borderRadius: '8px', margin: '10px 0', fontSize: '14px', border: '1px solid #474d57' }}>
+                <p style={{ color: '#fcd535', margin: '5px 0', fontWeight: 'bold' }}>Instant Withdrawal</p>
+                <p style={{ color: '#eaecef', margin: '5px 0' }}>USDT will be sent immediately to your address</p>
               </div>
               <button
                 onClick={() => handleWithdraw(type)}
@@ -646,31 +670,22 @@ const WalletActions = ({ user, onUpdate }) => {
             </button>
             <button
               onClick={() => setShowModal('withdraw-inr')}
-              disabled={!user.wallets?.inr || user.wallets.inr <= 0}
               style={{ 
                 flex: 1, 
                 padding: '12px 16px', 
-                backgroundColor: !user.wallets?.inr || user.wallets.inr <= 0 ? '#848e9c' : '#f84960', 
+                backgroundColor: '#f84960', 
                 color: '#ffffff', 
                 border: 'none', 
                 borderRadius: '8px', 
-                cursor: !user.wallets?.inr || user.wallets.inr <= 0 ? 'not-allowed' : 'pointer',
+                cursor: 'pointer',
                 fontSize: '15px',
                 fontWeight: '600',
                 transition: 'all 0.2s ease',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                 letterSpacing: '-0.1px'
               }}
-              onMouseEnter={(e) => {
-                if (!(!user.wallets?.inr || user.wallets.inr <= 0)) {
-                  e.target.style.backgroundColor = '#e73c4e';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!(!user.wallets?.inr || user.wallets.inr <= 0)) {
-                  e.target.style.backgroundColor = '#f84960';
-                }
-              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#e73c4e'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#f84960'}
             >
               Withdraw
             </button>
@@ -727,31 +742,22 @@ const WalletActions = ({ user, onUpdate }) => {
             </button>
             <button
               onClick={() => setShowModal('withdraw-usdt')}
-              disabled={!user.wallets?.usdt || user.wallets.usdt <= 0}
               style={{ 
                 flex: 1, 
                 padding: '12px 16px', 
-                backgroundColor: !user.wallets?.usdt || user.wallets.usdt <= 0 ? '#848e9c' : '#f84960', 
+                backgroundColor: '#f84960', 
                 color: '#ffffff', 
                 border: 'none', 
                 borderRadius: '8px', 
-                cursor: !user.wallets?.usdt || user.wallets.usdt <= 0 ? 'not-allowed' : 'pointer',
+                cursor: 'pointer',
                 fontSize: '15px',
                 fontWeight: '600',
                 transition: 'all 0.2s ease',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                 letterSpacing: '-0.1px'
               }}
-              onMouseEnter={(e) => {
-                if (!(!user.wallets?.usdt || user.wallets.usdt <= 0)) {
-                  e.target.style.backgroundColor = '#e73c4e';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!(!user.wallets?.usdt || user.wallets.usdt <= 0)) {
-                  e.target.style.backgroundColor = '#f84960';
-                }
-              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#e73c4e'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#f84960'}
             >
               Withdraw
             </button>
