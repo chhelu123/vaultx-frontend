@@ -136,7 +136,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <Link to="/" style={{ textDecoration: 'none', display: 'inline-block', marginBottom: '16px' }}>
             <img 
-              src="/image.png" 
+              src="/login.png" 
               alt="VaultX Logo" 
               style={{ height: '56px' }}
               onError={(e) => { 
