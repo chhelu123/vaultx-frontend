@@ -54,20 +54,7 @@ const Profile = ({ user }) => {
           <p style={{ color: '#b7bdc6', fontSize: r.bodySize, margin: 0 }}>Complete overview of your VaultX account and trading statistics</p>
         </div>
 
-        {/* Wallet Overview */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: r.marginBottom }}>
-          <div style={{ 
-            background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
-            padding: '40px', 
-            borderRadius: '16px',
-            textAlign: 'center',
-            minWidth: '320px'
-          }}>
-            <h3 style={{ color: '#000', fontSize: '18px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
-            <p style={{ fontSize: '42px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px', wordBreak: 'break-all' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
-            <p style={{ color: '#000', fontSize: '14px', margin: '8px 0 0 0', opacity: '0.8' }}>Available for trading</p>
-          </div>
-        </div>
+
 
         {/* Account Stats */}
         <div style={{ 

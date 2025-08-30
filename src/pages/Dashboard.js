@@ -45,25 +45,202 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ 
+        {/* Welcome Message */}
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '24px', 
+          borderRadius: '12px', 
+          border: '1px solid #474d57',
+          marginBottom: '32px'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+            <div>
+              <h1 style={{ 
+                color: '#ffffff', 
+                fontSize: window.innerWidth <= 768 ? '24px' : '28px', 
+                fontWeight: '700', 
+                marginBottom: '8px', 
+                letterSpacing: '-0.5px',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              }}>Welcome back, {user?.name?.split(' ')[0] || 'Trader'}! 👋</h1>
+              <p style={{ 
+                color: '#b7bdc6', 
+                fontSize: window.innerWidth <= 768 ? '14px' : '16px', 
+                margin: 0,
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              }}>Ready to trade USDT? Your secure trading dashboard awaits.</p>
+            </div>
+            <div style={{ 
+              padding: '12px 20px', 
+              backgroundColor: '#fcd535', 
+              borderRadius: '8px', 
+              color: '#000',
+              fontSize: '14px',
+              fontWeight: '600',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            }}>
+              {user?.kycStatus === 'approved' ? '✅ Verified Trader' : '⏳ Complete KYC'}
+            </div>
+          </div>
+        </div>
+        
+        {/* Achievement System */}
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '24px', 
+          borderRadius: '12px', 
+          border: '1px solid #474d57',
+          marginBottom: '32px'
+        }}>
+          <h3 style={{ 
             color: '#ffffff', 
-            fontSize: window.innerWidth <= 768 ? '28px' : '32px', 
-            fontWeight: '700', 
-            marginBottom: '8px', 
-            letterSpacing: '-0.5px' 
-          }}>Dashboard</h1>
-          <p style={{ 
-            color: '#b7bdc6', 
-            fontSize: window.innerWidth <= 768 ? '14px' : '16px', 
-            margin: 0 
-          }}>Manage your wallet, deposits, withdrawals and view transaction history</p>
+            fontSize: '20px', 
+            fontWeight: '600', 
+            marginBottom: '20px', 
+            letterSpacing: '-0.3px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+          }}>Your Trading Journey</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr 1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+            <div style={{ 
+              padding: '20px', 
+              backgroundColor: '#1e2329', 
+              borderRadius: '12px',
+              textAlign: 'center',
+              border: '1px solid #474d57'
+            }}>
+              <div style={{ fontSize: '32px', marginBottom: '8px' }}>🏆</div>
+              <div style={{ color: '#fcd535', fontSize: '24px', fontWeight: '700', marginBottom: '4px' }}>{transactions.length}</div>
+              <div style={{ color: '#b7bdc6', fontSize: '14px', fontWeight: '500' }}>Total Trades</div>
+            </div>
+            <div style={{ 
+              padding: '20px', 
+              backgroundColor: '#1e2329', 
+              borderRadius: '12px',
+              textAlign: 'center',
+              border: '1px solid #474d57'
+            }}>
+              <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔥</div>
+              <div style={{ color: '#f84960', fontSize: '24px', fontWeight: '700', marginBottom: '4px' }}>0</div>
+              <div style={{ color: '#b7bdc6', fontSize: '14px', fontWeight: '500' }}>Trading Streak</div>
+            </div>
+            <div style={{ 
+              padding: '20px', 
+              backgroundColor: '#1e2329', 
+              borderRadius: '12px',
+              textAlign: 'center',
+              border: '1px solid #474d57'
+            }}>
+              <div style={{ fontSize: '32px', marginBottom: '8px' }}>💎</div>
+              <div style={{ color: '#02c076', fontSize: '24px', fontWeight: '700', marginBottom: '4px' }}>
+                {transactions.length >= 10 ? 'Pro' : transactions.length >= 5 ? 'Active' : 'Beginner'}
+              </div>
+              <div style={{ color: '#b7bdc6', fontSize: '14px', fontWeight: '500' }}>Trader Level</div>
+            </div>
+            <div style={{ 
+              padding: '20px', 
+              backgroundColor: '#1e2329', 
+              borderRadius: '12px',
+              textAlign: 'center',
+              border: '1px solid #474d57'
+            }}>
+              <div style={{ fontSize: '32px', marginBottom: '8px' }}>⭐</div>
+              <div style={{ color: '#3498db', fontSize: '24px', fontWeight: '700', marginBottom: '4px' }}>
+                {Math.floor((Date.now() - new Date(user?.createdAt)) / (1000 * 60 * 60 * 24)) || 0}
+              </div>
+              <div style={{ color: '#b7bdc6', fontSize: '14px', fontWeight: '500' }}>Days Active</div>
+            </div>
+          </div>
+          
+          {/* Achievement Badges */}
+          <div style={{ marginTop: '24px' }}>
+            <h4 style={{ 
+              color: '#ffffff', 
+              fontSize: '16px', 
+              fontWeight: '600', 
+              marginBottom: '16px',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            }}>Recent Achievements</h4>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              {transactions.length >= 1 && (
+                <div style={{ 
+                  padding: '8px 16px', 
+                  backgroundColor: '#02c076', 
+                  borderRadius: '20px', 
+                  color: '#ffffff',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  🎯 First Trade
+                </div>
+              )}
+              {transactions.length >= 5 && (
+                <div style={{ 
+                  padding: '8px 16px', 
+                  backgroundColor: '#fcd535', 
+                  borderRadius: '20px', 
+                  color: '#000',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  🚀 Active Trader
+                </div>
+              )}
+              {transactions.length >= 10 && (
+                <div style={{ 
+                  padding: '8px 16px', 
+                  backgroundColor: '#f84960', 
+                  borderRadius: '20px', 
+                  color: '#ffffff',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  💎 Pro Trader
+                </div>
+              )}
+              {user?.kycStatus === 'approved' && (
+                <div style={{ 
+                  padding: '8px 16px', 
+                  backgroundColor: '#3498db', 
+                  borderRadius: '20px', 
+                  color: '#ffffff',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  ✅ Verified
+                </div>
+              )}
+              {transactions.length === 0 && (
+                <div style={{ 
+                  padding: '8px 16px', 
+                  backgroundColor: '#474d57', 
+                  borderRadius: '20px', 
+                  color: '#b7bdc6',
+                  fontSize: '14px',
+                  fontWeight: '500'
+                }}>
+                  Complete your first trade to earn badges!
+                </div>
+              )}
+            </div>
+          </div>
         </div>
         
         <div style={{ 
           display: 'flex',
           justifyContent: 'center',
-          marginBottom: r.marginBottom 
+          marginBottom: '32px'
         }}>
           <div style={{ 
             padding: '40px', 
