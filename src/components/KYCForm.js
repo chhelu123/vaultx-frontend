@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { kycAPI } from '../services/api';
 
 const KYCForm = ({ user, onUpdate }) => {
+  const [currentStep, setCurrentStep] = useState(1);
   const [kycData, setKycData] = useState({
     fullName: '',
     dateOfBirth: '',
     mobileNumber: '',
+    streetAddress: '',
+    city: '',
+    state: '',
+    pincode: '',
     aadharNumber: '',
     panNumber: '',
     aadharFrontWithSelfie: '',
@@ -14,6 +19,7 @@ const KYCForm = ({ user, onUpdate }) => {
   });
   const [kycStatus, setKycStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     fetchKYCStatus();
@@ -47,27 +53,45 @@ const KYCForm = ({ user, onUpdate }) => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleNext = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const handlePrev = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleSubmit = async () => {
     setLoading(true);
 
     try {
       if (kycStatus?.kycStatus === 'rejected') {
         await kycAPI.updateKYC(kycData);
-        alert('KYC documents updated successfully!');
       } else {
         await kycAPI.submitKYC(kycData);
-        alert('KYC documents submitted successfully!');
       }
       
+      setSubmitted(true);
       fetchKYCStatus();
       onUpdate();
-      // Refresh parent user data
       if (window.refreshUser) window.refreshUser();
     } catch (error) {
       alert(error.response?.data?.message || 'Error submitting KYC');
     }
     setLoading(false);
+  };
+
+  const isStepValid = () => {
+    switch(currentStep) {
+      case 1: return kycData.fullName && kycData.dateOfBirth;
+      case 2: return kycData.mobileNumber;
+      case 3: return kycData.streetAddress && kycData.city && kycData.state && kycData.pincode;
+      case 4: return kycData.aadharNumber;
+      case 5: return kycData.aadharFrontWithSelfie && kycData.aadharBackWithSelfie;
+      case 6: return kycData.panNumber;
+      case 7: return kycData.panDocument;
+      default: return false;
+    }
   };
 
   if (kycStatus?.kycStatus === 'approved') {
@@ -88,17 +112,50 @@ const KYCForm = ({ user, onUpdate }) => {
     );
   }
 
+  if (submitted) {
+    return (
+      <div style={{
+        background: '#2b3139',
+        border: '1px solid #474d57',
+        borderRadius: '12px',
+        padding: '48px 32px',
+        textAlign: 'center',
+        maxWidth: '500px',
+        margin: '0 auto'
+      }}>
+        <div style={{ fontSize: '64px', marginBottom: '24px' }}>✅</div>
+        <h2 style={{ color: '#02c076', fontSize: '24px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.3px' }}>
+          KYC Submitted Successfully
+        </h2>
+        <p style={{ color: '#b7bdc6', fontSize: '16px', lineHeight: '1.5', marginBottom: '24px' }}>
+          Thank you for submitting your KYC documents. Our team will review your information within 24-48 hours.
+        </p>
+        <p style={{ color: '#848e9c', fontSize: '14px', lineHeight: '1.4' }}>
+          You'll receive an email notification once your verification is complete. Until then, you can continue exploring VaultX with limited features.
+        </p>
+      </div>
+    );
+  }
+
   if (kycStatus?.kycStatus === 'rejected' && !kycStatus?.showForm) {
     return (
-      <div className="card" style={{ background: 'linear-gradient(135deg, #f84960 0%, #e8334a 100%)', border: 'none' }}>
-        <h3 style={{ color: '#fff', marginBottom: '10px' }}>❌ KYC Rejected</h3>
-        <p style={{ color: '#fff', marginBottom: '15px' }}>
+      <div style={{ background: '#2b3139', border: '1px solid #f84960', borderRadius: '12px', padding: '32px' }}>
+        <h3 style={{ color: '#f84960', marginBottom: '16px', fontSize: '20px', fontWeight: '600' }}>KYC Rejected</h3>
+        <p style={{ color: '#eaecef', marginBottom: '20px', lineHeight: '1.5' }}>
           <strong>Admin Note:</strong> {kycStatus.kyc?.adminNotes || kycStatus.adminNote || 'Please resubmit with correct documents'}
         </p>
         <button
           onClick={() => setKycStatus({ ...kycStatus, showForm: true })}
-          className="btn"
-          style={{ backgroundColor: '#fff', color: '#f84960', fontWeight: '600' }}
+          style={{
+            padding: '12px 24px',
+            backgroundColor: '#fcd535',
+            color: '#000',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '600'
+          }}
         >
           Resubmit KYC
         </button>
@@ -106,136 +163,336 @@ const KYCForm = ({ user, onUpdate }) => {
     );
   }
 
+  const renderStep = () => {
+    const stepStyle = {
+      background: '#2b3139',
+      border: '1px solid #474d57',
+      borderRadius: '12px',
+      padding: '32px',
+      maxWidth: '500px',
+      margin: '0 auto'
+    };
+
+    const inputStyle = {
+      width: '100%',
+      padding: '14px 16px',
+      border: '1px solid #474d57',
+      borderRadius: '8px',
+      backgroundColor: '#1e2329',
+      color: '#eaecef',
+      fontSize: '16px',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      outline: 'none',
+      transition: 'border-color 0.2s ease'
+    };
+
+    const labelStyle = {
+      display: 'block',
+      marginBottom: '8px',
+      color: '#eaecef',
+      fontSize: '14px',
+      fontWeight: '500'
+    };
+
+    switch(currentStep) {
+      case 1:
+        return (
+          <div style={stepStyle}>
+            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '8px', letterSpacing: '-0.3px' }}>Personal Information</h2>
+            <p style={{ color: '#b7bdc6', fontSize: '14px', marginBottom: '32px' }}>Enter your full name as per your government documents</p>
+            
+            <div style={{ marginBottom: '24px' }}>
+              <label style={labelStyle}>Full Name (as per documents)</label>
+              <input
+                type="text"
+                value={kycData.fullName}
+                onChange={(e) => setKycData({ ...kycData, fullName: e.target.value })}
+                style={inputStyle}
+                placeholder="Enter your full name"
+                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+              />
+            </div>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <label style={labelStyle}>Date of Birth</label>
+              <input
+                type="date"
+                value={kycData.dateOfBirth}
+                onChange={(e) => setKycData({ ...kycData, dateOfBirth: e.target.value })}
+                style={inputStyle}
+                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+              />
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div style={stepStyle}>
+            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '8px', letterSpacing: '-0.3px' }}>Contact Information</h2>
+            <p style={{ color: '#b7bdc6', fontSize: '14px', marginBottom: '32px' }}>Provide your mobile number for verification</p>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <label style={labelStyle}>Mobile Number</label>
+              <input
+                type="tel"
+                value={kycData.mobileNumber}
+                onChange={(e) => setKycData({ ...kycData, mobileNumber: e.target.value })}
+                style={inputStyle}
+                placeholder="+91 XXXXXXXXXX"
+                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+              />
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div style={stepStyle}>
+            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '8px', letterSpacing: '-0.3px' }}>Address Details</h2>
+            <p style={{ color: '#b7bdc6', fontSize: '14px', marginBottom: '32px' }}>Enter your current residential address</p>
+            
+            <div style={{ marginBottom: '20px' }}>
+              <label style={labelStyle}>Street Address</label>
+              <input
+                type="text"
+                value={kycData.streetAddress}
+                onChange={(e) => setKycData({ ...kycData, streetAddress: e.target.value })}
+                style={inputStyle}
+                placeholder="House/Flat No., Street Name"
+                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+              />
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+              <div>
+                <label style={labelStyle}>City</label>
+                <input
+                  type="text"
+                  value={kycData.city}
+                  onChange={(e) => setKycData({ ...kycData, city: e.target.value })}
+                  style={inputStyle}
+                  placeholder="City"
+                  onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                  onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>State</label>
+                <input
+                  type="text"
+                  value={kycData.state}
+                  onChange={(e) => setKycData({ ...kycData, state: e.target.value })}
+                  style={inputStyle}
+                  placeholder="State"
+                  onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                  onBlur={(e) => e.target.style.borderColor = '#474d57'}
+                />
+              </div>
+            </div>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <label style={labelStyle}>PIN Code</label>
+              <input
+                type="text"
+                value={kycData.pincode}
+                onChange={(e) => setKycData({ ...kycData, pincode: e.target.value })}
+                style={inputStyle}
+                placeholder="6-digit PIN code"
+                maxLength="6"
+                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+              />
+            </div>
+          </div>
+        );
+
+      case 4:
+        return (
+          <div style={stepStyle}>
+            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '8px', letterSpacing: '-0.3px' }}>Aadhar Information</h2>
+            <p style={{ color: '#b7bdc6', fontSize: '14px', marginBottom: '32px' }}>Enter your 12-digit Aadhar number</p>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <label style={labelStyle}>Aadhar Number</label>
+              <input
+                type="text"
+                value={kycData.aadharNumber}
+                onChange={(e) => setKycData({ ...kycData, aadharNumber: e.target.value })}
+                style={inputStyle}
+                placeholder="XXXX XXXX XXXX"
+                maxLength="12"
+                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+              />
+            </div>
+          </div>
+        );
+
+      case 5:
+        return (
+          <div style={stepStyle}>
+            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '8px', letterSpacing: '-0.3px' }}>Aadhar Documents</h2>
+            <p style={{ color: '#b7bdc6', fontSize: '14px', marginBottom: '32px' }}>Upload selfies holding your Aadhar card</p>
+            
+            <div style={{ marginBottom: '24px' }}>
+              <label style={labelStyle}>Aadhar Front with Selfie</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileUpload('aadharFrontWithSelfie', e.target.files[0])}
+                style={inputStyle}
+              />
+              <small style={{ color: '#848e9c', fontSize: '12px', display: 'block', marginTop: '6px' }}>Take a selfie holding your Aadhar card with front side visible</small>
+            </div>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <label style={labelStyle}>Aadhar Back with Selfie</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileUpload('aadharBackWithSelfie', e.target.files[0])}
+                style={inputStyle}
+              />
+              <small style={{ color: '#848e9c', fontSize: '12px', display: 'block', marginTop: '6px' }}>Take a selfie holding your Aadhar card with back side visible</small>
+            </div>
+          </div>
+        );
+
+      case 6:
+        return (
+          <div style={stepStyle}>
+            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '8px', letterSpacing: '-0.3px' }}>PAN Information</h2>
+            <p style={{ color: '#b7bdc6', fontSize: '14px', marginBottom: '32px' }}>Enter your 10-character PAN number</p>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <label style={labelStyle}>PAN Number</label>
+              <input
+                type="text"
+                value={kycData.panNumber}
+                onChange={(e) => setKycData({ ...kycData, panNumber: e.target.value.toUpperCase() })}
+                style={inputStyle}
+                placeholder="ABCDE1234F"
+                maxLength="10"
+                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+              />
+            </div>
+          </div>
+        );
+
+      case 7:
+        return (
+          <div style={stepStyle}>
+            <h2 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '8px', letterSpacing: '-0.3px' }}>PAN Document</h2>
+            <p style={{ color: '#b7bdc6', fontSize: '14px', marginBottom: '32px' }}>Upload a clear image of your PAN card</p>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <label style={labelStyle}>PAN Card Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileUpload('panDocument', e.target.files[0])}
+                style={inputStyle}
+              />
+              <small style={{ color: '#848e9c', fontSize: '12px', display: 'block', marginTop: '6px' }}>Upload a clear, well-lit image of your PAN card</small>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="card">
-      <h2 style={{ marginBottom: '20px', color: '#eaecef' }}>KYC Verification Required</h2>
-      <p style={{ marginBottom: '25px', color: '#848e9c' }}>
-        Complete your KYC verification to start trading. All information is secure and encrypted.
-      </p>
-
-      <form onSubmit={handleSubmit}>
-        <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>Full Name</label>
-            <input
-              type="text"
-              value={kycData.fullName}
-              onChange={(e) => setKycData({ ...kycData, fullName: e.target.value })}
-              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
-              required
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>Date of Birth</label>
-            <input
-              type="date"
-              value={kycData.dateOfBirth}
-              onChange={(e) => setKycData({ ...kycData, dateOfBirth: e.target.value })}
-              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
-              required
-            />
-          </div>
+    <div>
+      {/* Progress Bar */}
+      <div style={{ marginBottom: '32px', maxWidth: '500px', margin: '0 auto 32px auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span style={{ color: '#b7bdc6', fontSize: '14px', fontWeight: '500' }}>Step {currentStep} of 7</span>
+          <span style={{ color: '#b7bdc6', fontSize: '14px', fontWeight: '500' }}>{Math.round((currentStep / 7) * 100)}%</span>
         </div>
-
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>Mobile Number</label>
-          <input
-            type="tel"
-            value={kycData.mobileNumber}
-            onChange={(e) => setKycData({ ...kycData, mobileNumber: e.target.value })}
-            style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
-            placeholder="+91 XXXXXXXXXX"
-            required
-          />
+        <div style={{ width: '100%', height: '4px', backgroundColor: '#474d57', borderRadius: '2px', overflow: 'hidden' }}>
+          <div style={{ 
+            width: `${(currentStep / 7) * 100}%`, 
+            height: '100%', 
+            backgroundColor: '#fcd535', 
+            transition: 'width 0.3s ease' 
+          }}></div>
         </div>
+      </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>Aadhar Number</label>
-            <input
-              type="text"
-              value={kycData.aadharNumber}
-              onChange={(e) => setKycData({ ...kycData, aadharNumber: e.target.value })}
-              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
-              placeholder="XXXX XXXX XXXX"
-              required
-            />
-          </div>
+      {renderStep()}
 
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', color: '#eaecef' }}>PAN Number</label>
-            <input
-              type="text"
-              value={kycData.panNumber}
-              onChange={(e) => setKycData({ ...kycData, panNumber: e.target.value.toUpperCase() })}
-              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
-              placeholder="ABCDE1234F"
-              required
-            />
-          </div>
-        </div>
-
-        <div style={{ marginBottom: '25px' }}>
-          <h3 style={{ color: '#eaecef', marginBottom: '15px', fontSize: '18px' }}>Document Upload</h3>
-          
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#eaecef' }}>Aadhar Front with Selfie</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFileUpload('aadharFrontWithSelfie', e.target.files[0])}
-              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
-              required
-            />
-            <small style={{ color: '#b7bdc6', display: 'block', marginTop: '4px' }}>Upload a selfie holding your Aadhar card (front side visible). Max 5MB</small>
-          </div>
-
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#eaecef' }}>Aadhar Back with Selfie</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFileUpload('aadharBackWithSelfie', e.target.files[0])}
-              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
-              required
-            />
-            <small style={{ color: '#b7bdc6', display: 'block', marginTop: '4px' }}>Upload a selfie holding your Aadhar card (back side visible). Max 5MB</small>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#eaecef' }}>PAN Card</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFileUpload('panDocument', e.target.files[0])}
-              style={{ width: '100%', padding: '12px', border: '1px solid #474d57', borderRadius: '6px', backgroundColor: '#1e2329', color: '#eaecef' }}
-              required
-            />
-            <small style={{ color: '#b7bdc6', display: 'block', marginTop: '4px' }}>Upload clear image of your PAN card. Max 5MB</small>
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '16px',
-            backgroundColor: loading ? '#b8a429' : '#fcd535',
-            color: '#000',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            fontSize: '16px',
-            fontWeight: '600',
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-            transition: 'all 0.2s ease'
-          }}
-        >
-          {loading ? 'Submitting...' : 'Submit KYC Documents'}
-        </button>
-      </form>
+      {/* Navigation Buttons */}
+      <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', marginTop: '32px', maxWidth: '500px', margin: '32px auto 0 auto' }}>
+        {currentStep > 1 && (
+          <button
+            onClick={handlePrev}
+            style={{
+              flex: 1,
+              padding: '14px 24px',
+              backgroundColor: '#474d57',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#5a6169'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#474d57'}
+          >
+            Previous
+          </button>
+        )}
+        
+        {currentStep < 7 ? (
+          <button
+            onClick={handleNext}
+            disabled={!isStepValid()}
+            style={{
+              flex: 1,
+              padding: '14px 24px',
+              backgroundColor: isStepValid() ? '#fcd535' : '#848e9c',
+              color: '#000',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: isStepValid() ? 'pointer' : 'not-allowed',
+              fontSize: '14px',
+              fontWeight: '600',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Next Step
+          </button>
+        ) : (
+          <button
+            onClick={handleSubmit}
+            disabled={!isStepValid() || loading}
+            style={{
+              flex: 1,
+              padding: '14px 24px',
+              backgroundColor: (isStepValid() && !loading) ? '#fcd535' : '#848e9c',
+              color: '#000',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: (isStepValid() && !loading) ? 'pointer' : 'not-allowed',
+              fontSize: '14px',
+              fontWeight: '600',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            {loading ? 'Submitting...' : 'Submit KYC'}
+          </button>
+        )}
+      </div>
     </div>
   );
 };
