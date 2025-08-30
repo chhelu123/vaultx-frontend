@@ -29,6 +29,7 @@ const Navbar = ({ user, onLogout }) => {
               src="/logo.png" 
               alt="VaultX Logo" 
               style={{ height: '32px', marginRight: '8px' }}
+              onError={(e) => { e.target.style.display = 'none'; }}
             />
             <h2 style={{ color: '#fcd535', margin: '0', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>VaultX</h2>
           </div>
