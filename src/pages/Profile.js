@@ -55,24 +55,17 @@ const Profile = ({ user }) => {
         </div>
 
         {/* Wallet Overview */}
-        <div style={{ display: 'grid', gridTemplateColumns: r.gridCols, gap: r.gap, marginBottom: r.marginBottom }}>
-          <div style={{ 
-            background: 'linear-gradient(135deg, #02c076 0%, #00a66d 100%)', 
-            padding: r.cardPadding, 
-            borderRadius: '12px',
-            textAlign: 'center' 
-          }}>
-            <h3 style={{ color: '#fff', fontSize: r.bodySize, fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>INR Balance</h3>
-            <p style={{ fontSize: r.balanceSize, fontWeight: '700', margin: '0', color: '#fff', letterSpacing: '-0.5px' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</p>
-          </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: r.marginBottom }}>
           <div style={{ 
             background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
-            padding: r.cardPadding, 
-            borderRadius: '12px',
-            textAlign: 'center' 
+            padding: '40px', 
+            borderRadius: '16px',
+            textAlign: 'center',
+            minWidth: '320px'
           }}>
-            <h3 style={{ color: '#000', fontSize: r.bodySize, fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
-            <p style={{ fontSize: r.balanceSize, fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px', wordBreak: 'break-all' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
+            <h3 style={{ color: '#000', fontSize: '18px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
+            <p style={{ fontSize: '42px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px', wordBreak: 'break-all' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
+            <p style={{ color: '#000', fontSize: '14px', margin: '8px 0 0 0', opacity: '0.8' }}>Available for trading</p>
           </div>
         </div>
 

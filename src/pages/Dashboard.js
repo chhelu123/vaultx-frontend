@@ -5,6 +5,8 @@ import useResponsive from '../hooks/useResponsive';
 const Dashboard = ({ user, setUser, refreshUser }) => {
   const [transactions, setTransactions] = useState([]);
   const r = useResponsive();
+  const [showUSDTModal, setShowUSDTModal] = useState(null);
+  const [usdtForm, setUsdtForm] = useState({ amount: '', address: '', transactionHash: '' });
 
   useEffect(() => {
     fetchTransactions();
@@ -70,7 +72,47 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
           }}>
             <h3 style={{ color: '#000', fontSize: '18px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
             <p style={{ fontSize: '42px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
-            <p style={{ color: '#000', fontSize: '14px', margin: '8px 0 0 0', opacity: '0.8' }}>Available for trading</p>
+            <p style={{ color: '#000', fontSize: '14px', margin: '8px 0 20px 0', opacity: '0.8' }}>Available for trading</p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+              <button
+                onClick={() => setShowUSDTModal('deposit')}
+                style={{ 
+                  padding: '12px 24px', 
+                  backgroundColor: '#02c076', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '8px', 
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#029f6b'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#02c076'}
+              >
+                Deposit
+              </button>
+              <button
+                onClick={() => setShowUSDTModal('withdraw')}
+                style={{ 
+                  padding: '12px 24px', 
+                  backgroundColor: '#f84960', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '8px', 
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#e73c4e'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#f84960'}
+              >
+                Withdraw
+              </button>
+            </div>
           </div>
         </div>
         
@@ -127,6 +169,179 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
             </div>
           )}
         </div>
+        
+        {/* USDT Modal */}
+        {showUSDTModal && (
+          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+            <div style={{ 
+              backgroundColor: '#2b3139', 
+              padding: '32px', 
+              borderRadius: '12px', 
+              maxWidth: '450px', 
+              width: '90%',
+              border: '1px solid #474d57'
+            }}>
+              <h3 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '600', marginBottom: '24px', letterSpacing: '-0.3px' }}>
+                {showUSDTModal === 'deposit' ? 'Deposit USDT' : 'Withdraw USDT'}
+              </h3>
+              
+              {showUSDTModal === 'deposit' ? (
+                <div>
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Amount</label>
+                    <input
+                      type="number"
+                      placeholder="Enter USDT amount"
+                      value={usdtForm.amount}
+                      onChange={(e) => setUsdtForm(prev => ({ ...prev, amount: e.target.value }))}
+                      style={{ 
+                        width: '100%', 
+                        padding: '14px 16px', 
+                        border: '1px solid #474d57', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#1e2329', 
+                        color: '#ffffff',
+                        fontSize: '16px'
+                      }}
+                    />
+                  </div>
+                  <div style={{ 
+                    backgroundColor: '#1e2329', 
+                    padding: '16px', 
+                    borderRadius: '8px', 
+                    marginBottom: '20px',
+                    border: '1px solid #474d57'
+                  }}>
+                    <p style={{ color: '#fcd535', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Send USDT to:</p>
+                    <p style={{ color: '#ffffff', fontSize: '14px', fontFamily: 'monospace', wordBreak: 'break-all' }}>TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh</p>
+                  </div>
+                  <div style={{ marginBottom: '24px' }}>
+                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Transaction Hash</label>
+                    <input
+                      type="text"
+                      placeholder="Enter transaction hash"
+                      value={usdtForm.transactionHash}
+                      onChange={(e) => setUsdtForm(prev => ({ ...prev, transactionHash: e.target.value }))}
+                      style={{ 
+                        width: '100%', 
+                        padding: '14px 16px', 
+                        border: '1px solid #474d57', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#1e2329', 
+                        color: '#ffffff',
+                        fontSize: '16px'
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={() => {
+                      // Handle deposit submission
+                      setShowUSDTModal(null);
+                      setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                    }}
+                    disabled={!usdtForm.amount || !usdtForm.transactionHash}
+                    style={{ 
+                      width: '100%', 
+                      padding: '14px', 
+                      backgroundColor: !usdtForm.amount || !usdtForm.transactionHash ? '#848e9c' : '#02c076', 
+                      color: '#ffffff', 
+                      border: 'none', 
+                      borderRadius: '8px', 
+                      cursor: !usdtForm.amount || !usdtForm.transactionHash ? 'not-allowed' : 'pointer',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      marginBottom: '12px'
+                    }}
+                  >
+                    Submit Deposit
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Amount</label>
+                    <input
+                      type="number"
+                      placeholder="Enter USDT amount"
+                      value={usdtForm.amount}
+                      onChange={(e) => setUsdtForm(prev => ({ ...prev, amount: e.target.value }))}
+                      style={{ 
+                        width: '100%', 
+                        padding: '14px 16px', 
+                        border: '1px solid #474d57', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#1e2329', 
+                        color: '#ffffff',
+                        fontSize: '16px'
+                      }}
+                    />
+                    <p style={{ color: '#b7bdc6', fontSize: '12px', marginTop: '4px' }}>Available: {user?.wallets?.usdt?.toFixed(6) || '0.000000'} USDT</p>
+                  </div>
+                  <div style={{ marginBottom: '24px' }}>
+                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>USDT Address</label>
+                    <input
+                      type="text"
+                      placeholder="Enter your USDT address"
+                      value={usdtForm.address}
+                      onChange={(e) => setUsdtForm(prev => ({ ...prev, address: e.target.value }))}
+                      style={{ 
+                        width: '100%', 
+                        padding: '14px 16px', 
+                        border: '1px solid #474d57', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#1e2329', 
+                        color: '#ffffff',
+                        fontSize: '16px'
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={() => {
+                      // Handle withdrawal submission
+                      setShowUSDTModal(null);
+                      setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                    }}
+                    disabled={!usdtForm.amount || !usdtForm.address}
+                    style={{ 
+                      width: '100%', 
+                      padding: '14px', 
+                      backgroundColor: !usdtForm.amount || !usdtForm.address ? '#848e9c' : '#f84960', 
+                      color: '#ffffff', 
+                      border: 'none', 
+                      borderRadius: '8px', 
+                      cursor: !usdtForm.amount || !usdtForm.address ? 'not-allowed' : 'pointer',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      marginBottom: '12px'
+                    }}
+                  >
+                    Submit Withdrawal
+                  </button>
+                </div>
+              )}
+              
+              <button
+                onClick={() => {
+                  setShowUSDTModal(null);
+                  setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                }}
+                style={{ 
+                  width: '100%', 
+                  padding: '14px', 
+                  backgroundColor: '#474d57', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: '8px', 
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: '600'
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
