@@ -84,6 +84,85 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
           </div>
         </div>
         
+        {/* USDT Wallet */}
+        <div style={{ 
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '32px'
+        }}>
+          <div style={{ 
+            padding: window.innerWidth <= 768 ? '32px 24px' : '40px', 
+            textAlign: 'center', 
+            background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
+            borderRadius: '16px',
+            border: 'none',
+            width: '100%',
+            maxWidth: window.innerWidth <= 768 ? '100%' : '400px'
+          }}>
+            <h3 style={{ color: '#000', fontSize: window.innerWidth <= 768 ? '16px' : '18px', fontWeight: '600', marginBottom: window.innerWidth <= 768 ? '16px' : '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
+            <p style={{ fontSize: window.innerWidth <= 768 ? '32px' : '42px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
+            <p style={{ color: '#000', fontSize: window.innerWidth <= 768 ? '12px' : '14px', margin: window.innerWidth <= 768 ? '6px 0 16px 0' : '8px 0 20px 0', opacity: '0.8' }}>Available for trading</p>
+            <div style={{ display: 'flex', gap: window.innerWidth <= 768 ? '12px' : '16px', justifyContent: 'center', flexDirection: window.innerWidth <= 480 ? 'column' : 'row' }}>
+              <button
+                onClick={() => setShowUSDTModal('deposit')}
+                style={{ 
+                  padding: window.innerWidth <= 768 ? '12px 20px' : '14px 28px', 
+                  backgroundColor: '#02c076', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: window.innerWidth <= 768 ? '10px' : '12px', 
+                  cursor: 'pointer',
+                  fontSize: window.innerWidth <= 768 ? '14px' : '16px',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px',
+                  transform: 'translateY(0)',
+                  flex: window.innerWidth <= 480 ? '1' : 'none'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#029f6b';
+                  e.target.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#02c076';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
+                {window.innerWidth <= 768 ? 'Deposit' : 'Deposit USDT'}
+              </button>
+              <button
+                onClick={() => setShowUSDTModal('withdraw')}
+                style={{ 
+                  padding: window.innerWidth <= 768 ? '12px 20px' : '14px 28px', 
+                  backgroundColor: '#f84960', 
+                  color: '#ffffff', 
+                  border: 'none', 
+                  borderRadius: window.innerWidth <= 768 ? '10px' : '12px', 
+                  cursor: 'pointer',
+                  fontSize: window.innerWidth <= 768 ? '14px' : '16px',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px',
+                  transform: 'translateY(0)',
+                  flex: window.innerWidth <= 480 ? '1' : 'none'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#e73c4e';
+                  e.target.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#f84960';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
+                {window.innerWidth <= 768 ? 'Withdraw' : 'Withdraw USDT'}
+              </button>
+            </div>
+          </div>
+        </div>
+        
         {/* Achievement System */}
         <div style={{ 
           backgroundColor: '#2b3139', 
@@ -237,80 +316,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
           </div>
         </div>
         
-        <div style={{ 
-          display: 'flex',
-          justifyContent: 'center',
-          marginBottom: '32px'
-        }}>
-          <div style={{ 
-            padding: '40px', 
-            textAlign: 'center', 
-            background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
-            borderRadius: '16px',
-            border: 'none',
-            minWidth: '320px'
-          }}>
-            <h3 style={{ color: '#000', fontSize: '18px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
-            <p style={{ fontSize: '42px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
-            <p style={{ color: '#000', fontSize: '14px', margin: '8px 0 20px 0', opacity: '0.8' }}>Available for trading</p>
-            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-              <button
-                onClick={() => setShowUSDTModal('deposit')}
-                style={{ 
-                  padding: '14px 28px', 
-                  backgroundColor: '#02c076', 
-                  color: '#ffffff', 
-                  border: 'none', 
-                  borderRadius: '12px', 
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  transition: 'all 0.2s ease',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                  letterSpacing: '-0.1px',
-                  transform: 'translateY(0)'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#029f6b';
-                  e.target.style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#02c076';
-                  e.target.style.transform = 'translateY(0)';
-                }}
-              >
-                Deposit USDT
-              </button>
-              <button
-                onClick={() => setShowUSDTModal('withdraw')}
-                style={{ 
-                  padding: '14px 28px', 
-                  backgroundColor: '#f84960', 
-                  color: '#ffffff', 
-                  border: 'none', 
-                  borderRadius: '12px', 
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  transition: 'all 0.2s ease',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                  letterSpacing: '-0.1px',
-                  transform: 'translateY(0)'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#e73c4e';
-                  e.target.style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#f84960';
-                  e.target.style.transform = 'translateY(0)';
-                }}
-              >
-                Withdraw USDT
-              </button>
-            </div>
-          </div>
-        </div>
+
         
 
 
