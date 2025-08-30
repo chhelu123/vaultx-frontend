@@ -147,9 +147,9 @@ const TradingPanel = ({ user, onUpdate }) => {
     if (!canTrade) {
       setNotification({
         isOpen: true,
-        type: 'warning',
+        type: 'confirm',
         title: 'KYC Required',
-        message: 'Please complete your KYC verification to start trading. Click OK to go to KYC page.',
+        message: 'Please complete your KYC verification to start trading. Click OK to complete KYC.',
         onConfirm: () => window.location.href = '/kyc'
       });
       return;
@@ -735,9 +735,9 @@ const TradingPanel = ({ user, onUpdate }) => {
                     if (!canTrade) {
                       setNotification({
                         isOpen: true,
-                        type: 'warning',
+                        type: 'confirm',
                         title: 'KYC Required',
-                        message: 'Please complete your KYC verification to start trading. Click OK to go to KYC page.',
+                        message: 'Please complete your KYC verification to start trading. Click OK to complete KYC.',
                         onConfirm: () => window.location.href = '/kyc'
                       });
                       return;

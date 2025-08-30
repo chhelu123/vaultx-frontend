@@ -70,16 +70,24 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
               }}>Ready to trade USDT? Your secure trading dashboard awaits.</p>
             </div>
-            <div style={{ 
-              padding: '12px 20px', 
-              backgroundColor: '#fcd535', 
-              borderRadius: '8px', 
-              color: '#000',
-              fontSize: '14px',
-              fontWeight: '600',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-            }}>
-              {user?.kycStatus === 'approved' ? '✅ Verified Trader' : '⏳ Complete KYC'}
+            <div 
+              style={{ 
+                padding: '12px 20px', 
+                backgroundColor: user?.kycStatus === 'approved' ? '#fcd535' : '#02c076', 
+                borderRadius: '8px', 
+                color: user?.kycStatus === 'approved' ? '#000' : '#ffffff',
+                fontSize: '14px',
+                fontWeight: '600',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                cursor: user?.kycStatus !== 'approved' ? 'pointer' : 'default'
+              }}
+              onClick={() => {
+                if (user?.kycStatus !== 'approved') {
+                  window.location.href = '/trading';
+                }
+              }}
+            >
+              {user?.kycStatus === 'approved' ? '✅ Verified Trader' : '🚀 Start Trading'}
             </div>
           </div>
         </div>
