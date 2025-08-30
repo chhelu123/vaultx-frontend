@@ -341,7 +341,7 @@ const LandingPage = () => {
                 initial: 'R'
               },
               {
-                name: 'Priya Sharma',
+                name: 'Karan Singh',
                 role: 'Business Owner',
                 review: 'Excellent platform with transparent pricing and no hidden fees. The KYC process was quick, and customer support is very responsive. Great experience overall.',
                 rating: 5,
