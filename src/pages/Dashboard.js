@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import WalletActions from '../components/WalletActions';
 import { tradingAPI } from '../services/api';
 import useResponsive from '../hooks/useResponsive';
 
@@ -57,34 +56,25 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
         </div>
         
         <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: r.gridCols, 
-          gap: r.gap, 
+          display: 'flex',
+          justifyContent: 'center',
           marginBottom: r.marginBottom 
         }}>
           <div style={{ 
-            padding: '32px', 
-            textAlign: 'center', 
-            background: 'linear-gradient(135deg, #02c076 0%, #00a66d 100%)', 
-            borderRadius: '12px',
-            border: 'none'
-          }}>
-            <h3 style={{ color: '#fff', fontSize: '16px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>INR Balance</h3>
-            <p style={{ fontSize: '36px', fontWeight: '700', margin: '0', color: '#fff', letterSpacing: '-0.5px' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</p>
-          </div>
-          <div style={{ 
-            padding: '32px', 
+            padding: '40px', 
             textAlign: 'center', 
             background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
-            borderRadius: '12px',
-            border: 'none'
+            borderRadius: '16px',
+            border: 'none',
+            minWidth: '320px'
           }}>
-            <h3 style={{ color: '#000', fontSize: '16px', fontWeight: '600', marginBottom: '16px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
-            <p style={{ fontSize: '36px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
+            <h3 style={{ color: '#000', fontSize: '18px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
+            <p style={{ fontSize: '42px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
+            <p style={{ color: '#000', fontSize: '14px', margin: '8px 0 0 0', opacity: '0.8' }}>Available for trading</p>
           </div>
         </div>
         
-        <WalletActions user={user} onUpdate={handleUpdate} />
+
 
         <div style={{ 
           backgroundColor: '#2b3139', 

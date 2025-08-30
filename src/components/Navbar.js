@@ -74,24 +74,15 @@ const Navbar = ({ user, onLogout }) => {
               ))}
             </div>
             
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <div style={{ 
                 background: '#2b3139', 
-                padding: '10px 16px', 
-                borderRadius: '8px', 
-                border: '1px solid #474d57'
+                padding: '12px 20px', 
+                borderRadius: '10px', 
+                border: '1px solid #fcd535'
               }}>
-                <span style={{ color: '#b7bdc6', fontSize: '13px', fontWeight: '500', letterSpacing: '0.5px' }}>INR </span>
-                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</span>
-              </div>
-              <div style={{ 
-                background: '#2b3139', 
-                padding: '10px 16px', 
-                borderRadius: '8px', 
-                border: '1px solid #474d57'
-              }}>
-                <span style={{ color: '#b7bdc6', fontSize: '13px', fontWeight: '500', letterSpacing: '0.5px' }}>USDT </span>
-                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
+                <span style={{ color: '#fcd535', fontSize: '13px', fontWeight: '600', letterSpacing: '0.5px' }}>USDT </span>
+                <span style={{ color: '#ffffff', fontWeight: '700', fontSize: '16px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</span>
               </div>
             </div>
             
@@ -156,15 +147,11 @@ const Navbar = ({ user, onLogout }) => {
           }}>
             {/* Wallet Info */}
             <div style={{ padding: '15px', borderBottom: '1px solid #2b3139' }}>
-              <div style={{ marginBottom: '12px' }}>
+              <div style={{ marginBottom: '16px' }}>
                 <span style={{ color: '#b7bdc6', fontSize: '13px', fontWeight: '500', letterSpacing: '0.5px' }}>USER ID </span>
                 <span style={{ color: '#fcd535', fontSize: '13px', fontFamily: 'monospace', fontWeight: '600' }} title={user?._id}>
                   {user?._id ? `${user._id.slice(0, 8)}...${user._id.slice(-4)}` : 'Loading...'}
                 </span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                <span style={{ color: '#b7bdc6', fontSize: '15px', fontWeight: '500' }}>INR Balance</span>
-                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#b7bdc6', fontSize: '15px', fontWeight: '500' }}>USDT Balance</span>
