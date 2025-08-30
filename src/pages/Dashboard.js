@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { tradingAPI } from '../services/api';
+import { tradingAPI, walletAPI } from '../services/api';
 import useResponsive from '../hooks/useResponsive';
+import NotificationModal from '../components/NotificationModal';
 
 const Dashboard = ({ user, setUser, refreshUser }) => {
   const [transactions, setTransactions] = useState([]);
   const r = useResponsive();
   const [showUSDTModal, setShowUSDTModal] = useState(null);
   const [usdtForm, setUsdtForm] = useState({ amount: '', address: '', transactionHash: '' });
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState({ isOpen: false, type: '', title: '', message: '' });
 
   useEffect(() => {
     fetchTransactions();
@@ -73,44 +76,60 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
             <h3 style={{ color: '#000', fontSize: '18px', fontWeight: '600', marginBottom: '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
             <p style={{ fontSize: '42px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
             <p style={{ color: '#000', fontSize: '14px', margin: '8px 0 20px 0', opacity: '0.8' }}>Available for trading</p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
               <button
                 onClick={() => setShowUSDTModal('deposit')}
                 style={{ 
-                  padding: '12px 24px', 
+                  padding: '14px 28px', 
                   backgroundColor: '#02c076', 
                   color: '#ffffff', 
                   border: 'none', 
-                  borderRadius: '8px', 
+                  borderRadius: '12px', 
                   cursor: 'pointer',
-                  fontSize: '14px',
+                  fontSize: '16px',
                   fontWeight: '600',
                   transition: 'all 0.2s ease',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px',
+                  transform: 'translateY(0)'
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#029f6b'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#02c076'}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#029f6b';
+                  e.target.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#02c076';
+                  e.target.style.transform = 'translateY(0)';
+                }}
               >
-                Deposit
+                Deposit USDT
               </button>
               <button
                 onClick={() => setShowUSDTModal('withdraw')}
                 style={{ 
-                  padding: '12px 24px', 
+                  padding: '14px 28px', 
                   backgroundColor: '#f84960', 
                   color: '#ffffff', 
                   border: 'none', 
-                  borderRadius: '8px', 
+                  borderRadius: '12px', 
                   cursor: 'pointer',
-                  fontSize: '14px',
+                  fontSize: '16px',
                   fontWeight: '600',
                   transition: 'all 0.2s ease',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px',
+                  transform: 'translateY(0)'
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#e73c4e'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#f84960'}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#e73c4e';
+                  e.target.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#f84960';
+                  e.target.style.transform = 'translateY(0)';
+                }}
               >
-                Withdraw
+                Withdraw USDT
               </button>
             </div>
           </div>
@@ -234,26 +253,50 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                     />
                   </div>
                   <button
-                    onClick={() => {
-                      // Handle deposit submission
-                      setShowUSDTModal(null);
-                      setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                    onClick={async () => {
+                      setLoading(true);
+                      try {
+                        await walletAPI.requestDeposit({
+                          type: 'usdt',
+                          amount: parseFloat(usdtForm.amount),
+                          paymentMethod: 'USDT Transfer',
+                          transactionId: usdtForm.transactionHash
+                        });
+                        setNotification({
+                          isOpen: true,
+                          type: 'success',
+                          title: 'Deposit Request Submitted',
+                          message: 'Your USDT deposit request has been submitted successfully. Your balance will be updated within a few minutes after admin approval.'
+                        });
+                        setShowUSDTModal(null);
+                        setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                      } catch (error) {
+                        setNotification({
+                          isOpen: true,
+                          type: 'error',
+                          title: 'Deposit Failed',
+                          message: 'Unable to submit deposit request. Please try again.'
+                        });
+                      }
+                      setLoading(false);
                     }}
-                    disabled={!usdtForm.amount || !usdtForm.transactionHash}
+                    disabled={loading || !usdtForm.amount || !usdtForm.transactionHash}
                     style={{ 
                       width: '100%', 
-                      padding: '14px', 
-                      backgroundColor: !usdtForm.amount || !usdtForm.transactionHash ? '#848e9c' : '#02c076', 
+                      padding: '16px', 
+                      backgroundColor: loading || !usdtForm.amount || !usdtForm.transactionHash ? '#848e9c' : '#02c076', 
                       color: '#ffffff', 
                       border: 'none', 
-                      borderRadius: '8px', 
-                      cursor: !usdtForm.amount || !usdtForm.transactionHash ? 'not-allowed' : 'pointer',
+                      borderRadius: '12px', 
+                      cursor: loading || !usdtForm.amount || !usdtForm.transactionHash ? 'not-allowed' : 'pointer',
                       fontSize: '16px',
                       fontWeight: '600',
-                      marginBottom: '12px'
+                      marginBottom: '16px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                      letterSpacing: '-0.1px'
                     }}
                   >
-                    Submit Deposit
+                    {loading ? 'Submitting...' : 'Submit Deposit Request'}
                   </button>
                 </div>
               ) : (
@@ -296,26 +339,61 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                     />
                   </div>
                   <button
-                    onClick={() => {
-                      // Handle withdrawal submission
-                      setShowUSDTModal(null);
-                      setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                    onClick={async () => {
+                      setLoading(true);
+                      try {
+                        const balance = user.wallets?.usdt || 0;
+                        if (parseFloat(usdtForm.amount) > balance) {
+                          setNotification({
+                            isOpen: true,
+                            type: 'error',
+                            title: 'Insufficient Balance',
+                            message: `You can only withdraw up to ${balance.toFixed(6)} USDT.`
+                          });
+                          setLoading(false);
+                          return;
+                        }
+                        await walletAPI.requestWithdrawal({
+                          type: 'usdt',
+                          amount: parseFloat(usdtForm.amount),
+                          withdrawalDetails: usdtForm.address
+                        });
+                        setNotification({
+                          isOpen: true,
+                          type: 'success',
+                          title: 'Withdrawal Request Submitted',
+                          message: 'Your USDT withdrawal request has been submitted successfully. Your USDT will be sent to your address within a few minutes after admin approval.'
+                        });
+                        setShowUSDTModal(null);
+                        setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                        refreshUser();
+                      } catch (error) {
+                        setNotification({
+                          isOpen: true,
+                          type: 'error',
+                          title: 'Withdrawal Failed',
+                          message: 'Unable to submit withdrawal request. Please try again.'
+                        });
+                      }
+                      setLoading(false);
                     }}
-                    disabled={!usdtForm.amount || !usdtForm.address}
+                    disabled={loading || !usdtForm.amount || !usdtForm.address}
                     style={{ 
                       width: '100%', 
-                      padding: '14px', 
-                      backgroundColor: !usdtForm.amount || !usdtForm.address ? '#848e9c' : '#f84960', 
+                      padding: '16px', 
+                      backgroundColor: loading || !usdtForm.amount || !usdtForm.address ? '#848e9c' : '#f84960', 
                       color: '#ffffff', 
                       border: 'none', 
-                      borderRadius: '8px', 
-                      cursor: !usdtForm.amount || !usdtForm.address ? 'not-allowed' : 'pointer',
+                      borderRadius: '12px', 
+                      cursor: loading || !usdtForm.amount || !usdtForm.address ? 'not-allowed' : 'pointer',
                       fontSize: '16px',
                       fontWeight: '600',
-                      marginBottom: '12px'
+                      marginBottom: '16px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                      letterSpacing: '-0.1px'
                     }}
                   >
-                    Submit Withdrawal
+                    {loading ? 'Submitting...' : 'Submit Withdrawal Request'}
                   </button>
                 </div>
               )}
@@ -327,14 +405,16 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                 }}
                 style={{ 
                   width: '100%', 
-                  padding: '14px', 
+                  padding: '16px', 
                   backgroundColor: '#474d57', 
                   color: '#ffffff', 
                   border: 'none', 
-                  borderRadius: '8px', 
+                  borderRadius: '12px', 
                   cursor: 'pointer',
                   fontSize: '16px',
-                  fontWeight: '600'
+                  fontWeight: '600',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  letterSpacing: '-0.1px'
                 }}
               >
                 Cancel
@@ -342,6 +422,14 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
             </div>
           </div>
         )}
+        
+        <NotificationModal
+          isOpen={notification.isOpen}
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          onClose={() => setNotification({ isOpen: false, type: '', title: '', message: '' })}
+        />
       </div>
     </div>
   );
