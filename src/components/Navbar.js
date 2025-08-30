@@ -6,7 +6,6 @@ const Navbar = ({ user, onLogout }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard' },
     { path: '/trading', label: 'Trading' },
     { path: '/history', label: 'History' },
     { path: '/kyc', label: 'KYC' },
@@ -24,7 +23,7 @@ const Navbar = ({ user, onLogout }) => {
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '64px', padding: '0 20px', maxWidth: '100%' }}>
           {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Link to="/trading" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
             <img 
               src="/logo.png" 
               alt="VaultX Logo" 
@@ -32,7 +31,7 @@ const Navbar = ({ user, onLogout }) => {
               onError={(e) => { e.target.style.display = 'none'; }}
             />
             <h2 style={{ color: '#fcd535', margin: '0', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>VaultX</h2>
-          </div>
+          </Link>
           
           {/* Desktop Navigation */}
           <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
@@ -72,15 +71,6 @@ const Navbar = ({ user, onLogout }) => {
             </div>
             
             <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <div style={{ 
-                background: '#2b3139', 
-                padding: '10px 16px', 
-                borderRadius: '8px', 
-                border: '1px solid #474d57'
-              }}>
-                <span style={{ color: '#b7bdc6', fontSize: '13px', fontWeight: '500', letterSpacing: '0.5px' }}>INR </span>
-                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</span>
-              </div>
               <div style={{ 
                 background: '#2b3139', 
                 padding: '10px 16px', 
@@ -158,10 +148,6 @@ const Navbar = ({ user, onLogout }) => {
                 <span style={{ color: '#fcd535', fontSize: '13px', fontFamily: 'monospace', fontWeight: '600' }} title={user?._id}>
                   {user?._id ? `${user._id.slice(0, 8)}...${user._id.slice(-4)}` : 'Loading...'}
                 </span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                <span style={{ color: '#b7bdc6', fontSize: '15px', fontWeight: '500' }}>INR Balance</span>
-                <span style={{ color: '#ffffff', fontWeight: '600', fontSize: '15px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>₹{user?.wallets?.inr?.toFixed(2) || '0.00'}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#b7bdc6', fontSize: '15px', fontWeight: '500' }}>USDT Balance</span>
