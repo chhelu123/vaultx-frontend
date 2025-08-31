@@ -308,14 +308,12 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                                          usdtForm.chain === 'aptos' ? (settings?.aptosAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh') :
                                          (settings?.trc20Address || settings?.usdtAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh');
                           
-                          // Fallback method for older browsers
                           const textArea = document.createElement('textarea');
                           textArea.value = address;
                           document.body.appendChild(textArea);
                           textArea.select();
                           document.execCommand('copy');
                           document.body.removeChild(textArea);
-                          alert('Address copied!');
                         }}
                         style={{
                           padding: '6px 12px',
@@ -441,47 +439,21 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                   </div>
                   <div style={{ marginBottom: '24px' }}>
                     <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>USDT Address ({usdtForm.chain?.toUpperCase() || 'TRC-20'})</label>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <input
-                        type="text"
-                        placeholder={`Enter your ${usdtForm.chain?.toUpperCase() || 'TRC-20'} USDT address`}
-                        value={usdtForm.address}
-                        onChange={(e) => setUsdtForm(prev => ({ ...prev, address: e.target.value }))}
-                        style={{ 
-                          flex: 1, 
-                          padding: '14px 16px', 
-                          border: '1px solid #474d57', 
-                          borderRadius: '8px', 
-                          backgroundColor: '#1e2329', 
-                          color: '#ffffff',
-                          fontSize: '16px'
-                        }}
-                      />
-                      <button
-                        onClick={() => {
-                          // Focus the input and let user paste manually
-                          const input = document.querySelector('input[placeholder*="USDT address"]');
-                          if (input) {
-                            input.focus();
-                            input.select();
-                          }
-                          alert('Input focused. Press Ctrl+V to paste your address.');
-                        }}
-                        style={{
-                          padding: '14px 16px',
-                          backgroundColor: '#fcd535',
-                          color: '#000',
-                          border: 'none',
-                          borderRadius: '8px',
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          cursor: 'pointer',
-                          whiteSpace: 'nowrap'
-                        }}
-                      >
-                        Paste
-                      </button>
-                    </div>
+                    <input
+                      type="text"
+                      placeholder={`Enter your ${usdtForm.chain?.toUpperCase() || 'TRC-20'} USDT address`}
+                      value={usdtForm.address}
+                      onChange={(e) => setUsdtForm(prev => ({ ...prev, address: e.target.value }))}
+                      style={{ 
+                        width: '100%', 
+                        padding: '14px 16px', 
+                        border: '1px solid #474d57', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#1e2329', 
+                        color: '#ffffff',
+                        fontSize: '16px'
+                      }}
+                    />
                   </div>
                   <button
                     onClick={async () => {
