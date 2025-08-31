@@ -10,10 +10,22 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
   const [usdtForm, setUsdtForm] = useState({ amount: '', address: '', transactionHash: '', chain: 'trc20' });
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({ isOpen: false, type: '', title: '', message: '' });
+  const [settings, setSettings] = useState(null);
 
   useEffect(() => {
     fetchTransactions();
+    fetchSettings();
   }, []);
+  
+  const fetchSettings = async () => {
+    try {
+      const response = await fetch('/api/settings');
+      const data = await response.json();
+      setSettings(data);
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+  };
 
   const fetchTransactions = async () => {
     try {
