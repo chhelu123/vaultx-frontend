@@ -104,8 +104,6 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
         
         {/* USDT Wallet */}
         <div style={{ 
-          display: 'flex',
-          justifyContent: 'center',
           marginBottom: '32px'
         }}>
           <div style={{ 
@@ -114,8 +112,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
             background: 'linear-gradient(135deg, #2b3139 0%, #1e2329 100%)', 
             borderRadius: '16px',
             border: '2px solid #474d57',
-            width: '100%',
-            maxWidth: window.innerWidth <= 768 ? '100%' : '400px'
+            width: '100%'
           }}>
             <h3 style={{ color: '#ffffff', fontSize: window.innerWidth <= 768 ? '16px' : '18px', fontWeight: '600', marginBottom: window.innerWidth <= 768 ? '16px' : '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
             <p style={{ fontSize: window.innerWidth <= 768 ? '32px' : '42px', fontWeight: '700', margin: '0', color: '#fcd535', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
