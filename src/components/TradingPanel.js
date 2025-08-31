@@ -71,7 +71,12 @@ const TradingPanel = ({ user, onUpdate }) => {
     setBuyFlow(prev => ({ ...prev, loading: true }));
     try {
       const inrAmount = parseFloat(buyFlow.amount) * prices.buyPrice;
-      await tradingAPI.buyUSDT(inrAmount);
+      await tradingAPI.buyUSDT({
+        inrAmount: inrAmount,
+        usdtAmount: parseFloat(buyFlow.amount),
+        paymentMethod: buyFlow.paymentMethod,
+        transactionId: buyFlow.transactionId
+      });
       
       setNotification({
         isOpen: true,
@@ -110,7 +115,15 @@ const TradingPanel = ({ user, onUpdate }) => {
         return;
       }
       
-      await tradingAPI.sellUSDT(parseFloat(sellFlow.amount));
+      const paymentDetails = sellFlow.paymentMethod === 'upi' 
+        ? sellFlow.bankDetails 
+        : `${sellFlow.accountName} | ${sellFlow.accountNumber} | ${sellFlow.ifscCode} | ${sellFlow.bankName}`;
+      
+      await tradingAPI.sellUSDT({
+        usdtAmount: parseFloat(sellFlow.amount),
+        paymentMethod: sellFlow.paymentMethod,
+        paymentDetails: paymentDetails
+      });
       
       setNotification({
         isOpen: true,
