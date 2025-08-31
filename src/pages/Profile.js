@@ -150,9 +150,25 @@ const Profile = ({ user }) => {
                 borderRadius: '8px', 
                 color: '#eaecef',
                 fontSize: r.bodySize,
-                wordBreak: 'break-word'
+                wordBreak: 'break-word',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
               }}>
-                {user?.name || 'Loading...'}
+                <span>{user?.name || 'Loading...'}</span>
+                {user?.kycStatus === 'approved' && (
+                  <span style={{
+                    backgroundColor: '#02c076',
+                    color: '#ffffff',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    padding: '4px 8px',
+                    borderRadius: '12px',
+                    letterSpacing: '0.5px'
+                  }}>
+                    VERIFIED
+                  </span>
+                )}
               </div>
             </div>
           </div>

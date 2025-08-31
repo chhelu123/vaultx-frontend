@@ -85,21 +85,19 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
             <div 
               style={{ 
                 padding: '12px 20px', 
-                backgroundColor: user?.kycStatus === 'approved' ? '#fcd535' : '#02c076', 
+                backgroundColor: '#02c076', 
                 borderRadius: '8px', 
-                color: user?.kycStatus === 'approved' ? '#000' : '#ffffff',
+                color: '#ffffff',
                 fontSize: '14px',
                 fontWeight: '600',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                cursor: user?.kycStatus !== 'approved' ? 'pointer' : 'default'
+                cursor: 'pointer'
               }}
               onClick={() => {
-                if (user?.kycStatus !== 'approved') {
-                  window.location.href = '/trading';
-                }
+                window.location.href = '/trading';
               }}
             >
-              {user?.kycStatus === 'approved' ? 'Verified Trader' : 'Start Trading'}
+              Start Trading
             </div>
           </div>
         </div>
@@ -298,12 +296,35 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                     border: '1px solid #474d57'
                   }}>
                     <p style={{ color: '#ffffff', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Deposit Address ({usdtForm.chain?.toUpperCase() || 'TRC-20'}):</p>
-                    <p style={{ color: '#fcd535', fontSize: '14px', fontFamily: 'monospace', wordBreak: 'break-all' }}>
-                      {usdtForm.chain === 'bep20' ? (settings?.bep20Address || 'Loading...') :
-                       usdtForm.chain === 'aptos' ? (settings?.aptosAddress || 'Loading...') :
-                       (settings?.trc20Address || settings?.usdtAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh')}
-                    </p>
-                    <p style={{ color: '#b7bdc6', fontSize: '12px', marginTop: '8px' }}>Only send USDT on {usdtForm.chain?.toUpperCase() || 'TRC-20'} network</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <p style={{ color: '#fcd535', fontSize: '14px', fontFamily: 'monospace', wordBreak: 'break-all', margin: 0, flex: 1 }}>
+                        {usdtForm.chain === 'bep20' ? (settings?.bep20Address || 'Loading...') :
+                         usdtForm.chain === 'aptos' ? (settings?.aptosAddress || 'Loading...') :
+                         (settings?.trc20Address || settings?.usdtAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh')}
+                      </p>
+                      <button
+                        onClick={() => {
+                          const address = usdtForm.chain === 'bep20' ? (settings?.bep20Address || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh') :
+                                         usdtForm.chain === 'aptos' ? (settings?.aptosAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh') :
+                                         (settings?.trc20Address || settings?.usdtAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh');
+                          navigator.clipboard.writeText(address);
+                          alert('Address copied!');
+                        }}
+                        style={{
+                          padding: '6px 12px',
+                          backgroundColor: '#02c076',
+                          color: '#ffffff',
+                          border: 'none',
+                          borderRadius: '6px',
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Copy
+                      </button>
+                    </div>
+                    <p style={{ color: '#b7bdc6', fontSize: '12px', margin: 0 }}>Only send USDT on {usdtForm.chain?.toUpperCase() || 'TRC-20'} network</p>
                   </div>
                   <div style={{ marginBottom: '24px' }}>
                     <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Transaction Hash</label>
@@ -413,21 +434,46 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                   </div>
                   <div style={{ marginBottom: '24px' }}>
                     <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>USDT Address ({usdtForm.chain?.toUpperCase() || 'TRC-20'})</label>
-                    <input
-                      type="text"
-                      placeholder={`Enter your ${usdtForm.chain?.toUpperCase() || 'TRC-20'} USDT address`}
-                      value={usdtForm.address}
-                      onChange={(e) => setUsdtForm(prev => ({ ...prev, address: e.target.value }))}
-                      style={{ 
-                        width: '100%', 
-                        padding: '14px 16px', 
-                        border: '1px solid #474d57', 
-                        borderRadius: '8px', 
-                        backgroundColor: '#1e2329', 
-                        color: '#ffffff',
-                        fontSize: '16px'
-                      }}
-                    />
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <input
+                        type="text"
+                        placeholder={`Enter your ${usdtForm.chain?.toUpperCase() || 'TRC-20'} USDT address`}
+                        value={usdtForm.address}
+                        onChange={(e) => setUsdtForm(prev => ({ ...prev, address: e.target.value }))}
+                        style={{ 
+                          flex: 1, 
+                          padding: '14px 16px', 
+                          border: '1px solid #474d57', 
+                          borderRadius: '8px', 
+                          backgroundColor: '#1e2329', 
+                          color: '#ffffff',
+                          fontSize: '16px'
+                        }}
+                      />
+                      <button
+                        onClick={async () => {
+                          try {
+                            const text = await navigator.clipboard.readText();
+                            setUsdtForm(prev => ({ ...prev, address: text }));
+                          } catch (err) {
+                            alert('Unable to paste. Please paste manually.');
+                          }
+                        }}
+                        style={{
+                          padding: '14px 16px',
+                          backgroundColor: '#fcd535',
+                          color: '#000',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap'
+                        }}
+                      >
+                        Paste
+                      </button>
+                    </div>
                   </div>
                   <button
                     onClick={async () => {
