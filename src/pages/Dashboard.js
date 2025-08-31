@@ -7,7 +7,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
   const [transactions, setTransactions] = useState([]);
   const r = useResponsive();
   const [showUSDTModal, setShowUSDTModal] = useState(null);
-  const [usdtForm, setUsdtForm] = useState({ amount: '', address: '', transactionHash: '' });
+  const [usdtForm, setUsdtForm] = useState({ amount: '', address: '', transactionHash: '', chain: 'trc20' });
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({ isOpen: false, type: '', title: '', message: '' });
 
@@ -62,7 +62,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                 marginBottom: '8px', 
                 letterSpacing: '-0.5px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-              }}>Welcome back, {user?.name?.split(' ')[0] || 'Trader'}! 👋</h1>
+              }}>Welcome back, {user?.name?.split(' ')[0] || 'Trader'}</h1>
               <p style={{ 
                 color: '#b7bdc6', 
                 fontSize: window.innerWidth <= 768 ? '14px' : '16px', 
@@ -87,7 +87,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                 }
               }}
             >
-              {user?.kycStatus === 'approved' ? '✅ Verified Trader' : '🚀 Start Trading'}
+              {user?.kycStatus === 'approved' ? 'Verified Trader' : 'Start Trading'}
             </div>
           </div>
         </div>
@@ -101,15 +101,15 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
           <div style={{ 
             padding: window.innerWidth <= 768 ? '32px 24px' : '40px', 
             textAlign: 'center', 
-            background: 'linear-gradient(135deg, #fcd535 0%, #f0b90b 100%)', 
+            background: 'linear-gradient(135deg, #2b3139 0%, #1e2329 100%)', 
             borderRadius: '16px',
-            border: 'none',
+            border: '2px solid #474d57',
             width: '100%',
             maxWidth: window.innerWidth <= 768 ? '100%' : '400px'
           }}>
-            <h3 style={{ color: '#000', fontSize: window.innerWidth <= 768 ? '16px' : '18px', fontWeight: '600', marginBottom: window.innerWidth <= 768 ? '16px' : '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
-            <p style={{ fontSize: window.innerWidth <= 768 ? '32px' : '42px', fontWeight: '700', margin: '0', color: '#000', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
-            <p style={{ color: '#000', fontSize: window.innerWidth <= 768 ? '12px' : '14px', margin: window.innerWidth <= 768 ? '6px 0 16px 0' : '8px 0 20px 0', opacity: '0.8' }}>Available for trading</p>
+            <h3 style={{ color: '#ffffff', fontSize: window.innerWidth <= 768 ? '16px' : '18px', fontWeight: '600', marginBottom: window.innerWidth <= 768 ? '16px' : '20px', letterSpacing: '-0.2px' }}>USDT Balance</h3>
+            <p style={{ fontSize: window.innerWidth <= 768 ? '32px' : '42px', fontWeight: '700', margin: '0', color: '#fcd535', letterSpacing: '-0.5px' }}>{user?.wallets?.usdt?.toFixed(6) || '0.000000'}</p>
+            <p style={{ color: '#b7bdc6', fontSize: window.innerWidth <= 768 ? '12px' : '14px', margin: window.innerWidth <= 768 ? '6px 0 16px 0' : '8px 0 20px 0' }}>Available for trading</p>
             <div style={{ display: 'flex', gap: window.innerWidth <= 768 ? '12px' : '16px', justifyContent: 'center', flexDirection: window.innerWidth <= 480 ? 'column' : 'row' }}>
               <button
                 onClick={() => setShowUSDTModal('deposit')}
@@ -258,6 +258,26 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                       }}
                     />
                   </div>
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Blockchain Network</label>
+                    <select
+                      value={usdtForm.chain || 'trc20'}
+                      onChange={(e) => setUsdtForm(prev => ({ ...prev, chain: e.target.value }))}
+                      style={{ 
+                        width: '100%', 
+                        padding: '14px 16px', 
+                        border: '1px solid #474d57', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#1e2329', 
+                        color: '#ffffff',
+                        fontSize: '16px'
+                      }}
+                    >
+                      <option value="trc20">TRC-20 (Tron)</option>
+                      <option value="bep20">BEP-20 (BSC)</option>
+                      <option value="aptos">Aptos Network</option>
+                    </select>
+                  </div>
                   <div style={{ 
                     backgroundColor: '#1e2329', 
                     padding: '16px', 
@@ -265,8 +285,13 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                     marginBottom: '20px',
                     border: '1px solid #474d57'
                   }}>
-                    <p style={{ color: '#fcd535', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Send USDT to:</p>
-                    <p style={{ color: '#ffffff', fontSize: '14px', fontFamily: 'monospace', wordBreak: 'break-all' }}>TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh</p>
+                    <p style={{ color: '#ffffff', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Deposit Address ({usdtForm.chain?.toUpperCase() || 'TRC-20'}):</p>
+                    <p style={{ color: '#fcd535', fontSize: '14px', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                      {usdtForm.chain === 'bep20' ? (settings?.bep20Address || 'Loading...') :
+                       usdtForm.chain === 'aptos' ? (settings?.aptosAddress || 'Loading...') :
+                       (settings?.trc20Address || settings?.usdtAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh')}
+                    </p>
+                    <p style={{ color: '#b7bdc6', fontSize: '12px', marginTop: '8px' }}>Only send USDT on {usdtForm.chain?.toUpperCase() || 'TRC-20'} network</p>
                   </div>
                   <div style={{ marginBottom: '24px' }}>
                     <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Transaction Hash</label>
@@ -303,7 +328,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                           message: 'Your USDT deposit request has been submitted successfully. Your balance will be updated within a few minutes after admin approval.'
                         });
                         setShowUSDTModal(null);
-                        setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                        setUsdtForm({ amount: '', address: '', transactionHash: '', chain: 'trc20' });
                       } catch (error) {
                         setNotification({
                           isOpen: true,
@@ -399,7 +424,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                           message: 'Your USDT withdrawal request has been submitted successfully. Your USDT will be sent to your address within a few minutes after admin approval.'
                         });
                         setShowUSDTModal(null);
-                        setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                        setUsdtForm({ amount: '', address: '', transactionHash: '', chain: 'trc20' });
                         refreshUser();
                       } catch (error) {
                         setNotification({
@@ -435,7 +460,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
               <button
                 onClick={() => {
                   setShowUSDTModal(null);
-                  setUsdtForm({ amount: '', address: '', transactionHash: '' });
+                  setUsdtForm({ amount: '', address: '', transactionHash: '', chain: 'trc20' });
                 }}
                 style={{ 
                   width: '100%', 
