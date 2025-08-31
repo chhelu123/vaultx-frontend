@@ -307,7 +307,14 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                           const address = usdtForm.chain === 'bep20' ? (settings?.bep20Address || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh') :
                                          usdtForm.chain === 'aptos' ? (settings?.aptosAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh') :
                                          (settings?.trc20Address || settings?.usdtAddress || 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh');
-                          navigator.clipboard.writeText(address);
+                          
+                          // Fallback method for older browsers
+                          const textArea = document.createElement('textarea');
+                          textArea.value = address;
+                          document.body.appendChild(textArea);
+                          textArea.select();
+                          document.execCommand('copy');
+                          document.body.removeChild(textArea);
                           alert('Address copied!');
                         }}
                         style={{
@@ -451,13 +458,14 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                         }}
                       />
                       <button
-                        onClick={async () => {
-                          try {
-                            const text = await navigator.clipboard.readText();
-                            setUsdtForm(prev => ({ ...prev, address: text }));
-                          } catch (err) {
-                            alert('Unable to paste. Please paste manually.');
+                        onClick={() => {
+                          // Focus the input and let user paste manually
+                          const input = document.querySelector('input[placeholder*="USDT address"]');
+                          if (input) {
+                            input.focus();
+                            input.select();
                           }
+                          alert('Input focused. Press Ctrl+V to paste your address.');
                         }}
                         style={{
                           padding: '14px 16px',
