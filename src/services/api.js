@@ -26,8 +26,8 @@ export const authAPI = {
 
 export const tradingAPI = {
   getPrice: () => api.get('/trading/price'),
-  buyUSDT: (amount) => api.post('/trading/buy', { amount }),
-  sellUSDT: (amount) => api.post('/trading/sell', { amount }),
+  buyUSDT: (data) => api.post('/trading/buy', data),
+  sellUSDT: (data) => api.post('/trading/sell', data),
   getTransactions: (page = 1, limit = 10) => api.get(`/trading/transactions?page=${page}&limit=${limit}`),
 };
 
