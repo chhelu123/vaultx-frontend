@@ -391,11 +391,31 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                     />
                     <p style={{ color: '#b7bdc6', fontSize: '12px', marginTop: '4px' }}>Available: {user?.wallets?.usdt?.toFixed(6) || '0.000000'} USDT</p>
                   </div>
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Blockchain Network</label>
+                    <select
+                      value={usdtForm.chain || 'trc20'}
+                      onChange={(e) => setUsdtForm(prev => ({ ...prev, chain: e.target.value }))}
+                      style={{ 
+                        width: '100%', 
+                        padding: '14px 16px', 
+                        border: '1px solid #474d57', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#1e2329', 
+                        color: '#ffffff',
+                        fontSize: '16px'
+                      }}
+                    >
+                      <option value="trc20">TRC-20 (Tron)</option>
+                      <option value="bep20">BEP-20 (BSC)</option>
+                      <option value="aptos">Aptos Network</option>
+                    </select>
+                  </div>
                   <div style={{ marginBottom: '24px' }}>
-                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>USDT Address</label>
+                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>USDT Address ({usdtForm.chain?.toUpperCase() || 'TRC-20'})</label>
                     <input
                       type="text"
-                      placeholder="Enter your USDT address"
+                      placeholder={`Enter your ${usdtForm.chain?.toUpperCase() || 'TRC-20'} USDT address`}
                       value={usdtForm.address}
                       onChange={(e) => setUsdtForm(prev => ({ ...prev, address: e.target.value }))}
                       style={{ 
@@ -427,7 +447,8 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                         await walletAPI.requestWithdrawal({
                           type: 'usdt',
                           amount: parseFloat(usdtForm.amount),
-                          withdrawalDetails: usdtForm.address
+                          withdrawalDetails: usdtForm.address,
+                          chain: usdtForm.chain || 'trc20'
                         });
                         setNotification({
                           isOpen: true,
