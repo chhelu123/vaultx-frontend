@@ -149,8 +149,8 @@ const Navbar = ({ user, onLogout }) => {
             <div style={{ padding: '15px', borderBottom: '1px solid #2b3139' }}>
               <div style={{ marginBottom: '16px' }}>
                 <span style={{ color: '#b7bdc6', fontSize: '13px', fontWeight: '500', letterSpacing: '0.5px' }}>USER ID </span>
-                <span style={{ color: '#fcd535', fontSize: '13px', fontFamily: 'monospace', fontWeight: '600' }} title={user?._id}>
-                  {user?._id ? `${user._id.slice(0, 8)}...${user._id.slice(-4)}` : 'Loading...'}
+                <span style={{ color: '#fcd535', fontSize: '16px', fontFamily: 'monospace', fontWeight: '600' }}>
+                  {user?.userNumber || 'Loading...'}
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>

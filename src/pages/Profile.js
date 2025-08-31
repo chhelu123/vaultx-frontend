@@ -113,31 +113,11 @@ const Profile = ({ user }) => {
                 borderRadius: '8px', 
                 color: '#fcd535',
                 fontFamily: 'monospace',
-                fontSize: '14px',
+                fontSize: '18px',
                 fontWeight: '600',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
+                textAlign: 'center'
               }}>
-                <span title={user?._id}>{user?._id ? `${user._id.slice(0, 8)}...${user._id.slice(-4)}` : 'Loading...'}</span>
-                <button 
-                  onClick={() => copyToClipboard(user?._id)}
-                  style={{ 
-                    background: 'none', 
-                    border: 'none', 
-                    color: '#fcd535', 
-                    cursor: 'pointer', 
-                    fontSize: '14px',
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                    transition: 'background-color 0.2s ease'
-                  }}
-                  title="Copy full ID to clipboard"
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#474d57'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                >
-                  Copy
-                </button>
+                {user?.userNumber || 'Loading...'}
               </div>
             </div>
             
