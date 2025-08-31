@@ -70,19 +70,14 @@ const TradingPanel = ({ user, onUpdate }) => {
   const handleBuySubmit = async () => {
     setBuyFlow(prev => ({ ...prev, loading: true }));
     try {
-      await walletAPI.requestDeposit({
-        type: 'inr',
-        amount: parseFloat(buyFlow.amount) * prices.buyPrice,
-        paymentMethod: buyFlow.paymentMethod === 'upi' ? 'UPI' : 'Bank Transfer',
-        transactionId: buyFlow.transactionId,
-        usdtAmount: parseFloat(buyFlow.amount)
-      });
+      const inrAmount = parseFloat(buyFlow.amount) * prices.buyPrice;
+      await tradingAPI.buyUSDT(inrAmount);
       
       setNotification({
         isOpen: true,
         type: 'success',
         title: 'Purchase Request Submitted',
-        message: `Your request to buy ${buyFlow.amount} USDT has been submitted. You will receive USDT once payment is verified.`
+        message: `Your request to buy ${buyFlow.amount} USDT has been submitted. You will receive USDT once admin approves.`
       });
       
       setBuyFlow({ step: 1, amount: '', paymentMethod: 'upi', transactionId: '', loading: false });
@@ -115,19 +110,13 @@ const TradingPanel = ({ user, onUpdate }) => {
         return;
       }
       
-      await walletAPI.requestWithdrawal({
-        type: 'inr',
-        amount: parseFloat(sellFlow.amount) * prices.sellPrice,
-        withdrawalDetails: sellFlow.paymentMethod === 'upi' ? sellFlow.bankDetails : sellFlow.bankDetails,
-        paymentMethod: sellFlow.paymentMethod === 'upi' ? 'UPI' : 'Bank Transfer',
-        usdtAmount: parseFloat(sellFlow.amount)
-      });
+      await tradingAPI.sellUSDT(parseFloat(sellFlow.amount));
       
       setNotification({
         isOpen: true,
         type: 'success',
         title: 'Sale Request Submitted',
-        message: `Your request to sell ${sellFlow.amount} USDT has been submitted. You will receive INR once approved.`
+        message: `Your request to sell ${sellFlow.amount} USDT has been submitted. You will receive INR once admin approves.`
       });
       
       setSellFlow({ step: 1, amount: '', paymentMethod: 'upi', bankDetails: '', loading: false });
