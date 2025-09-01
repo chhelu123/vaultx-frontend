@@ -178,57 +178,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
           </div>
         </div>
         
-        <div style={{ 
-          backgroundColor: '#2b3139', 
-          padding: '32px', 
-          borderRadius: '12px', 
-          border: '1px solid #474d57'
-        }}>
-          <h3 style={{ marginBottom: '24px', color: '#ffffff', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.3px' }}>Transaction History</h3>
-          {transactions.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '48px', color: '#b7bdc6' }}>
-              <p style={{ fontSize: '18px', fontWeight: '500', marginBottom: '8px' }}>No transactions yet</p>
-              <p style={{ fontSize: '16px', margin: 0 }}>Start trading to see your transaction history</p>
-            </div>
-          ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid #474d57' }}>
-                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>TYPE</th>
-                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>AMOUNT</th>
-                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>PRICE</th>
-                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>TOTAL</th>
-                    <th style={{ padding: '16px', textAlign: 'left', fontWeight: '600', color: '#b7bdc6', fontSize: '14px', letterSpacing: '0.5px' }}>DATE</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transactions.map((tx) => (
-                    <tr key={tx._id} style={{ borderBottom: '1px solid #474d57' }}>
-                      <td data-label="Type" style={{ padding: '16px' }}>
-                        <span style={{
-                          padding: '6px 12px',
-                          borderRadius: '6px',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#ffffff',
-                          backgroundColor: tx.type === 'buy' ? '#02c076' : '#f84960',
-                          letterSpacing: '0.5px'
-                        }}>
-                          {tx.type === 'buy' ? 'BUY' : 'SELL'}
-                        </span>
-                      </td>
-                      <td data-label="Amount" style={{ padding: '16px', fontWeight: '500', color: '#ffffff', fontSize: '15px' }}>{tx.amount.toFixed(6)} USDT</td>
-                      <td data-label="Price" style={{ padding: '16px', color: '#b7bdc6', fontSize: '15px' }}>₹{tx.price.toFixed(2)}</td>
-                      <td data-label="Total" style={{ padding: '16px', fontWeight: '600', color: '#ffffff', fontSize: '15px' }}>₹{tx.total.toFixed(2)}</td>
-                      <td data-label="Date" style={{ padding: '16px', color: '#848e9c', fontSize: '14px' }}>{new Date(tx.createdAt).toLocaleDateString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+
         
         {/* USDT Modal */}
         {showUSDTModal && (

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Auth = ({ setUser, defaultTab = 'login' }) => {
   const [isLogin, setIsLogin] = useState(defaultTab === 'login');
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [step, setStep] = useState(1); // 1: form, 2: otp, 3: forgot password
@@ -13,6 +13,15 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
   const [countdown, setCountdown] = useState(0);
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
+
+  const validatePassword = (password) => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const isLongEnough = password.length >= 6;
+    
+    return hasUpperCase && hasLowerCase && hasNumber && isLongEnough;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +34,20 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
         localStorage.setItem('token', response.data.token);
         setUser(response.data.user);
       } else {
+        // Validate password
+        if (!validatePassword(formData.password)) {
+          setError('Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 6 characters long.');
+          setLoading(false);
+          return;
+        }
+        
+        // Check password confirmation
+        if (formData.password !== formData.confirmPassword) {
+          setError('Passwords do not match.');
+          setLoading(false);
+          return;
+        }
+        
         // Send OTP for registration
         const otpResponse = await authAPI.sendOTP({ email: formData.email, name: formData.name });
         setStep(2);
@@ -303,10 +326,47 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
                 margin: '6px 0 0 0',
                 lineHeight: '1.4'
               }}>
-                Password must be at least 6 characters long
+                Must contain: 1 uppercase, 1 lowercase, 1 number, min 6 characters
               </p>
             )}
           </div>
+          
+          {!isLogin && (
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ 
+                display: 'block', 
+                marginBottom: '8px', 
+                color: '#eaecef', 
+                fontSize: '14px', 
+                fontWeight: '500' 
+              }}>
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                autoComplete="new-password"
+                style={{ 
+                  width: '100%', 
+                  padding: '14px 16px', 
+                  border: '1px solid #474d57', 
+                  borderRadius: '8px', 
+                  backgroundColor: '#1e2329', 
+                  color: '#eaecef',
+                  fontSize: '16px',
+                  fontFamily: 'inherit',
+                  transition: 'all 0.2s ease',
+                  outline: 'none'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#fcd535'}
+                onBlur={(e) => e.target.style.borderColor = '#474d57'}
+              />
+            </div>
+          )}
           
           <button
             type="submit"
@@ -590,7 +650,7 @@ const Auth = ({ setUser, defaultTab = 'login' }) => {
           <button
             onClick={() => {
               setIsLogin(!isLogin);
-              setFormData({ name: '', email: '', password: '' });
+              setFormData({ name: '', email: '', password: '', confirmPassword: '' });
               setError('');
               setStep(1);
             }}
