@@ -334,11 +334,11 @@ const LandingPage = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '32px' }}>
             {[
               {
-                name: 'Rajesh Kumar',
+                name: 'Sagar Patidar',
                 role: 'Crypto Trader',
                 review: 'VaultX has been my go-to platform for USDT trading. The process is seamless, and transactions are completed within minutes. Highly recommended for serious traders.',
                 rating: 5,
-                initial: 'R'
+                initial: 'S'
               },
               {
                 name: 'Karan Singh',
