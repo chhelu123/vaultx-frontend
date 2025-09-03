@@ -335,7 +335,7 @@ const LandingPage = () => {
             {[
               {
                 name: 'Sagar Patidar',
-                role: 'Crypto Trader',
+                role: 'Digital Marketing Head',
                 review: 'VaultX has been my go-to platform for USDT trading. The process is seamless, and transactions are completed within minutes. Highly recommended for serious traders.',
                 rating: 5,
                 initial: 'S'
