@@ -279,10 +279,10 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                     <p style={{ color: '#b7bdc6', fontSize: '12px', margin: 0 }}>Only send USDT on {usdtForm.chain?.toUpperCase() || 'TRC-20'} network</p>
                   </div>
                   <div style={{ marginBottom: '24px' }}>
-                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Transaction Hash</label>
+                    <label style={{ display: 'block', color: '#eaecef', fontSize: '15px', fontWeight: '600', marginBottom: '8px' }}>Transaction Hash (Optional)</label>
                     <input
                       type="text"
-                      placeholder="Enter transaction hash"
+                      placeholder="Enter transaction hash (optional)"
                       value={usdtForm.transactionHash}
                       onChange={(e) => setUsdtForm(prev => ({ ...prev, transactionHash: e.target.value }))}
                       style={{ 
@@ -295,6 +295,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                         fontSize: '16px'
                       }}
                     />
+                    <p style={{ color: '#848e9c', fontSize: '12px', marginTop: '4px' }}>You can add this later if you can't find it now</p>
                   </div>
                   <button
                     onClick={async () => {
@@ -304,7 +305,7 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                           type: 'usdt',
                           amount: parseFloat(usdtForm.amount),
                           paymentMethod: 'USDT Transfer',
-                          transactionId: usdtForm.transactionHash
+                          transactionId: usdtForm.transactionHash || 'Not provided'
                         });
                         setNotification({
                           isOpen: true,
@@ -324,15 +325,15 @@ const Dashboard = ({ user, setUser, refreshUser }) => {
                       }
                       setLoading(false);
                     }}
-                    disabled={loading || !usdtForm.amount || !usdtForm.transactionHash}
+                    disabled={loading || !usdtForm.amount}
                     style={{ 
                       width: '100%', 
                       padding: '16px', 
-                      backgroundColor: loading || !usdtForm.amount || !usdtForm.transactionHash ? '#848e9c' : '#02c076', 
+                      backgroundColor: loading || !usdtForm.amount ? '#848e9c' : '#02c076', 
                       color: '#ffffff', 
                       border: 'none', 
                       borderRadius: '12px', 
-                      cursor: loading || !usdtForm.amount || !usdtForm.transactionHash ? 'not-allowed' : 'pointer',
+                      cursor: loading || !usdtForm.amount ? 'not-allowed' : 'pointer',
                       fontSize: '16px',
                       fontWeight: '600',
                       marginBottom: '16px',
